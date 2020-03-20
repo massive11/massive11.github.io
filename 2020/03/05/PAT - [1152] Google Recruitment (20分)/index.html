@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="Jingyi Yu">
   <meta name="keywords" content="">
-  <title>PAT - [1148] Werewolf - Simple Version (20分) - Untitled.</title>
+  <title>PAT - [1152] Google Recruitment (20分) - Untitled.</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
@@ -124,7 +124,7 @@
               
                 <p class="mt-3 post-meta">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                  Friday, March 20th 2020, 9:31 pm
+                  Thursday, March 5th 2020, 12:00 am
                 </p>
               
 
@@ -133,7 +133,7 @@
                   
                   <span class="post-meta">
                     <i class="far fa-chart-bar"></i>
-                    798 字
+                    879 字
                   </span>
                 
 
@@ -141,7 +141,7 @@
                   
                   <span class="post-meta">
                       <i class="far fa-clock"></i>
-                      3 分钟
+                      4 分钟
                   </span>
                 
 
@@ -170,112 +170,143 @@
             
             <div class="markdown-body">
               <h2 id="Vocabulary"><a href="#Vocabulary" class="headerlink" title="Vocabulary"></a>Vocabulary</h2><ol>
-<li>ascending 升序的</li>
+<li>prime number 素数</li>
+<li>consequence 连续的</li>
+<li>transcendental number 超越数</li>
+<li>in bold 黑体的，加粗的</li>
 </ol>
-<h2 id="自己的想法"><a href="#自己的想法" class="headerlink" title="自己的想法"></a>自己的想法</h2><p>进行模拟，假定两个人为狼人看是否符合条件<br>冷静可以解决一切问题！<br>思路没有问题，但是代码可以精简很多</p>
-<h2 id="自己的代码"><a href="#自己的代码" class="headerlink" title="自己的代码"></a>自己的代码</h2><pre><code class="c">#include &lt;iostream&gt;
-#include &lt;vector&gt;
+<h2 id="个人解题思路"><a href="#个人解题思路" class="headerlink" title="个人解题思路"></a>个人解题思路</h2><p>本题使用暴力解的方法成功AC，本来担心会不会超时，但是并没有。只是实现的思路略复杂，也导致了在判断的时候遗漏了部分关键信息。</p>
+<p>自己的复杂思路：采用枚举法，从左至右一依次寻找k位数，为了缩短时间，首先判断最后一位是否是偶数。在这里隐含了两种情况。第一种情况是是偶数，但这个数为2，2为素数；第二种情况是是除2以外的偶数，可以直接判断为非素数进入下一次的循环。<br>如果最后一位为奇数，且9位以下的数在int范围内，则将其该k位数转为int型，通过isPrime函数进行判断是否为素数，如果是素数则按位输出，谨防丢掉前面的几位0。<br>最后如果没有找到则输出404。</p>
+<pre><code class="c">#include &lt;iostream&gt;
 #include &lt;algorithm&gt;
-#include &lt;set&gt;
-using namespace std;
-int main() {
-    int n;
-    scanf(&quot;%d&quot;,&amp;n);
-    vector&lt;int&gt; in;
-    for(int i=0;i&lt;n;++i){
-        int t;
-        scanf(&quot;%d&quot;,&amp;t);
-        in.emplace_back(t);
-    }
-    int w1 = 0,w2 = 1;//假设狼人为w1和w2
-    for(;;){
-        bool flag = true;
-        int countL = 0;
-        //1.先判断两个狼人是否全说的真话，若全说的真话则为假，若全说的假话则为假
-        if(in[w1]&gt;0){
-            //w1说某人是人，判断这个人是不是两个狼人之一，若是则为假话，否则为真话
-            if(in[w1]==(w1+1)||in[w1]==(w2+1)) ++countL;
-        }else{
-            //w1说某人是狼人，如果这个人不是二者之一，则说的假话
-            if((-in[w1])!=(w1+1)&amp;&amp;(-in[w1])!=(w2+1)) ++countL;
-        }
-        //判断w2
-        if(in[w2]&gt;0){
-            if(in[w2]==(w1+1)||in[w2]==(w2+1)) ++countL;
-        }else{
-            if((-in[w2])!=(w1+1)&amp;&amp;(-in[w2])!=(w2+1)) ++countL;
-        }
-
-        //2.判断共有几个说谎的人，如果不为2则为假
-        if(countL==0||countL==2){
-            flag = false;
-        }else{
-            //剩下的人中必须只能有一个说谎的人
-            int count = 0;
-            for(int j=0;j&lt;n;++j){
-                if(j==w1||j==w2) continue;
-                if(in[j]&gt;0){
-                    //这个人类说某人是人，若某人是w1或w2则为说谎
-                    if(in[j]==(w1+1)||in[j]==(w2+1)) ++count;
-                }else{
-                    //这个人说某人是狼，若这个人不是w1且不是w2则为说谎
-                    if(-in[j]!=(w1+1)&amp;&amp;-in[j]!=(w2+1)) ++count;
-                }
-                if(count&gt;1){
-                    flag = false;
-                    break;
-                }
-            }
-            if(count==0) flag = false;
-        }
-        if(!flag){
-            if(w1==in.size()-2&amp;&amp;w2==in.size()-1){
-                cout&lt;&lt;&quot;No Solution&quot;;
-                break;
-            }else if(w2==in.size()-1){
-                ++w1;
-                w2 = w1+1;
-            }else{
-                ++w2;
-            }
-        }else{
-            cout&lt;&lt;w1+1&lt;&lt;&quot; &quot;&lt;&lt;w2+1;
-            break;
-        }
-    }
-    return 0;</code></pre>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>每个人说的数字保存在v数组中，i从1～n、j从i+1～n遍历，分别假设i和j是狼人，a数组表示该人是狼人还是好人，等于1表示是好人，等于-1表示是狼人。k从1～n分别判断k所说的话是真是假，k说的话和真实情况不同（即v[k] * a[abs(v[k])] &lt; 0）则表示k在说谎，则将k放在lie数组中；遍历完成后判断lie数组，如果说谎人数等于2并且这两个说谎的人一个是好人一个是狼人（即a[lie[0]] + a[lie[1]] == 0）表示满足题意，此时输出i和j并return，否则最后的时候输出No Solution～</p>
-<h2 id="代码优化"><a href="#代码优化" class="headerlink" title="代码优化"></a>代码优化</h2><pre><code class="c">//代码链接 https://blog.csdn.net/liuchuo/article/details/82560876
-#include &lt;iostream&gt;
 #include &lt;vector&gt;
 #include &lt;cmath&gt;
 using namespace std;
+
+bool isPrime(int q){
+    bool flag = true;
+    if(q==1||q==2){
+        return flag;
+    }else{
+        for(int i=2;i&lt;=sqrt(q);++i){
+            if(q%i==0){
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+    }
+}
+
 int main() {
-    int n;
-    cin &gt;&gt; n;
-    vector&lt;int&gt; v(n+1);
-    for (int i = 1; i &lt;= n; i++) cin &gt;&gt; v[i];
-    for (int i = 1; i &lt;= n; i++) {
-        for (int j = i + 1; j &lt;= n; j++) {
-            vector&lt;int&gt; lie, a(n + 1, 1);
-            a[i] = a[j] = -1;
-            for (int k = 1; k &lt;= n; k++)
-                if (v[k] * a[abs(v[k])] &lt; 0) lie.push_back(k);
-            if (lie.size() == 2 &amp;&amp; a[lie[0]] + a[lie[1]] == 0) {
-                cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j;
-                return 0;
+    int l,k;
+    scanf(&quot;%d%d&quot;,&amp;l,&amp;k);
+    char s[l];
+    scanf(&quot;%s&quot;,s);
+    bool f = false;
+    for(int i=0;i+k-1&lt;l;++i){
+        //此种情况表示这个k位数为偶数，偶数不是素数，除2外
+        if((s[i+k-1]-&#39;0&#39;)%2==0){
+            bool flag = true;
+            //如果不是00002，那么一定是偶数
+            if((s[i+k-1]-&#39;0&#39;)!=2){
+                flag = false;
+            }else{
+                //如果flag为false，表示不是素数，为true表示是素数
+                for(int j = i;j&lt;i+k-1;++j){
+                    if(s[j]!=&#39;0&#39;){
+                        flag = false;
+                        break;
+                    }
+                }
+            }
+            if(flag){
+                f = true;
+                for(int j = i;j&lt;i+k;++j){
+                    cout&lt;&lt;s[j];
+                }
+                break;
+            }else{
+                continue;//向后寻找素数
+            }
+        }else{//非偶数的情况
+            int iP = 0;
+            int su = 1;
+            int t = i+k-1;
+            while(t&gt;=i){
+                iP += (s[t]-&#39;0&#39;)*su;
+                --t;
+                su*=10;
+            }
+            if(isPrime(iP)){
+                f =true;
+                for(int j = i;j&lt;i+k;++j){
+                    cout&lt;&lt;s[j];
+                }
+                break;
             }
         }
     }
-    cout &lt;&lt; &quot;No Solution&quot;;
+    if(!f){
+        cout&lt;&lt;&quot;404&quot;;
+    }
     return 0;
 }</code></pre>
+<h2 id="代码优化"><a href="#代码优化" class="headerlink" title="代码优化"></a>代码优化</h2><pre><code class="c">//代码链接 https://www.liuchuo.net/archives/category/code/page/5
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+bool isPrime(int n) {
+    if (n == 0 || n == 1) return false;
+    for (int i = 2; i * i &lt;= n; i++)
+        if (n % i == 0) return false;
+    return true;
+}
+int main() {
+    int l, k;
+    string s;
+    cin &gt;&gt; l &gt;&gt; k &gt;&gt; s;
+    for (int i = 0; i &lt;= l - k; i++) {
+        string t = s.substr(i, k);
+        int num = stoi(t);
+        if (isPrime(num)) {
+            cout &lt;&lt; t;
+            return 0;
+        }
+    }
+    cout &lt;&lt; &quot;404\n&quot;;
+    return 0;
+}</code></pre>
+<p>学习心得：<br>该题考虑了多种情况提高代码速度反而带来了更多的漏洞，可以先直接尝试暴力解是否得解，超时的话再考虑代码优化问题。</p>
+<h3 id="C-stoi函数使用："><a href="#C-stoi函数使用：" class="headerlink" title="C++ stoi函数使用："></a>C++ stoi函数使用：</h3><p>引入头文件</p>
+<pre><code class="c">#include &lt;string&gt;</code></pre>
+<p>作用：将n进制的字符串转为十进制</p>
+<p>用法</p>
+<pre><code class="c">//stoi（字符串，起始位置，n进制），将 n 进制的字符串转化为十进制
+
+stoi(str, 0, 2); //将字符串 str 从 0 位置开始到末尾的 2 进制转换为十进制</code></pre>
+<h3 id="C-substr函数使用"><a href="#C-substr函数使用" class="headerlink" title="C++ substr函数使用"></a>C++ substr函数使用</h3><p>引入头文件 </p>
+<pre><code class="c">#include &lt;string&gt;</code></pre>
+<p>作用：返回一个从指定位置开始的指定长度的子字符串</p>
+<p>用法</p>
+<pre><code class="c">//只有一个数字5表示从下标为5开始一直到结尾：sub1 = &quot;56789&quot;
+string sub1 = s.substr(5);
+
+//从下标为5开始截取长度为3位：sub2 = &quot;567&quot;
+string sub2 = s.substr(5, 3); </code></pre>
 
             </div>
             <hr>
             <div>
               <p>
                 
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/PAT/">PAT</a>
+                    
+                  </span>
                 
               </p>
               
@@ -285,18 +316,13 @@ int main() {
                 <div class="post-prevnext row">
                   <div class="post-prev col-12 col-md-6">
                     
-                      <a href="/2020/03/20/PAT%20-%20%5B1152%5D%20Google%20Recruitment%20(20%E5%88%86)/">
+                      <a href="/2020/03/11/PAT%20-%20%5B1148%5D%20Werewolf%20-%20Simple%20Version%20(20%E5%88%86)/">
                         <i class="fa fa-chevron-left"></i>
-                        <span>PAT - [1152] Google Recruitment (20分)</span>
+                        <span>PAT - [1148] Werewolf - Simple Version (20分)</span>
                       </a>
                     
                   </div>
                   <div class="post-next col-12 col-md-6">
-                    
-                      <a href="/2019/03/02/ubuntu%E6%8A%98%E8%85%BE%E4%B9%8B%E8%B7%AF/">
-                        <span>Ubuntu 18.04折腾之路</span>
-                        <i class="fa fa-chevron-right"></i>
-                      </a>
                     
                   </div>
                 </div>
@@ -474,7 +500,7 @@ int main() {
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "PAT - [1148] Werewolf - Simple Version (20分)&nbsp;",
+        "PAT - [1152] Google Recruitment (20分)&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

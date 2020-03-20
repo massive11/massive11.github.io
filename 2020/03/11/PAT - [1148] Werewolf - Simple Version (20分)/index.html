@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="Jingyi Yu">
   <meta name="keywords" content="">
-  <title>Ubuntu 18.04折腾之路 - Untitled.</title>
+  <title>PAT - [1148] Werewolf - Simple Version (20分) - Untitled.</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
@@ -124,7 +124,7 @@
               
                 <p class="mt-3 post-meta">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                  Saturday, March 2nd 2019, 12:00 am
+                  Wednesday, March 11th 2020, 12:00 am
                 </p>
               
 
@@ -133,7 +133,7 @@
                   
                   <span class="post-meta">
                     <i class="far fa-chart-bar"></i>
-                    185 字
+                    798 字
                   </span>
                 
 
@@ -141,7 +141,7 @@
                   
                   <span class="post-meta">
                       <i class="far fa-clock"></i>
-                      1 分钟
+                      3 分钟
                   </span>
                 
 
@@ -169,20 +169,107 @@
           <div class="post-content mx-auto" id="post">
             
             <div class="markdown-body">
-              <p>#Ubuntu 18.04折腾之路</p>
-<h3 id="更改系统时间（win10-Ubuntu双系统）"><a href="#更改系统时间（win10-Ubuntu双系统）" class="headerlink" title="更改系统时间（win10+Ubuntu双系统）"></a>更改系统时间（win10+Ubuntu双系统）</h3><p>以下两种方法均可</p>
-<ul>
-<li><p>Ubuntu终端输入</p>
-<pre><code>timedatectl set-local-rtc 1 --adjust-system-clock</code></pre></li>
-<li><p>win10  cmd输入</p>
-<pre><code>Reg add HKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation /v  RealTimeIsUniversal /t REG_DWORD /d 1    </code></pre><h3 id="Mac-主题桌面"><a href="#Mac-主题桌面" class="headerlink" title="Mac 主题桌面"></a>Mac 主题桌面</h3><p>效果:</p>
-</li>
-</ul>
-<img src="https://github.com/zhangzizhao404/markdown-pictures/blob/master/MyBlog/Ubuntu18.04/111.png" srcset="/img/loading.gif" />
+              <h2 id="Vocabulary"><a href="#Vocabulary" class="headerlink" title="Vocabulary"></a>Vocabulary</h2><ol>
+<li>ascending 升序的</li>
+</ol>
+<h2 id="自己的想法"><a href="#自己的想法" class="headerlink" title="自己的想法"></a>自己的想法</h2><p>进行模拟，假定两个人为狼人看是否符合条件<br>冷静可以解决一切问题！<br>思路没有问题，但是代码可以精简很多</p>
+<h2 id="自己的代码"><a href="#自己的代码" class="headerlink" title="自己的代码"></a>自己的代码</h2><pre><code class="c">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;set&gt;
+using namespace std;
+int main() {
+    int n;
+    scanf(&quot;%d&quot;,&amp;n);
+    vector&lt;int&gt; in;
+    for(int i=0;i&lt;n;++i){
+        int t;
+        scanf(&quot;%d&quot;,&amp;t);
+        in.emplace_back(t);
+    }
+    int w1 = 0,w2 = 1;//假设狼人为w1和w2
+    for(;;){
+        bool flag = true;
+        int countL = 0;
+        //1.先判断两个狼人是否全说的真话，若全说的真话则为假，若全说的假话则为假
+        if(in[w1]&gt;0){
+            //w1说某人是人，判断这个人是不是两个狼人之一，若是则为假话，否则为真话
+            if(in[w1]==(w1+1)||in[w1]==(w2+1)) ++countL;
+        }else{
+            //w1说某人是狼人，如果这个人不是二者之一，则说的假话
+            if((-in[w1])!=(w1+1)&amp;&amp;(-in[w1])!=(w2+1)) ++countL;
+        }
+        //判断w2
+        if(in[w2]&gt;0){
+            if(in[w2]==(w1+1)||in[w2]==(w2+1)) ++countL;
+        }else{
+            if((-in[w2])!=(w1+1)&amp;&amp;(-in[w2])!=(w2+1)) ++countL;
+        }
 
-<p>参考一个大神的视频:<a href="https://www.bilibili.com/video/av23152537" target="_blank" rel="noopener">https://www.bilibili.com/video/av23152537</a></p>
-<h3 id="在恢复模式下修改文件"><a href="#在恢复模式下修改文件" class="headerlink" title="在恢复模式下修改文件"></a>在恢复模式下修改文件</h3><p>我在一天之内改文件改的Ubuntu不能解锁进入桌面,于是又探索了一下<br>首先进入恢复模式之后是不能修改文件的,要先输入以下命令</p>
-<pre><code>mount -o remount,rw /</code></pre><p>这样就可以修改文件了,把你之前修改的文件改回原来的.按住Ctrl+Alt+delete就能重启了进入系统了.</p>
+        //2.判断共有几个说谎的人，如果不为2则为假
+        if(countL==0||countL==2){
+            flag = false;
+        }else{
+            //剩下的人中必须只能有一个说谎的人
+            int count = 0;
+            for(int j=0;j&lt;n;++j){
+                if(j==w1||j==w2) continue;
+                if(in[j]&gt;0){
+                    //这个人类说某人是人，若某人是w1或w2则为说谎
+                    if(in[j]==(w1+1)||in[j]==(w2+1)) ++count;
+                }else{
+                    //这个人说某人是狼，若这个人不是w1且不是w2则为说谎
+                    if(-in[j]!=(w1+1)&amp;&amp;-in[j]!=(w2+1)) ++count;
+                }
+                if(count&gt;1){
+                    flag = false;
+                    break;
+                }
+            }
+            if(count==0) flag = false;
+        }
+        if(!flag){
+            if(w1==in.size()-2&amp;&amp;w2==in.size()-1){
+                cout&lt;&lt;&quot;No Solution&quot;;
+                break;
+            }else if(w2==in.size()-1){
+                ++w1;
+                w2 = w1+1;
+            }else{
+                ++w2;
+            }
+        }else{
+            cout&lt;&lt;w1+1&lt;&lt;&quot; &quot;&lt;&lt;w2+1;
+            break;
+        }
+    }
+    return 0;</code></pre>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>每个人说的数字保存在v数组中，i从1～n、j从i+1～n遍历，分别假设i和j是狼人，a数组表示该人是狼人还是好人，等于1表示是好人，等于-1表示是狼人。k从1～n分别判断k所说的话是真是假，k说的话和真实情况不同（即v[k] * a[abs(v[k])] &lt; 0）则表示k在说谎，则将k放在lie数组中；遍历完成后判断lie数组，如果说谎人数等于2并且这两个说谎的人一个是好人一个是狼人（即a[lie[0]] + a[lie[1]] == 0）表示满足题意，此时输出i和j并return，否则最后的时候输出No Solution～</p>
+<h2 id="代码优化"><a href="#代码优化" class="headerlink" title="代码优化"></a>代码优化</h2><pre><code class="c">//代码链接 https://blog.csdn.net/liuchuo/article/details/82560876
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+using namespace std;
+int main() {
+    int n;
+    cin &gt;&gt; n;
+    vector&lt;int&gt; v(n+1);
+    for (int i = 1; i &lt;= n; i++) cin &gt;&gt; v[i];
+    for (int i = 1; i &lt;= n; i++) {
+        for (int j = i + 1; j &lt;= n; j++) {
+            vector&lt;int&gt; lie, a(n + 1, 1);
+            a[i] = a[j] = -1;
+            for (int k = 1; k &lt;= n; k++)
+                if (v[k] * a[abs(v[k])] &lt; 0) lie.push_back(k);
+            if (lie.size() == 2 &amp;&amp; a[lie[0]] + a[lie[1]] == 0) {
+                cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j;
+                return 0;
+            }
+        }
+    }
+    cout &lt;&lt; &quot;No Solution&quot;;
+    return 0;
+}</code></pre>
 
             </div>
             <hr>
@@ -193,9 +280,7 @@
                   <span>
                 <i class="iconfont icon-tag"></i>
                     
-                      <a class="hover-with-bg" href="/tags/Ubuntu/">Ubuntu</a>
-                    
-                      <a class="hover-with-bg" href="/tags/linux/">linux</a>
+                      <a class="hover-with-bg" href="/tags/PAT/">PAT</a>
                     
                   </span>
                 
@@ -207,13 +292,13 @@
                 <div class="post-prevnext row">
                   <div class="post-prev col-12 col-md-6">
                     
-                      <a href="/2020/03/20/PAT%20-%20%5B1148%5D%20Werewolf%20-%20Simple%20Version%20(20%E5%88%86)/">
-                        <i class="fa fa-chevron-left"></i>
-                        <span>PAT - [1148] Werewolf - Simple Version (20分)</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2020/03/05/PAT%20-%20%5B1152%5D%20Google%20Recruitment%20(20%E5%88%86)/">
+                        <span>PAT - [1152] Google Recruitment (20分)</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
                     
                   </div>
                 </div>
@@ -391,7 +476,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Ubuntu 18.04折腾之路&nbsp;",
+        "PAT - [1148] Werewolf - Simple Version (20分)&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

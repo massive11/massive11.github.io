@@ -133,7 +133,7 @@
                   
                   <span class="post-meta">
                     <i class="far fa-chart-bar"></i>
-                    879 字
+                    935 字
                   </span>
                 
 
@@ -176,7 +176,9 @@
           <div class="post-content mx-auto" id="post">
             
             <div class="markdown-body">
-              <h2 id="Vocabulary"><a href="#Vocabulary" class="headerlink" title="Vocabulary"></a>Vocabulary</h2><ol>
+              <p>本题使用暴力解的方法成功AC，本来担心会不会超时，但是并没有。只是实现的思路略复杂，也导致了在判断的时候遗漏了部分关键信息。</p>
+<a id="more"></a>
+<h2 id="Vocabulary"><a href="#Vocabulary" class="headerlink" title="Vocabulary"></a>Vocabulary</h2><ol>
 <li>prime number 素数</li>
 <li>consequence 连续的</li>
 <li>transcendental number 超越数</li>
@@ -307,6 +309,14 @@ string sub2 = s.substr(5, 3); </code></pre>
             <div>
               <p>
                 
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/PAT%E7%94%B2%E7%BA%A7/">PAT甲级</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
                 
                   <span>
                 <i class="iconfont icon-tag"></i>
@@ -341,6 +351,32 @@ string sub2 = s.substr(5, 3); </code></pre>
                 <div class="comments" id="comments">
                   
                   
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script defer src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var oldLoad = window.onload;
+    window.onload = function () {
+      var gitalk = new Gitalk({
+        clientID: '87ee0584e60a7cd2c709',
+        clientSecret: 'f73407aa6c175bb33547b283e73d45ce5ff7ce7a',
+        repo: 'massive11.github.io',
+        owner: 'massive11',
+        admin: 'massive11',
+        id: md5(location.pathname),
+        language: 'zh-CN',
+        perPage: 15,
+        pagerDirection: 'last',
+        createIssueManually: 'true',
+        distractionFreeMode: 'false'
+      });
+
+      gitalk.render('gitalk-container')
+      oldLoad && oldLoad();
+    }
+  </script>
+
 
                 </div>
             

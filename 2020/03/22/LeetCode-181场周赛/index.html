@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="Jingyi Yu">
   <meta name="keywords" content="">
-  <title>PAT - [1148] Werewolf - Simple Version (20分) - Untitled.</title>
+  <title>LeetCode-181场周赛 - Untitled.</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
@@ -124,7 +124,7 @@
               
                 <p class="mt-3 post-meta">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                  Wednesday, March 11th 2020, 10:33 pm
+                  Sunday, March 22nd 2020, 5:25 pm
                 </p>
               
 
@@ -133,7 +133,7 @@
                   
                   <span class="post-meta">
                     <i class="far fa-chart-bar"></i>
-                    817 字
+                    1.6k 字
                   </span>
                 
 
@@ -141,7 +141,7 @@
                   
                   <span class="post-meta">
                       <i class="far fa-clock"></i>
-                      3 分钟
+                      7 分钟
                   </span>
                 
 
@@ -176,109 +176,188 @@
           <div class="post-content mx-auto" id="post">
             
             <div class="markdown-body">
-              <p>进行模拟，假定两个人为狼人看是否符合条件</p>
-<a id="more"></a>
-<h2 id="Vocabulary"><a href="#Vocabulary" class="headerlink" title="Vocabulary"></a>Vocabulary</h2><ol>
-<li>ascending 升序的</li>
-</ol>
-<h2 id="自己的想法"><a href="#自己的想法" class="headerlink" title="自己的想法"></a>自己的想法</h2><p>进行模拟，假定两个人为狼人看是否符合条件<br>冷静可以解决一切问题！<br>思路没有问题，但是代码可以精简很多</p>
-<h2 id="自己的代码"><a href="#自己的代码" class="headerlink" title="自己的代码"></a>自己的代码</h2><pre><code class="c">#include &lt;iostream&gt;
-#include &lt;vector&gt;
-#include &lt;algorithm&gt;
-#include &lt;set&gt;
-using namespace std;
-int main() {
-    int n;
-    scanf(&quot;%d&quot;,&amp;n);
-    vector&lt;int&gt; in;
-    for(int i=0;i&lt;n;++i){
-        int t;
-        scanf(&quot;%d&quot;,&amp;t);
-        in.emplace_back(t);
-    }
-    int w1 = 0,w2 = 1;//假设狼人为w1和w2
-    for(;;){
-        bool flag = true;
-        int countL = 0;
-        //1.先判断两个狼人是否全说的真话，若全说的真话则为假，若全说的假话则为假
-        if(in[w1]&gt;0){
-            //w1说某人是人，判断这个人是不是两个狼人之一，若是则为假话，否则为真话
-            if(in[w1]==(w1+1)||in[w1]==(w2+1)) ++countL;
-        }else{
-            //w1说某人是狼人，如果这个人不是二者之一，则说的假话
-            if((-in[w1])!=(w1+1)&amp;&amp;(-in[w1])!=(w2+1)) ++countL;
-        }
-        //判断w2
-        if(in[w2]&gt;0){
-            if(in[w2]==(w1+1)||in[w2]==(w2+1)) ++countL;
-        }else{
-            if((-in[w2])!=(w1+1)&amp;&amp;(-in[w2])!=(w2+1)) ++countL;
-        }
-
-        //2.判断共有几个说谎的人，如果不为2则为假
-        if(countL==0||countL==2){
-            flag = false;
-        }else{
-            //剩下的人中必须只能有一个说谎的人
-            int count = 0;
-            for(int j=0;j&lt;n;++j){
-                if(j==w1||j==w2) continue;
-                if(in[j]&gt;0){
-                    //这个人类说某人是人，若某人是w1或w2则为说谎
-                    if(in[j]==(w1+1)||in[j]==(w2+1)) ++count;
-                }else{
-                    //这个人说某人是狼，若这个人不是w1且不是w2则为说谎
-                    if(-in[j]!=(w1+1)&amp;&amp;-in[j]!=(w2+1)) ++count;
-                }
-                if(count&gt;1){
-                    flag = false;
-                    break;
-                }
-            }
-            if(count==0) flag = false;
-        }
-        if(!flag){
-            if(w1==in.size()-2&amp;&amp;w2==in.size()-1){
-                cout&lt;&lt;&quot;No Solution&quot;;
-                break;
-            }else if(w2==in.size()-1){
-                ++w1;
-                w2 = w1+1;
+              <h1 id="1-按既定顺序创建目标数组"><a href="#1-按既定顺序创建目标数组" class="headerlink" title="1. 按既定顺序创建目标数组"></a>1. 按既定顺序创建目标数组</h1><p>给你两个整数数组 nums 和 index。你需要按照以下规则创建目标数组：</p>
+<ul>
+<li>目标数组 target 最初为空。</li>
+<li>按从左到右的顺序依次读取 nums[i] 和 index[i]，在 target 数组中的下标 index[i] 处插入值 nums[i] 。</li>
+<li>重复上一步，直到在 nums 和 index 中都没有要读取的元素。</li>
+<li>请你返回目标数组。</li>
+</ul>
+<p>题目保证数字插入位置总是存在。</p>
+<p>示例：<br>输入：nums = [0,1,2,3,4], index = [0,1,2,2,1]<br>输出：[0,4,1,3,2]<br>解释：<br>nums       index     target<br>0            0        [0]<br>1            1        [0,1]<br>2            2        [0,1,2]<br>3            2        [0,1,3,2]<br>4            1        [0,4,1,3,2]</p>
+<pre><code class="c">class Solution {
+public:
+    vector&lt;int&gt; createTargetArray(vector&lt;int&gt;&amp; nums, vector&lt;int&gt;&amp; index) {
+        vector&lt;int&gt; result(index.size(),0);
+        int f[index.size()];
+        memset(f,0,sizeof(f));
+        for(int i=0;i&lt;index.size();++i){
+            if(f[result[i]]==0){
+                result[index[i]] = nums[i];
+                f[index[i]] = 1;
             }else{
-                ++w2;
-            }
-        }else{
-            cout&lt;&lt;w1+1&lt;&lt;&quot; &quot;&lt;&lt;w2+1;
-            break;
-        }
-    }
-    return 0;</code></pre>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>每个人说的数字保存在v数组中，i从1～n、j从i+1～n遍历，分别假设i和j是狼人，a数组表示该人是狼人还是好人，等于1表示是好人，等于-1表示是狼人。k从1～n分别判断k所说的话是真是假，k说的话和真实情况不同（即v[k] * a[abs(v[k])] &lt; 0）则表示k在说谎，则将k放在lie数组中；遍历完成后判断lie数组，如果说谎人数等于2并且这两个说谎的人一个是好人一个是狼人（即a[lie[0]] + a[lie[1]] == 0）表示满足题意，此时输出i和j并return，否则最后的时候输出No Solution～</p>
-<h2 id="代码优化"><a href="#代码优化" class="headerlink" title="代码优化"></a>代码优化</h2><pre><code class="c">//代码链接 https://blog.csdn.net/liuchuo/article/details/82560876
-#include &lt;iostream&gt;
-#include &lt;vector&gt;
-#include &lt;cmath&gt;
-using namespace std;
-int main() {
-    int n;
-    cin &gt;&gt; n;
-    vector&lt;int&gt; v(n+1);
-    for (int i = 1; i &lt;= n; i++) cin &gt;&gt; v[i];
-    for (int i = 1; i &lt;= n; i++) {
-        for (int j = i + 1; j &lt;= n; j++) {
-            vector&lt;int&gt; lie, a(n + 1, 1);
-            a[i] = a[j] = -1;
-            for (int k = 1; k &lt;= n; k++)
-                if (v[k] * a[abs(v[k])] &lt; 0) lie.push_back(k);
-            if (lie.size() == 2 &amp;&amp; a[lie[0]] + a[lie[1]] == 0) {
-                cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j;
-                return 0;
+                for(int j=index.size()-1;j&gt;index[i];--j){
+                    result[j] = result[j-1];
+                }
+                result[index[i]] = nums[i];
             }
         }
+        return result;
     }
-    cout &lt;&lt; &quot;No Solution&quot;;
-    return 0;
-}</code></pre>
+};</code></pre>
+<p>代码优化<br>使用库方法</p>
+<pre><code class="c">//代码链接：https://leetcode-cn.com/problems/create-target-array-in-the-given-order/solution/di-181chang-zhou-sai-jie-ti-bao-gao-by-time-limit/
+class Solution {
+public:
+    vector&lt;int&gt; createTargetArray(vector&lt;int&gt;&amp; nums, vector&lt;int&gt;&amp; index) {
+        vector&lt;int&gt; infoVec;
+        for(int i = 0, n = nums.size(); i &lt; n; i++) {
+            infoVec.insert(infoVec.begin() + index[i], nums[i]);
+        }
+        return infoVec;
+    }
+};</code></pre>
+<h1 id="2-5178-四因数"><a href="#2-5178-四因数" class="headerlink" title="2. 5178. 四因数"></a>2. 5178. 四因数</h1><p>给你一个整数数组 nums，请你返回该数组中恰有四个因数的这些整数的各因数之和。</p>
+<p>如果数组中不存在满足题意的整数，则返回 0 。</p>
+<p>示例：<br>输入：nums = [21,4,7]<br>输出：32<br>解释：<br>21 有 4 个因数：1, 3, 7, 21<br>4 有 3 个因数：1, 2, 4<br>7 有 2 个因数：1, 7<br>答案仅为 21 的所有因数的和。</p>
+<pre><code class="c">class Solution {
+public:
+    int sumFourDivisors(vector&lt;int&gt;&amp; nums) {
+        int result = 0;
+        for(int i=0;i&lt;nums.size();++i){
+            int count = 2;
+            vector&lt;int&gt; add;
+            for(int j=2;j*j&lt;=nums[i];++j){
+                if(nums[i]%j==0){
+                    if(j!=nums[i]/j){
+                        count+=2;
+                        add.emplace_back(j);
+                        add.emplace_back(nums[i]/j);
+                    }else{
+                        ++count;
+                        add.emplace_back(j);
+                    }
+                }
+                if(count&gt;4) break;
+            }
+            if(count==4){
+                result +=1;
+                result += nums[i];
+                for(int j = 0;j&lt;add.size();++j) result += add[j];
+            }
+        }
+        return result;
+    }
+};</code></pre>
+<p>代码优化<br>思路上没有发现较好的解法，只是代码量能减少很多</p>
+<pre><code class="c">class Solution {
+public:
+    int sumFourDivisors(vector&lt;int&gt;&amp; nums) {
+        int ans=0,i,j,k;
+        for(auto c:nums)
+        {
+            for(i=1,j=k=0;i*i&lt;=c;i++)if(c%i==0)
+            {
+                j++;
+                k+=i;
+                if(i*i&lt;c)
+                {
+                    j++;
+                    k+=c/i;
+                }
+            }
+            if(j==4)ans+=k;
+        }
+        return ans;
+    }
+};</code></pre>
+<h1 id="3-检查网格中是否存在有效路径"><a href="#3-检查网格中是否存在有效路径" class="headerlink" title="3. 检查网格中是否存在有效路径"></a>3. 检查网格中是否存在有效路径</h1><p>给你一个 m x n 的网格 grid。网格里的每个单元都代表一条街道。grid[i][j] 的街道可以是：</p>
+<p>1 表示连接左单元格和右单元格的街道。<br>2 表示连接上单元格和下单元格的街道。<br>3 表示连接左单元格和下单元格的街道。<br>4 表示连接右单元格和下单元格的街道。<br>5 表示连接左单元格和上单元格的街道。<br>6 表示连接右单元格和上单元格的街道。<br><img src="/img/181-1.jpg" srcset="/img/loading.gif" alt=""><br>你最开始从左上角的单元格 (0,0) 开始出发，网格中的「有效路径」是指从左上方的单元格 (0,0) 开始、一直到右下方的 (m-1,n-1) 结束的路径。该路径必须只沿着街道走。</p>
+<p>注意：你不能变更街道。<br>如果网格中存在有效的路径，则返回 true，否则返回 false 。</p>
+<p>示例：<br><img src="/img/181-2.jpg" srcset="/img/loading.gif" alt=""></p>
+<p>将该问题转化为DFS问题</p>
+<pre><code class="c">//参考代码：https://leetcode-cn.com/problems/check-if-there-is-a-valid-path-in-a-grid/solution/cdfsjie-fa-rong-yi-li-jie-dai-ma-duan-zhu-shi-duo-/
+class Solution {
+    int m,n,dx[4]={1,0,-1,0},dy[4]={0,1,0,-1};//0下、1右、2上、3左
+    int pipe[7][4]={{-1,-1,-1,-1},{-1,1,-1,3},{0,-1,2,-1},{-1,0,3,-1},{-1,-1,1,0},{3,2,-1,-1},{1,-1,-1,2}};
+    //记录各个拼图块路径的方向，0、1、2、3代表方向，-1代表不可走。
+    bool dfs(int x,int y,int dir,vector&lt;vector&lt;int&gt;&gt;&amp; grid){//(x,y,当前方向,地图)
+        if(x==m-1&amp;&amp;y==n-1) return 1;//到达终点
+        int xx=x+dx[dir];
+        int yy=y+dy[dir];//得到下一个准备走的坐标
+        if(xx&lt;0||yy&lt;0||xx&gt;=m||yy&gt;=n)return 0;//越界
+        int nxt=grid[xx][yy];//得到下一块拼图的编号
+        if(pipe[nxt][dir]!=-1)return dfs(xx,yy,pipe[nxt][dir],grid);//如果当前方向可走，则方向改变，继续走。
+        return 0;//无法走，返回0
+    }
+    public:
+    bool hasValidPath(vector&lt;vector&lt;int&gt;&gt;&amp; grid) {    
+        m=grid.size();
+        n=grid[0].size();
+        int sta=grid[0][0];//起点的拼图编号
+        for(int i=0;i&lt;4;++i)//朝着四个方向都试一下
+            if(pipe[sta][i]!=-1)//当前方向可以走
+                if(dfs(0,0,pipe[sta][i],grid))//沿着当前方向搜索
+                    return 1;//拼图都有两个方向可以走，只要沿着一个初始方向走通就可以。
+        return 0;
+    }
+};</code></pre>
+<h1 id="4-最长快乐前缀"><a href="#4-最长快乐前缀" class="headerlink" title="4. 最长快乐前缀"></a>4. 最长快乐前缀</h1><p>「快乐前缀」是在原字符串中既是 非空 前缀也是后缀（不包括原字符串自身）的字符串。</p>
+<p>给你一个字符串 s，请你返回它的 最长快乐前缀。</p>
+<p>如果不存在满足题意的前缀，则返回一个空字符串。</p>
+<p>示例：<br>输入：s = “level”<br>输出：”l”<br>解释：不包括 s 自己，一共有 4 个前缀（”l”, “le”, “lev”, “leve”）和 4 个后缀（”l”, “el”, “vel”, “evel”）。最长的既是前缀也是后缀的字符串是 “l” 。</p>
+<p>自己写的代码最后超时了😭</p>
+<pre><code class="c">class Solution {
+public:
+    string longestPrefix(string s) {
+        string str = &quot;&quot;;
+        int length = 0;
+        for(int i=1;i&lt;s.size();++i){
+            if(s[0]==s[i]){
+                int count = 0;
+                char st[s.size()+5];
+                bool f = false;
+                for(int j = 0;i+j&lt;s.size();++j){
+                    if(s[j]==s[i+j]){
+                        ++count;
+                        st[j] = s[i+j];
+                        if(i+j+1==s.size()){
+                            f = true;
+                            break;
+                        }
+                    }else{
+                        break;
+                    }
+                }
+                if(count&gt;length&amp;&amp;f == true){
+                    str.resize(count);
+                    for(int p = 0;p&lt;count;++p) str[p] = st[p];
+                    length = count;
+                    if(length==s.size()-1) break;
+                }
+            }
+        }
+        return str;
+    }
+};</code></pre>
+<pre><code class="c">//参考代码
+class Solution {
+    int ne[100005];
+    string ans;
+public:
+    string longestPrefix(string s) {
+        int n=s.size(),i,j;
+        for(ne[1]=j=0,i=2;i&lt;=n;i++)
+        {
+            while(j&amp;&amp;s[j]!=s[i-1])j=ne[j];
+            if(s[j]==s[i-1])j++;
+            ne[i]=j;
+        }
+        ans.clear();
+        for(i=0;i&lt;ne[n];i++)ans+=s[i];
+        return ans;
+    }
+};</code></pre>
 
             </div>
             <hr>
@@ -288,7 +367,7 @@ int main() {
                   <span>
                 <i class="iconfont icon-inbox"></i>
                     
-                      <a class="hover-with-bg" href="/categories/PAT%E7%94%B2%E7%BA%A7/">PAT甲级</a>
+                      <a class="hover-with-bg" href="/categories/LeetCode%E5%91%A8%E8%B5%9B/">LeetCode周赛</a>
                       &nbsp;
                     
                   </span>&nbsp;&nbsp;
@@ -297,7 +376,7 @@ int main() {
                   <span>
                 <i class="iconfont icon-tag"></i>
                     
-                      <a class="hover-with-bg" href="/tags/PAT/">PAT</a>
+                      <a class="hover-with-bg" href="/tags/DFS/">DFS</a>
                     
                   </span>
                 
@@ -309,16 +388,11 @@ int main() {
                 <div class="post-prevnext row">
                   <div class="post-prev col-12 col-md-6">
                     
-                      <a href="/2020/03/22/LeetCode-181%E5%9C%BA%E5%91%A8%E8%B5%9B/">
-                        <i class="fa fa-chevron-left"></i>
-                        <span>LeetCode-181场周赛</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-12 col-md-6">
                     
-                      <a href="/2020/03/05/PAT%20-%20%5B1152%5D%20Google%20Recruitment%20(20%E5%88%86)/">
-                        <span>PAT - [1152] Google Recruitment (20分)</span>
+                      <a href="/2020/03/11/PAT%20-%20%5B1148%5D%20Werewolf%20-%20Simple%20Version%20(20%E5%88%86)/">
+                        <span>PAT - [1148] Werewolf - Simple Version (20分)</span>
                         <i class="fa fa-chevron-right"></i>
                       </a>
                     
@@ -526,7 +600,7 @@ int main() {
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "PAT - [1148] Werewolf - Simple Version (20分)&nbsp;",
+        "LeetCode-181场周赛&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 75,

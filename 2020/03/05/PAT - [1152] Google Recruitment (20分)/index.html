@@ -364,7 +364,7 @@ string sub2 = s.substr(5, 3); </code></pre>
         repo: 'massive11.github.io',
         owner: 'massive11',
         admin: 'massive11',
-        id: md5(window.location.hash),
+        id: md5(decodeURI(window.location.pathname)),
         language: 'zh-CN',
         perPage: 15,
         pagerDirection: 'last',

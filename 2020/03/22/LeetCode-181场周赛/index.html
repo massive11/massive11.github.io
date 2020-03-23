@@ -272,9 +272,9 @@ public:
     }
 };</code></pre>
 <h1 id="3-检查网格中是否存在有效路径"><a href="#3-检查网格中是否存在有效路径" class="headerlink" title="3. 检查网格中是否存在有效路径"></a>3. 检查网格中是否存在有效路径</h1><p>给你一个 m x n 的网格 grid。网格里的每个单元都代表一条街道。grid[i][j] 的街道可以是：</p>
-<p>1 表示连接左单元格和右单元格的街道。<br>2 表示连接上单元格和下单元格的街道。<br>3 表示连接左单元格和下单元格的街道。<br>4 表示连接右单元格和下单元格的街道。<br>5 表示连接左单元格和上单元格的街道。<br>6 表示连接右单元格和上单元格的街道。<br><img src="/img/181-1.jpg" srcset="/img/loading.gif" alt=""><br>你最开始从左上角的单元格 (0,0) 开始出发，网格中的「有效路径」是指从左上方的单元格 (0,0) 开始、一直到右下方的 (m-1,n-1) 结束的路径。该路径必须只沿着街道走。</p>
+<p>1 表示连接左单元格和右单元格的街道。<br>2 表示连接上单元格和下单元格的街道。<br>3 表示连接左单元格和下单元格的街道。<br>4 表示连接右单元格和下单元格的街道。<br>5 表示连接左单元格和上单元格的街道。<br>6 表示连接右单元格和上单元格的街道。<br><img src="/img/181-1.png" srcset="/img/loading.gif" alt=""><br>你最开始从左上角的单元格 (0,0) 开始出发，网格中的「有效路径」是指从左上方的单元格 (0,0) 开始、一直到右下方的 (m-1,n-1) 结束的路径。该路径必须只沿着街道走。</p>
 <p>注意：你不能变更街道。<br>如果网格中存在有效的路径，则返回 true，否则返回 false 。</p>
-<p>示例：<br><img src="/img/181-2.jpg" srcset="/img/loading.gif" alt=""></p>
+<p>示例：<br><img src="/img/181-2.png" srcset="/img/loading.gif" alt=""></p>
 <p>将该问题转化为DFS问题</p>
 <pre><code class="c">//参考代码：https://leetcode-cn.com/problems/check-if-there-is-a-valid-path-in-a-grid/solution/cdfsjie-fa-rong-yi-li-jie-dai-ma-duan-zhu-shi-duo-/
 class Solution {

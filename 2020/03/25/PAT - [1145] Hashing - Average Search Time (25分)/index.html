@@ -124,7 +124,7 @@
               
                 <p class="mt-3 post-meta">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                  Wednesday, March 25th 2020, 12:00 am
+                  Wednesday, March 25th 2020, 9:58 pm
                 </p>
               
 
@@ -185,9 +185,9 @@
 <h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><h3 id="input"><a href="#input" class="headerlink" title="input:"></a>input:</h3><p>4 5 4<br>10 6 4 15 11<br>11 4 15 2</p>
 <h3 id="output"><a href="#output" class="headerlink" title="output:"></a>output:</h3><p>15 cannot be inserted.<br>2.8</p>
 <h1 id="Vocabulary"><a href="#Vocabulary" class="headerlink" title="Vocabulary"></a>Vocabulary</h1><ul>
-<li>Quadratic 二次方的</li>
+<li>quadratic 二次方的</li>
 <li>probing 调查，探究</li>
-<li>Quadratic probing 平方探测法</li>
+<li>quadratic probing 平方探测法</li>
 <li>collision 冲突</li>
 </ul>
 <h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>先找到大于tsize的最小的素数为真正的tsize，然后建立一个tsize长度的数组。首先用平方探测法插入数字a，每次pos = (a + j * j) % tsize，j是从0～tsize-1的数字，如果当前位置可以插入就将a赋值给v[pos]，如果一次都没有能够插入成功就输出”X cannot be inserted.”。其次计算平均查找时间，每次计算pos = (a + j * j) % tsize，其中j &lt;= tsize，如果v[pos]处正是a则查找到了，则退出循环，如果v[pos]处不存在数字表示没查找到，那么也要退出循环。每次查找的时候，退出循环之前的j就是这个数字的查找长度。最后ans除以m得到平均查找时间然后输出。<br>本题其实并不难，只是很多hash相关的基础知识容易遗忘，需要多复习巩固一下。</p>

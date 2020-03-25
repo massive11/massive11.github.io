@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="Jingyi Yu">
   <meta name="keywords" content="">
-  <title>LeetCode-181场周赛 - Untitled.</title>
+  <title>PAT - [1152] Hashing - Average Search Time (25分) - Untitled.</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
@@ -124,7 +124,7 @@
               
                 <p class="mt-3 post-meta">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                  Sunday, March 22nd 2020, 5:25 pm
+                  Wednesday, March 25th 2020, 12:00 am
                 </p>
               
 
@@ -133,7 +133,7 @@
                   
                   <span class="post-meta">
                     <i class="far fa-chart-bar"></i>
-                    1.6k 字
+                    787 字
                   </span>
                 
 
@@ -141,7 +141,7 @@
                   
                   <span class="post-meta">
                       <i class="far fa-clock"></i>
-                      7 分钟
+                      4 分钟
                   </span>
                 
 
@@ -176,190 +176,67 @@
           <div class="post-content mx-auto" id="post">
             
             <div class="markdown-body">
-              <p>按既定顺序创建目标数组、四因数、检查网格中是否存在有效路径、最长快乐前缀</p>
+              <p>本题其实并不难，只是很多hash相关的基础知识容易遗忘，需要多复习巩固一下。</p>
 <a id="more"></a>
-<h1 id="1-按既定顺序创建目标数组"><a href="#1-按既定顺序创建目标数组" class="headerlink" title="1. 按既定顺序创建目标数组"></a>1. 按既定顺序创建目标数组</h1><p>给你两个整数数组 nums 和 index。你需要按照以下规则创建目标数组：</p>
-<ul>
-<li>目标数组 target 最初为空。</li>
-<li>按从左到右的顺序依次读取 nums[i] 和 index[i]，在 target 数组中的下标 index[i] 处插入值 nums[i] 。</li>
-<li>重复上一步，直到在 nums 和 index 中都没有要读取的元素。</li>
-<li>请你返回目标数组。</li>
+<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>The task of this problem is simple: insert a sequence of distinct positive integers into a hash table first. Then try to find another sequence of integer keys from the table and output the average search time (the number of comparisons made to find whether or not the key is in the table). The hash function is defined to be H(key)=key%TSize where TSize is the maximum size of the hash table. Quadratic probing (with positive increments only) is used to solve the collisions.</p>
+<p>Note that the table size is better to be prime. If the maximum size given by the user is not prime, you must re-define the table size to be the smallest prime number which is larger than the size given by the user.</p>
+<h1 id="输入说明"><a href="#输入说明" class="headerlink" title="输入说明"></a>输入说明</h1><p>Each input file contains one test case. For each case, the first line contains 3 positive numbers: MSize, N, and M, which are the user-defined table size, the number of input numbers, and the number of keys to be found, respectively. All the three numbers are no more than $10^4$.Then N distinct positive integers are given in the next line, followed by M positive integer keys in the next line. All the numbers in a line are separated by a space and are no more than $10^5$.</p>
+<h1 id="输出说明"><a href="#输出说明" class="headerlink" title="输出说明"></a>输出说明</h1><p>For each test case, in case it is impossible to insert some number, print in a line X cannot be inserted. where X is the input number. Finally print in a line the average search time for all the M keys, accurate up to 1 decimal place.</p>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><h3 id="input"><a href="#input" class="headerlink" title="input:"></a>input:</h3><p>4 5 4<br>10 6 4 15 11<br>11 4 15 2</p>
+<h3 id="output"><a href="#output" class="headerlink" title="output:"></a>output:</h3><p>15 cannot be inserted.<br>2.8</p>
+<h1 id="Vocabulary"><a href="#Vocabulary" class="headerlink" title="Vocabulary"></a>Vocabulary</h1><ul>
+<li>Quadratic 二次方的</li>
+<li>probing 调查，探究</li>
+<li>Quadratic probing 平方探测法</li>
+<li>collision 冲突</li>
 </ul>
-<p>题目保证数字插入位置总是存在。</p>
-<p>示例：<br>输入：nums = [0,1,2,3,4], index = [0,1,2,2,1]<br>输出：[0,4,1,3,2]<br>解释：<br>nums       index     target<br>0            0        [0]<br>1            1        [0,1]<br>2            2        [0,1,2]<br>3            2        [0,1,3,2]<br>4            1        [0,4,1,3,2]</p>
-<pre><code class="c">class Solution {
-public:
-    vector&lt;int&gt; createTargetArray(vector&lt;int&gt;&amp; nums, vector&lt;int&gt;&amp; index) {
-        vector&lt;int&gt; result(index.size(),0);
-        int f[index.size()];
-        memset(f,0,sizeof(f));
-        for(int i=0;i&lt;index.size();++i){
-            if(f[result[i]]==0){
-                result[index[i]] = nums[i];
-                f[index[i]] = 1;
-            }else{
-                for(int j=index.size()-1;j&gt;index[i];--j){
-                    result[j] = result[j-1];
-                }
-                result[index[i]] = nums[i];
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>先找到大于tsize的最小的素数为真正的tsize，然后建立一个tsize长度的数组。首先用平方探测法插入数字a，每次pos = (a + j * j) % tsize，j是从0～tsize-1的数字，如果当前位置可以插入就将a赋值给v[pos]，如果一次都没有能够插入成功就输出”X cannot be inserted.”。其次计算平均查找时间，每次计算pos = (a + j * j) % tsize，其中j &lt;= tsize，如果v[pos]处正是a则查找到了，则退出循环，如果v[pos]处不存在数字表示没查找到，那么也要退出循环。每次查找的时候，退出循环之前的j就是这个数字的查找长度。最后ans除以m得到平均查找时间然后输出。<br>本题其实并不难，只是很多hash相关的基础知识容易遗忘，需要多复习巩固一下。</p>
+<h1 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h1><pre><code class="c">//代码链接：https://blog.csdn.net/liuchuo/article/details/79819316
+#include&lt;cstdio&gt;
+#include&lt;cmath&gt;
+#include&lt;vector&gt;
+using namespace std;
+int Msize,n,m,t;
+bool isPrime(int n){
+    if(n&lt;2) return false;
+    int sqrtN=(int)sqrt(1.0*n);
+    for(int i=2;i&lt;=sqrtN;i++){
+        if(n%i==0) 
+            return false;
+    }
+    return true;
+}
+int main()
+{
+    scanf(&quot;%d%d%d&quot;,&amp;Msize,&amp;n,&amp;m);
+    while(!isPrime(Msize)) Msize++;
+    vector&lt;int&gt; ht(Msize,0);
+    for(int i=0;i&lt;n;i++){
+        scanf(&quot;%d&quot;,&amp;t);
+        bool flag=false;
+        for(int j=0;j&lt;Msize&amp;&amp;!flag;j++){
+            int pos=(t+j*j)%Msize;
+            if(ht[pos]==0){
+                ht[pos]=t;
+                flag=true;
             }
         }
-        return result;
+        if(!flag) printf(&quot;%d cannot be inserted.\n&quot;,t);
     }
-};</code></pre>
-<p>代码优化<br>使用库方法</p>
-<pre><code class="c">//代码链接：https://leetcode-cn.com/problems/create-target-array-in-the-given-order/solution/di-181chang-zhou-sai-jie-ti-bao-gao-by-time-limit/
-class Solution {
-public:
-    vector&lt;int&gt; createTargetArray(vector&lt;int&gt;&amp; nums, vector&lt;int&gt;&amp; index) {
-        vector&lt;int&gt; infoVec;
-        for(int i = 0, n = nums.size(); i &lt; n; i++) {
-            infoVec.insert(infoVec.begin() + index[i], nums[i]);
-        }
-        return infoVec;
-    }
-};</code></pre>
-<h1 id="2-四因数"><a href="#2-四因数" class="headerlink" title="2. 四因数"></a>2. 四因数</h1><p>给你一个整数数组 nums，请你返回该数组中恰有四个因数的这些整数的各因数之和。</p>
-<p>如果数组中不存在满足题意的整数，则返回 0 。</p>
-<p>示例：<br>输入：nums = [21,4,7]<br>输出：32<br>解释：<br>21 有 4 个因数：1, 3, 7, 21<br>4 有 3 个因数：1, 2, 4<br>7 有 2 个因数：1, 7<br>答案仅为 21 的所有因数的和。</p>
-<pre><code class="c">class Solution {
-public:
-    int sumFourDivisors(vector&lt;int&gt;&amp; nums) {
-        int result = 0;
-        for(int i=0;i&lt;nums.size();++i){
-            int count = 2;
-            vector&lt;int&gt; add;
-            for(int j=2;j*j&lt;=nums[i];++j){
-                if(nums[i]%j==0){
-                    if(j!=nums[i]/j){
-                        count+=2;
-                        add.emplace_back(j);
-                        add.emplace_back(nums[i]/j);
-                    }else{
-                        ++count;
-                        add.emplace_back(j);
-                    }
-                }
-                if(count&gt;4) break;
-            }
-            if(count==4){
-                result +=1;
-                result += nums[i];
-                for(int j = 0;j&lt;add.size();++j) result += add[j];
+    int total=0;
+    for(int i=0;i&lt;m;i++){
+        scanf(&quot;%d&quot;,&amp;t);
+        for(int j=0;j&lt;=Msize;j++){
+            total++;
+            int pos=(t+j*j)%Msize;
+            if(ht[pos]==t||ht[pos]==0){
+                break;
             }
         }
-        return result;
     }
-};</code></pre>
-<p>代码优化<br>思路上没有发现较好的解法，只是代码量能减少很多</p>
-<pre><code class="c">class Solution {
-public:
-    int sumFourDivisors(vector&lt;int&gt;&amp; nums) {
-        int ans=0,i,j,k;
-        for(auto c:nums)
-        {
-            for(i=1,j=k=0;i*i&lt;=c;i++)if(c%i==0)
-            {
-                j++;
-                k+=i;
-                if(i*i&lt;c)
-                {
-                    j++;
-                    k+=c/i;
-                }
-            }
-            if(j==4)ans+=k;
-        }
-        return ans;
-    }
-};</code></pre>
-<h1 id="3-检查网格中是否存在有效路径"><a href="#3-检查网格中是否存在有效路径" class="headerlink" title="3. 检查网格中是否存在有效路径"></a>3. 检查网格中是否存在有效路径</h1><p>给你一个 m x n 的网格 grid。网格里的每个单元都代表一条街道。grid[i][j] 的街道可以是：</p>
-<p>1 表示连接左单元格和右单元格的街道。<br>2 表示连接上单元格和下单元格的街道。<br>3 表示连接左单元格和下单元格的街道。<br>4 表示连接右单元格和下单元格的街道。<br>5 表示连接左单元格和上单元格的街道。<br>6 表示连接右单元格和上单元格的街道。<br><img src="/img/181-1.png" srcset="/img/loading.gif" alt=""><br>你最开始从左上角的单元格 (0,0) 开始出发，网格中的「有效路径」是指从左上方的单元格 (0,0) 开始、一直到右下方的 (m-1,n-1) 结束的路径。该路径必须只沿着街道走。</p>
-<p>注意：你不能变更街道。<br>如果网格中存在有效的路径，则返回 true，否则返回 false 。</p>
-<p>示例：<br><img src="/img/181-2.png" srcset="/img/loading.gif" alt=""></p>
-<p>将该问题转化为DFS问题</p>
-<pre><code class="c">//参考代码：https://leetcode-cn.com/problems/check-if-there-is-a-valid-path-in-a-grid/solution/cdfsjie-fa-rong-yi-li-jie-dai-ma-duan-zhu-shi-duo-/
-class Solution {
-    int m,n,dx[4]={1,0,-1,0},dy[4]={0,1,0,-1};//0下、1右、2上、3左
-    int pipe[7][4]={{-1,-1,-1,-1},{-1,1,-1,3},{0,-1,2,-1},{-1,0,3,-1},{-1,-1,1,0},{3,2,-1,-1},{1,-1,-1,2}};
-    //记录各个拼图块路径的方向，0、1、2、3代表方向，-1代表不可走。
-    bool dfs(int x,int y,int dir,vector&lt;vector&lt;int&gt;&gt;&amp; grid){//(x,y,当前方向,地图)
-        if(x==m-1&amp;&amp;y==n-1) return 1;//到达终点
-        int xx=x+dx[dir];
-        int yy=y+dy[dir];//得到下一个准备走的坐标
-        if(xx&lt;0||yy&lt;0||xx&gt;=m||yy&gt;=n)return 0;//越界
-        int nxt=grid[xx][yy];//得到下一块拼图的编号
-        if(pipe[nxt][dir]!=-1)return dfs(xx,yy,pipe[nxt][dir],grid);//如果当前方向可走，则方向改变，继续走。
-        return 0;//无法走，返回0
-    }
-    public:
-    bool hasValidPath(vector&lt;vector&lt;int&gt;&gt;&amp; grid) {    
-        m=grid.size();
-        n=grid[0].size();
-        int sta=grid[0][0];//起点的拼图编号
-        for(int i=0;i&lt;4;++i)//朝着四个方向都试一下
-            if(pipe[sta][i]!=-1)//当前方向可以走
-                if(dfs(0,0,pipe[sta][i],grid))//沿着当前方向搜索
-                    return 1;//拼图都有两个方向可以走，只要沿着一个初始方向走通就可以。
-        return 0;
-    }
-};</code></pre>
-<h1 id="4-最长快乐前缀"><a href="#4-最长快乐前缀" class="headerlink" title="4. 最长快乐前缀"></a>4. 最长快乐前缀</h1><p>「快乐前缀」是在原字符串中既是 非空 前缀也是后缀（不包括原字符串自身）的字符串。</p>
-<p>给你一个字符串 s，请你返回它的 最长快乐前缀。</p>
-<p>如果不存在满足题意的前缀，则返回一个空字符串。</p>
-<p>示例：<br>输入：s = “level”<br>输出：”l”<br>解释：不包括 s 自己，一共有 4 个前缀（”l”, “le”, “lev”, “leve”）和 4 个后缀（”l”, “el”, “vel”, “evel”）。最长的既是前缀也是后缀的字符串是 “l” 。</p>
-<p>自己写的代码最后超时了😭</p>
-<pre><code class="c">class Solution {
-public:
-    string longestPrefix(string s) {
-        string str = &quot;&quot;;
-        int length = 0;
-        for(int i=1;i&lt;s.size();++i){
-            if(s[0]==s[i]){
-                int count = 0;
-                char st[s.size()+5];
-                bool f = false;
-                for(int j = 0;i+j&lt;s.size();++j){
-                    if(s[j]==s[i+j]){
-                        ++count;
-                        st[j] = s[i+j];
-                        if(i+j+1==s.size()){
-                            f = true;
-                            break;
-                        }
-                    }else{
-                        break;
-                    }
-                }
-                if(count&gt;length&amp;&amp;f == true){
-                    str.resize(count);
-                    for(int p = 0;p&lt;count;++p) str[p] = st[p];
-                    length = count;
-                    if(length==s.size()-1) break;
-                }
-            }
-        }
-        return str;
-    }
-};</code></pre>
-<pre><code class="c">//参考代码
-class Solution {
-    int ne[100005];
-    string ans;
-public:
-    string longestPrefix(string s) {
-        int n=s.size(),i,j;
-        for(ne[1]=j=0,i=2;i&lt;=n;i++)
-        {
-            while(j&amp;&amp;s[j]!=s[i-1])j=ne[j];
-            if(s[j]==s[i-1])j++;
-            ne[i]=j;
-        }
-        ans.clear();
-        for(i=0;i&lt;ne[n];i++)ans+=s[i];
-        return ans;
-    }
-};</code></pre>
+    printf(&quot;%.1f\n&quot;,(float)total/m);
+    return 0;
+}</code></pre>
 
             </div>
             <hr>
@@ -369,7 +246,7 @@ public:
                   <span>
                 <i class="iconfont icon-inbox"></i>
                     
-                      <a class="hover-with-bg" href="/categories/LeetCode%E5%91%A8%E8%B5%9B/">LeetCode周赛</a>
+                      <a class="hover-with-bg" href="/categories/PAT%E7%94%B2%E7%BA%A7/">PAT甲级</a>
                       &nbsp;
                     
                   </span>&nbsp;&nbsp;
@@ -378,7 +255,9 @@ public:
                   <span>
                 <i class="iconfont icon-tag"></i>
                     
-                      <a class="hover-with-bg" href="/tags/DFS/">DFS</a>
+                      <a class="hover-with-bg" href="/tags/PAT/">PAT</a>
+                    
+                      <a class="hover-with-bg" href="/tags/hash/">hash</a>
                     
                   </span>
                 
@@ -390,16 +269,11 @@ public:
                 <div class="post-prevnext row">
                   <div class="post-prev col-12 col-md-6">
                     
-                      <a href="/2020/03/25/PAT%20-%20%5B1145%5D%20Hashing%20-%20Average%20Search%20Time%20(25%E5%88%86)/">
-                        <i class="fa fa-chevron-left"></i>
-                        <span>PAT - [1152] Hashing - Average Search Time (25分)</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-12 col-md-6">
                     
-                      <a href="/2020/03/11/PAT%20-%20%5B1148%5D%20Werewolf%20-%20Simple%20Version%20(20%E5%88%86)/">
-                        <span>PAT - [1148] Werewolf - Simple Version (20分)</span>
+                      <a href="/2020/03/22/LeetCode-181%E5%9C%BA%E5%91%A8%E8%B5%9B/">
+                        <span>LeetCode-181场周赛</span>
                         <i class="fa fa-chevron-right"></i>
                       </a>
                     
@@ -607,7 +481,7 @@ public:
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "LeetCode-181场周赛&nbsp;",
+        "PAT - [1152] Hashing - Average Search Time (25分)&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 75,

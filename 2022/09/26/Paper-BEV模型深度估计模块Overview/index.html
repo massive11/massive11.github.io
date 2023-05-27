@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>BEV模型深度估计模块Overview | Untitled.</title>
+
+  
+  <meta name="author" content="Jingyi Yu">
+  
+
+  
+  <meta name="description" content="本文对BEV模型深度估计模块进行了梳理。">
+  
+
+  
+  
+  <meta name="keywords" content="Multi-view 3D">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="BEV模型深度估计模块Overview"/>
+
+  <meta property="og:site_name" content="Untitled."/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Untitled." type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Untitled.</a>
+    </h1>
+    <p class="site-description"></p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>BEV模型深度估计模块Overview</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2022/09/26/Paper-BEV模型深度估计模块Overview/" rel="bookmark">
+        <time class="entry-date published" datetime="2022-09-26T01:41:31.000Z">
+          2022-09-26
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>本文对BEV模型深度估计模块进行了梳理。</p>
+<span id="more"></span>
+
+
+<h2 id="1-图像特征直接卷积"><a href="#1-图像特征直接卷积" class="headerlink" title="1.图像特征直接卷积"></a>1.图像特征直接卷积</h2><h3 id="LSS、Fiery、BEVDet"><a href="#LSS、Fiery、BEVDet" class="headerlink" title="LSS、Fiery、BEVDet"></a>LSS、Fiery、BEVDet</h3><ul>
+<li>深度估计模块（均为原始的LSS的模块，这里以Fiery的模块为例）</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664348295899-ef580e6c-5d37-434d-9bbd-1d9ca12c09f9.png#clientId=u73016541-a3c0-4&errorMessage=unknown%20error&from=ui&id=u979da66c&originHeight=582&originWidth=1750&originalType=binary&ratio=1&rotation=0&showTitle=false&size=119663&status=error&style=none&taskId=u74358c08-0cea-45f0-855b-3745b3fb6cd&title=" alt="截屏2022-09-28 14.57.39.png"></p>
+<ul>
+<li>loss计算</li>
+</ul>
+<p>没有单独计算Depth部分的loss，直接计算的3D box的loss</p>
+<hr>
+<h2 id="2-Camera-Aware卷积"><a href="#2-Camera-Aware卷积" class="headerlink" title="2.Camera-Aware卷积"></a>2.Camera-Aware卷积</h2><h3 id="BEVDepth"><a href="#BEVDepth" class="headerlink" title="BEVDepth"></a>BEVDepth</h3><ul>
+<li>深度估计模块</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664333207590-285175fa-af3c-4b4e-81fd-ee06c1221fba.png#clientId=uc9f89468-6e64-4&errorMessage=unknown%20error&from=paste&height=363&id=ub85d9bca&originHeight=545&originWidth=786&originalType=binary&ratio=1&rotation=0&showTitle=false&size=135374&status=error&style=none&taskId=u7405615b-15a1-41cd-a083-9467cc45656&title=&width=524" alt="image.png"></p>
+<ul>
+<li>loss计算</li>
+</ul>
+<p>[H&#x2F;16, W&#x2F;16]的特征图和相应的真值之间计算BCE loss。<br>真值是将LiDAR点云先通过内外参投影到像素坐标系，经过resize处理后得到[256, 704]的depth真值。划分16×16的patch，每个patch取有深度点的<strong>最小深度值</strong>，若不在深度范围内则赋值0。得到[16, 44]的gt_depth。</p>
+<ul>
+<li>LiDAR点云真值downsample代码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">def get_downsampled_gt_depth(self, gt_depths):</span><br><span class="line">    B, N, H, W = gt_depths.shape</span><br><span class="line">    gt_depths = gt_depths.view(B*N, H//self.downsample_factor,</span><br><span class="line">        self.downsample_factor,</span><br><span class="line">        W // self.downsample_factor, self.downsample_factor, 1)</span><br><span class="line">    gt_depths = gt_depths.permute(0, 1, 3, 5, 2, 4).contiguous()</span><br><span class="line">    gt_depths = gt_depths.view(</span><br><span class="line">        -1, self.downsample_factor * self.downsample_factor)</span><br><span class="line">    gt_depths_tmp = torch.where(gt_depths == 0.0,</span><br><span class="line">                                1e5 * torch.ones_like(gt_depths),</span><br><span class="line">                                gt_depths)</span><br><span class="line">    gt_depths = torch.min(gt_depths_tmp, dim=-1).values</span><br><span class="line">    gt_depths = gt_depths.view(B * N, H // self.downsample_factor,</span><br><span class="line">                               W // self.downsample_factor)</span><br><span class="line">    gt_depths = (gt_depths -</span><br><span class="line">                 (self.dbound[0] - self.dbound[2])) / self.dbound[2]</span><br><span class="line">    gt_depths = torch.where(</span><br><span class="line">        (gt_depths &lt; self.depth_channels + 1) &amp; (gt_depths &gt;= 0.0),</span><br><span class="line">        gt_depths, torch.zeros_like(gt_depths))   # 6, 16, 44</span><br><span class="line">    gt_depths = F.one_hot(gt_depths.long(),</span><br><span class="line">                          num_classes=self.depth_channels + 1).view(</span><br><span class="line">                              -1, self.depth_channels + 1)[:, 1:]</span><br><span class="line">    return gt_depths.float()</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="单目上Camera-Aware卷积的模型"><a href="#单目上Camera-Aware卷积的模型" class="headerlink" title="单目上Camera-Aware卷积的模型"></a>单目上Camera-Aware卷积的模型</h3><h4 id="DD3D"><a href="#DD3D" class="headerlink" title="DD3D"></a>DD3D</h4><ul>
+<li>深度估计模块</li>
+</ul>
+<p>先进行深度网络预训练。<br>“Two paths in DD3D from the input image to the 3D bounding box and to the dense depth prediction differ only in the last 3×3 convolutional layer, and thus share nearly all parameters.”</p>
+<ul>
+<li>loss计算</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664352247582-6513d9b6-0753-4cc6-87db-0384d7ba8f3a.png#clientId=u7261c876-16a5-4&errorMessage=unknown%20error&from=paste&height=299&id=u83b85434&originHeight=449&originWidth=924&originalType=binary&ratio=1&rotation=0&showTitle=false&size=93733&status=error&style=none&taskId=u9f8cda92-d471-43b9-9662-d5fec36cc53&title=&width=616" alt="image.png"></p>
+<hr>
+<h2 id="3-Gaussian参数估计"><a href="#3-Gaussian参数估计" class="headerlink" title="3.Gaussian参数估计"></a>3.Gaussian参数估计</h2><h3 id="BEVStereo"><a href="#BEVStereo" class="headerlink" title="BEVStereo"></a>BEVStereo</h3><ul>
+<li>深度估计模块<ul>
+<li>基本参考MaGNet实现的</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664334366753-81bcf681-64f7-4579-a7fe-43834f263167.png#clientId=uc9f89468-6e64-4&errorMessage=unknown%20error&from=paste&height=678&id=u0d32a70e&originHeight=1017&originWidth=2167&originalType=binary&ratio=1&rotation=0&showTitle=false&size=615610&status=error&style=none&taskId=u53b7a47e-d78b-4bea-ad4f-c90fbc26c7d&title=&width=1444.6666666666667" alt="image.png"></p>
+<ul>
+<li>loss计算</li>
+</ul>
+<p>[H&#x2F;4, W&#x2F;4]的特征图和相应的真值之间计算BCE loss</p>
+<h3 id="单目上Gaussian参数估计的模型"><a href="#单目上Gaussian参数估计的模型" class="headerlink" title="单目上Gaussian参数估计的模型"></a>单目上Gaussian参数估计的模型</h3><h4 id="MaGNet"><a href="#MaGNet" class="headerlink" title="MaGNet"></a>MaGNet</h4><ul>
+<li>深度估计模块</li>
+</ul>
+<p>DNet将每个像素(u, v)的分布参数化为高斯分布。预训练DNet，完整训练时固定DNet的网络参数。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664350299798-da8e63cb-70ec-48d9-be6b-6631b92ff589.png#clientId=u7261c876-16a5-4&errorMessage=unknown%20error&from=paste&height=515&id=ue19e96bb&originHeight=773&originWidth=1596&originalType=binary&ratio=1&rotation=0&showTitle=false&size=521747&status=error&style=none&taskId=u81f63b6d-398c-4fde-a9d9-f078fa02c5c&title=&width=1064" alt="image.png"><br>本文的contribution主要是融合单视图深度概率与多视图几何，具体由以下几个模块组成</p>
+<ul>
+<li>Probabilistic Depth Sampling</li>
+</ul>
+<p>在<img src="https://cdn.nlark.com/yuque/__latex/17a8f206259a783f10b67682ecb10278.svg#card=math&code=%5B%5Cmu-%5Cbeta%5Csigma%2C%20%5Cmu%2B%5Cbeta%5Csigma%5D&id=XyE3S">的搜索区间里面去找depth candidates，搜索范围更接近Gaussian的参数<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664350349804-d1a004d5-3ff6-4f90-b006-af313f227430.png#clientId=u7261c876-16a5-4&errorMessage=unknown%20error&from=paste&height=285&id=ubaa7a5d6&originHeight=427&originWidth=793&originalType=binary&ratio=1&rotation=0&showTitle=false&size=70934&status=error&style=none&taskId=ub3ad164a-6859-4f1e-8f97-2e6c3db3396&title=&width=528.6666666666666" alt="image.png"></p>
+<ul>
+<li>Depth consistency weighting for multi-view matching</li>
+</ul>
+<p>“Depth consistency weighting discards the candidates with low single-view depth probability.”</p>
+<ul>
+<li>Iterative refinement</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664350428858-380bfa02-6410-4958-8e3f-5050fcc7eaf6.png#clientId=u7261c876-16a5-4&errorMessage=unknown%20error&from=paste&height=454&id=u9a8cdc2f&originHeight=681&originWidth=1695&originalType=binary&ratio=1&rotation=0&showTitle=false&size=367191&status=error&style=none&taskId=u7ba05a05-5cf8-45ad-81e4-5c167938a4e&title=&width=1130" alt="image.png"></p>
+<ul>
+<li>loss计算</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664350492107-fd0ec7b3-f712-4ff6-9b61-f57fe1528eee.png#clientId=u7261c876-16a5-4&errorMessage=unknown%20error&from=paste&height=75&id=ubad58ffd&originHeight=113&originWidth=837&originalType=binary&ratio=1&rotation=0&showTitle=false&size=23693&status=error&style=none&taskId=ubf9251eb-b325-409d-83cb-e8ce2f972a9&title=&width=558" alt="image.png"></p>
+<hr>
+<h2 id="4-单目时序深度估计模型"><a href="#4-单目时序深度估计模型" class="headerlink" title="4.单目时序深度估计模型"></a>4.单目时序深度估计模型</h2><h3 id="DFM"><a href="#DFM" class="headerlink" title="DFM"></a>DFM</h3>
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/Paper/">Paper</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/Multi-view-3D/">Multi-view 3D</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+
+
+
+
+
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2023 Jingyi Yu
+    
+  </p>
+</footer>
+    
+    
+  </div>
+</div>
+</body>
+</html>

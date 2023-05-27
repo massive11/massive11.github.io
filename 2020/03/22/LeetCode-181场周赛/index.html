@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>LeetCode-181场周赛 | Untitled.</title>
+
+  
+  <meta name="author" content="Jingyi Yu">
+  
+
+  
+  <meta name="description" content="按既定顺序创建目标数组、四因数、检查网格中是否存在有效路径、最长快乐前缀">
+  
+
+  
+  
+  <meta name="keywords" content="DFS">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="LeetCode-181场周赛"/>
+
+  <meta property="og:site_name" content="Untitled."/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Untitled." type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Untitled.</a>
+    </h1>
+    <p class="site-description"></p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>LeetCode-181场周赛</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2020/03/22/LeetCode-181场周赛/" rel="bookmark">
+        <time class="entry-date published" datetime="2020-03-22T09:25:10.000Z">
+          2020-03-22
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>按既定顺序创建目标数组、四因数、检查网格中是否存在有效路径、最长快乐前缀</p>
+<span id="more"></span>
+<h1 id="1-按既定顺序创建目标数组"><a href="#1-按既定顺序创建目标数组" class="headerlink" title="1. 按既定顺序创建目标数组"></a>1. 按既定顺序创建目标数组</h1><p>给你两个整数数组 nums 和 index。你需要按照以下规则创建目标数组：</p>
+<ul>
+<li>目标数组 target 最初为空。</li>
+<li>按从左到右的顺序依次读取 nums[i] 和 index[i]，在 target 数组中的下标 index[i] 处插入值 nums[i] 。</li>
+<li>重复上一步，直到在 nums 和 index 中都没有要读取的元素。</li>
+<li>请你返回目标数组。</li>
+</ul>
+<p>题目保证数字插入位置总是存在。</p>
+<p>示例：<br>输入：nums &#x3D; [0,1,2,3,4], index &#x3D; [0,1,2,2,1]<br>输出：[0,4,1,3,2]<br>解释：<br>nums       index     target<br>0            0        [0]<br>1            1        [0,1]<br>2            2        [0,1,2]<br>3            2        [0,1,3,2]<br>4            1        [0,4,1,3,2]</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">public:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt; <span class="title function_">createTargetArray</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;&amp; nums, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;&amp; index)</span> &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt; <span class="title function_">result</span><span class="params">(index.size(),<span class="number">0</span>)</span>;</span><br><span class="line">        <span class="type">int</span> f[index.size()];</span><br><span class="line">        <span class="built_in">memset</span>(f,<span class="number">0</span>,<span class="keyword">sizeof</span>(f));</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;index.size();++i)&#123;</span><br><span class="line">            <span class="keyword">if</span>(f[result[i]]==<span class="number">0</span>)&#123;</span><br><span class="line">                result[index[i]] = nums[i];</span><br><span class="line">                f[index[i]] = <span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="type">int</span> j=index.size()<span class="number">-1</span>;j&gt;index[i];--j)&#123;</span><br><span class="line">                    result[j] = result[j<span class="number">-1</span>];</span><br><span class="line">                &#125;</span><br><span class="line">                result[index[i]] = nums[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>代码优化<br>使用库方法</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//代码链接：https://leetcode-cn.com/problems/create-target-array-in-the-given-order/solution/di-181chang-zhou-sai-jie-ti-bao-gao-by-time-limit/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">public:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt; <span class="title function_">createTargetArray</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;&amp; nums, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;&amp; index)</span> &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt; infoVec;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>, n = nums.size(); i &lt; n; i++) &#123;</span><br><span class="line">            infoVec.insert(infoVec.begin() + index[i], nums[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> infoVec;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-四因数"><a href="#2-四因数" class="headerlink" title="2. 四因数"></a>2. 四因数</h1><p>给你一个整数数组 nums，请你返回该数组中恰有四个因数的这些整数的各因数之和。</p>
+<p>如果数组中不存在满足题意的整数，则返回 0 。</p>
+<p>示例：<br>输入：nums &#x3D; [21,4,7]<br>输出：32<br>解释：<br>21 有 4 个因数：1, 3, 7, 21<br>4 有 3 个因数：1, 2, 4<br>7 有 2 个因数：1, 7<br>答案仅为 21 的所有因数的和。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">public:</span><br><span class="line">    <span class="type">int</span> <span class="title function_">sumFourDivisors</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;&amp; nums)</span> &#123;</span><br><span class="line">        <span class="type">int</span> result = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;nums.size();++i)&#123;</span><br><span class="line">            <span class="type">int</span> count = <span class="number">2</span>;</span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt; add;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">2</span>;j*j&lt;=nums[i];++j)&#123;</span><br><span class="line">                <span class="keyword">if</span>(nums[i]%j==<span class="number">0</span>)&#123;</span><br><span class="line">                    <span class="keyword">if</span>(j!=nums[i]/j)&#123;</span><br><span class="line">                        count+=<span class="number">2</span>;</span><br><span class="line">                        add.emplace_back(j);</span><br><span class="line">                        add.emplace_back(nums[i]/j);</span><br><span class="line">                    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                        ++count;</span><br><span class="line">                        add.emplace_back(j);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(count&gt;<span class="number">4</span>) <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(count==<span class="number">4</span>)&#123;</span><br><span class="line">                result +=<span class="number">1</span>;</span><br><span class="line">                result += nums[i];</span><br><span class="line">                <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>;j&lt;add.size();++j) result += add[j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>代码优化<br>思路上没有发现较好的解法，只是代码量能减少很多</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">public:</span><br><span class="line">    <span class="type">int</span> <span class="title function_">sumFourDivisors</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;&amp; nums)</span> &#123;</span><br><span class="line">        <span class="type">int</span> ans=<span class="number">0</span>,i,j,k;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> c:nums)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(i=<span class="number">1</span>,j=k=<span class="number">0</span>;i*i&lt;=c;i++)<span class="keyword">if</span>(c%i==<span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                j++;</span><br><span class="line">                k+=i;</span><br><span class="line">                <span class="keyword">if</span>(i*i&lt;c)</span><br><span class="line">                &#123;</span><br><span class="line">                    j++;</span><br><span class="line">                    k+=c/i;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(j==<span class="number">4</span>)ans+=k;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-检查网格中是否存在有效路径"><a href="#3-检查网格中是否存在有效路径" class="headerlink" title="3. 检查网格中是否存在有效路径"></a>3. 检查网格中是否存在有效路径</h1><p>给你一个 m x n 的网格 grid。网格里的每个单元都代表一条街道。grid[i][j] 的街道可以是：</p>
+<p>1 表示连接左单元格和右单元格的街道。<br>2 表示连接上单元格和下单元格的街道。<br>3 表示连接左单元格和下单元格的街道。<br>4 表示连接右单元格和下单元格的街道。<br>5 表示连接左单元格和上单元格的街道。<br>6 表示连接右单元格和上单元格的街道。<br><img src="/img/181-1.png"><br>你最开始从左上角的单元格 (0,0) 开始出发，网格中的「有效路径」是指从左上方的单元格 (0,0) 开始、一直到右下方的 (m-1,n-1) 结束的路径。该路径必须只沿着街道走。</p>
+<p>注意：你不能变更街道。<br>如果网格中存在有效的路径，则返回 true，否则返回 false 。</p>
+<p>示例：<br><img src="/img/181-2.png"></p>
+<p>将该问题转化为DFS问题</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//参考代码：https://leetcode-cn.com/problems/check-if-there-is-a-valid-path-in-a-grid/solution/cdfsjie-fa-rong-yi-li-jie-dai-ma-duan-zhu-shi-duo-/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> m,n,dx[<span class="number">4</span>]=&#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">-1</span>,<span class="number">0</span>&#125;,dy[<span class="number">4</span>]=&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">-1</span>&#125;;<span class="comment">//0下、1右、2上、3左</span></span><br><span class="line">    <span class="type">int</span> pipe[<span class="number">7</span>][<span class="number">4</span>]=&#123;&#123;<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">1</span>,<span class="number">-1</span>,<span class="number">3</span>&#125;,&#123;<span class="number">0</span>,<span class="number">-1</span>,<span class="number">2</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">1</span>,<span class="number">0</span>&#125;,&#123;<span class="number">3</span>,<span class="number">2</span>,<span class="number">-1</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">2</span>&#125;&#125;;</span><br><span class="line">    <span class="comment">//记录各个拼图块路径的方向，0、1、2、3代表方向，-1代表不可走。</span></span><br><span class="line">    <span class="type">bool</span> <span class="title function_">dfs</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y,<span class="type">int</span> dir,<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;&gt;&amp; grid)</span>&#123;<span class="comment">//(x,y,当前方向,地图)</span></span><br><span class="line">        <span class="keyword">if</span>(x==m<span class="number">-1</span>&amp;&amp;y==n<span class="number">-1</span>) <span class="keyword">return</span> <span class="number">1</span>;<span class="comment">//到达终点</span></span><br><span class="line">        <span class="type">int</span> xx=x+dx[dir];</span><br><span class="line">        <span class="type">int</span> yy=y+dy[dir];<span class="comment">//得到下一个准备走的坐标</span></span><br><span class="line">        <span class="keyword">if</span>(xx&lt;<span class="number">0</span>||yy&lt;<span class="number">0</span>||xx&gt;=m||yy&gt;=n)<span class="keyword">return</span> <span class="number">0</span>;<span class="comment">//越界</span></span><br><span class="line">        <span class="type">int</span> nxt=grid[xx][yy];<span class="comment">//得到下一块拼图的编号</span></span><br><span class="line">        <span class="keyword">if</span>(pipe[nxt][dir]!=<span class="number">-1</span>)<span class="keyword">return</span> dfs(xx,yy,pipe[nxt][dir],grid);<span class="comment">//如果当前方向可走，则方向改变，继续走。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;<span class="comment">//无法走，返回0</span></span><br><span class="line">    &#125;</span><br><span class="line">    public:</span><br><span class="line">    <span class="type">bool</span> <span class="title function_">hasValidPath</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;&gt;&amp; grid)</span> &#123;    </span><br><span class="line">        m=grid.size();</span><br><span class="line">        n=grid[<span class="number">0</span>].size();</span><br><span class="line">        <span class="type">int</span> sta=grid[<span class="number">0</span>][<span class="number">0</span>];<span class="comment">//起点的拼图编号</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;++i)<span class="comment">//朝着四个方向都试一下</span></span><br><span class="line">            <span class="keyword">if</span>(pipe[sta][i]!=<span class="number">-1</span>)<span class="comment">//当前方向可以走</span></span><br><span class="line">                <span class="keyword">if</span>(dfs(<span class="number">0</span>,<span class="number">0</span>,pipe[sta][i],grid))<span class="comment">//沿着当前方向搜索</span></span><br><span class="line">                    <span class="keyword">return</span> <span class="number">1</span>;<span class="comment">//拼图都有两个方向可以走，只要沿着一个初始方向走通就可以。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-最长快乐前缀"><a href="#4-最长快乐前缀" class="headerlink" title="4. 最长快乐前缀"></a>4. 最长快乐前缀</h1><p>「快乐前缀」是在原字符串中既是 非空 前缀也是后缀（不包括原字符串自身）的字符串。</p>
+<p>给你一个字符串 s，请你返回它的 最长快乐前缀。</p>
+<p>如果不存在满足题意的前缀，则返回一个空字符串。</p>
+<p>示例：<br>输入：s &#x3D; “level”<br>输出：”l”<br>解释：不包括 s 自己，一共有 4 个前缀（”l”, “le”, “lev”, “leve”）和 4 个后缀（”l”, “el”, “vel”, “evel”）。最长的既是前缀也是后缀的字符串是 “l” 。</p>
+<p>自己写的代码最后超时了😭</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">public:</span><br><span class="line">    <span class="built_in">string</span> <span class="title function_">longestPrefix</span><span class="params">(<span class="built_in">string</span> s)</span> &#123;</span><br><span class="line">        <span class="built_in">string</span> str = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="type">int</span> length = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;s.size();++i)&#123;</span><br><span class="line">            <span class="keyword">if</span>(s[<span class="number">0</span>]==s[i])&#123;</span><br><span class="line">                <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">                <span class="type">char</span> st[s.size()+<span class="number">5</span>];</span><br><span class="line">                <span class="type">bool</span> f = <span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>;i+j&lt;s.size();++j)&#123;</span><br><span class="line">                    <span class="keyword">if</span>(s[j]==s[i+j])&#123;</span><br><span class="line">                        ++count;</span><br><span class="line">                        st[j] = s[i+j];</span><br><span class="line">                        <span class="keyword">if</span>(i+j+<span class="number">1</span>==s.size())&#123;</span><br><span class="line">                            f = <span class="literal">true</span>;</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(count&gt;length&amp;&amp;f == <span class="literal">true</span>)&#123;</span><br><span class="line">                    str.resize(count);</span><br><span class="line">                    <span class="keyword">for</span>(<span class="type">int</span> p = <span class="number">0</span>;p&lt;count;++p) str[p] = st[p];</span><br><span class="line">                    length = count;</span><br><span class="line">                    <span class="keyword">if</span>(length==s.size()<span class="number">-1</span>) <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> str;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//参考代码</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> ne[<span class="number">100005</span>];</span><br><span class="line">    <span class="built_in">string</span> ans;</span><br><span class="line">public:</span><br><span class="line">    <span class="built_in">string</span> <span class="title function_">longestPrefix</span><span class="params">(<span class="built_in">string</span> s)</span> &#123;</span><br><span class="line">        <span class="type">int</span> n=s.size(),i,j;</span><br><span class="line">        <span class="keyword">for</span>(ne[<span class="number">1</span>]=j=<span class="number">0</span>,i=<span class="number">2</span>;i&lt;=n;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span>(j&amp;&amp;s[j]!=s[i<span class="number">-1</span>])j=ne[j];</span><br><span class="line">            <span class="keyword">if</span>(s[j]==s[i<span class="number">-1</span>])j++;</span><br><span class="line">            ne[i]=j;</span><br><span class="line">        &#125;</span><br><span class="line">        ans.clear();</span><br><span class="line">        <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;ne[n];i++)ans+=s[i];</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/LeetCode周赛/">LeetCode周赛</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/DFS/">DFS</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+
+
+
+
+
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2023 Jingyi Yu
+    
+  </p>
+</footer>
+    
+    
+  </div>
+</div>
+</body>
+</html>

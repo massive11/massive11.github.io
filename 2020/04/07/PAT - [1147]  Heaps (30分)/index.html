@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>PAT - [1147] Heaps (30分) | Untitled.</title>
+
+  
+  <meta name="author" content="Jingyi Yu">
+  
+
+  
+  <meta name="description" content="从后往前检查所有节点（除了根节点）和它的父节点的关系，判断是否破坏最大堆或者最小堆的性质">
+  
+
+  
+  
+  <meta name="keywords" content="PAT">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="PAT - [1147] Heaps (30分)"/>
+
+  <meta property="og:site_name" content="Untitled."/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Untitled." type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Untitled.</a>
+    </h1>
+    <p class="site-description"></p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>PAT - [1147] Heaps (30分)</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2020/04/07/PAT - [1147]  Heaps (30分)/" rel="bookmark">
+        <time class="entry-date published" datetime="2020-04-07T09:23:13.000Z">
+          2020-04-07
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>从后往前检查所有节点（除了根节点）和它的父节点的关系，判断是否破坏最大堆或者最小堆的性质</p>
+<span id="more"></span>
+<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>In computer science, a heap is a specialized tree-based data structure that satisfies the heap property: if P is a parent node of C, then the key (the value) of P is either greater than or equal to (in a max heap) or less than or equal to (in a min heap) the key of C. A common implementation of a heap is the binary heap, in which the tree is a complete binary tree. (Quoted from Wikipedia at <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Heap_(data_structure)">https://en.wikipedia.org/wiki/Heap_(data_structure)</a>)</p>
+<p>Your job is to tell if a given complete binary tree is a heap.</p>
+<h1 id="输入说明"><a href="#输入说明" class="headerlink" title="输入说明"></a>输入说明</h1><p>Each input file contains one test case. For each case, the first line gives two positive integers: M (≤ 100), the number of trees to be tested; and N (1 &lt; N ≤ 1,000), the number of keys in each tree, respectively. Then M lines follow, each contains N distinct integer keys (all in the range of int), which gives the level order traversal sequence of a complete binary tree.</p>
+<h1 id="输出说明"><a href="#输出说明" class="headerlink" title="输出说明"></a>输出说明</h1><p>For each given tree, print in a line Max Heap if it is a max heap, or Min Heap for a min heap, or Not Heap if it is not a heap at all. Then in the next line print the tree’s postorder traversal sequence. All the numbers are separated by a space, and there must no extra space at the beginning or the end of the line.</p>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><h2 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h2><p>3 8<br>98 72 86 60 65 12 23 50<br>8 38 25 58 52 82 70 60<br>10 28 15 12 34 9 8 56</p>
+<h2 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h2><p>Max Heap<br>50 60 65 72 12 23 86 98<br>Min Heap<br>60 58 52 38 82 70 25 8<br>Not Heap<br>56 12 34 28 9 8 15 10</p>
+<h1 id="Vocabulary"><a href="#Vocabulary" class="headerlink" title="Vocabulary"></a>Vocabulary</h1><ul>
+<li>heap 堆</li>
+</ul>
+<h1 id="自己的想法"><a href="#自己的想法" class="headerlink" title="自己的想法"></a>自己的想法</h1><p>非常蠢的企图先把树建出来再挨个判断是大根堆还是小根堆，然后再将其转化为后序遍历输出。其实也有想过要不要直接根据二叉树的规律进行判断，因为对树相关的题目不够熟练所以打算先按自己的方法尝试一下，果然失败了。看了别人的答案之后才觉得自己的想法真是绕了太多的弯，且没能解决问题。</p>
+<h1 id="参考题解："><a href="#参考题解：" class="headerlink" title="参考题解："></a>参考题解：</h1><p>从后往前检查所有节点（除了根节点）和它的父节点的关系，判断是否破坏最大堆或者最小堆的性质，如果有不满足的情况将maxn或minn置为0，以此排除最大堆或者最小堆～</p>
+<p>然后后序遍历，对于index结点分别遍历孩子index<em>2和右孩子index</em>2+1，遍历完左右子树后输出根结点～</p>
+<h1 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//https://www.liuchuo.net/archives/4667</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line">using namespace <span class="built_in">std</span>;</span><br><span class="line"><span class="type">int</span> a[<span class="number">1005</span>], m, n;</span><br><span class="line"><span class="type">void</span> <span class="title function_">postOrder</span><span class="params">(<span class="type">int</span> index)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (index &gt; n) <span class="keyword">return</span>;</span><br><span class="line">    postOrder(index * <span class="number">2</span>);</span><br><span class="line">    postOrder(index * <span class="number">2</span> + <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d%s&quot;</span>, a[index], index == <span class="number">1</span> ? <span class="string">&quot;\n&quot;</span> : <span class="string">&quot; &quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>, &amp;m, &amp;n);</span><br><span class="line">    <span class="keyword">while</span> (m--) &#123;</span><br><span class="line">        <span class="type">int</span> minn = <span class="number">1</span>, maxn = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;a[i]);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (a[i] &gt; a[i / <span class="number">2</span>]) maxn = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span> (a[i] &lt; a[i / <span class="number">2</span>]) minn = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (maxn == <span class="number">1</span>) <span class="built_in">printf</span>(<span class="string">&quot;Max Heap\n&quot;</span>);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (minn == <span class="number">1</span>) <span class="built_in">printf</span>(<span class="string">&quot;Min Heap\n&quot;</span>);</span><br><span class="line">        <span class="keyword">else</span> <span class="built_in">printf</span>(<span class="string">&quot;Not Heap\n&quot;</span>);</span><br><span class="line">        postOrder(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/PAT甲级/">PAT甲级</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/PAT/">PAT</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+
+
+
+
+
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2023 Jingyi Yu
+    
+  </p>
+</footer>
+    
+    
+  </div>
+</div>
+</body>
+</html>

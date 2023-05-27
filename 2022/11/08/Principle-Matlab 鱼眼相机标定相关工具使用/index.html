@@ -1,0 +1,163 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>MATLAB鱼眼相机标定相关工具使用 | Untitled.</title>
+
+  
+  <meta name="author" content="Jingyi Yu">
+  
+
+  
+  <meta name="description" content="本文对MATLAB鱼眼相机标定相关工具使用进行了介绍">
+  
+
+  
+  
+  <meta name="keywords" content="Calibration,Fisheye">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="MATLAB鱼眼相机标定相关工具使用"/>
+
+  <meta property="og:site_name" content="Untitled."/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Untitled." type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Untitled.</a>
+    </h1>
+    <p class="site-description"></p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>MATLAB鱼眼相机标定相关工具使用</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2022/11/08/Principle-Matlab 鱼眼相机标定相关工具使用/" rel="bookmark">
+        <time class="entry-date published" datetime="2022-11-08T09:51:24.000Z">
+          2022-11-08
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>本文对MATLAB鱼眼相机标定相关工具使用进行了介绍</p>
+<span id="more"></span>
+
+
+
+<blockquote>
+<p>The Computer Vision Toolbox contains calibration algorithms for the pinhole camera model and the fisheye camera model. You can use the fisheye model with cameras up to a field of view (FOV) of 195 degrees.</p>
+</blockquote>
+<h1 id="1-Matlab鱼眼相机模型-Scaramuzza"><a href="#1-Matlab鱼眼相机模型-Scaramuzza" class="headerlink" title="1.Matlab鱼眼相机模型-Scaramuzza"></a>1.Matlab鱼眼相机模型-Scaramuzza</h1><p>官方文档：<a target="_blank" rel="noopener" href="https://ww2.mathworks.cn/help/vision/ug/fisheye-calibration-basics.html">Mathworks Fisheye Calibration Basics Document</a><br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1666232665636-597bb5ee-9cd3-4cc7-ac30-626bdd53b1c9.png#clientId=u693fa3a9-f283-4&errorMessage=unknown%20error&from=paste&height=289&id=QTKp4&originHeight=434&originWidth=1151&originalType=binary&ratio=1&rotation=0&showTitle=false&size=49976&status=error&style=none&taskId=uc00d749f-73c5-4d81-bb5d-66fc5a1664f&title=&width=767.3333333333334" alt="image.png"><br>小孔成像模型与鱼眼相机模型对比</p>
+<h2 id="1-1-世界坐标3D——图像坐标2D的转换"><a href="#1-1-世界坐标3D——图像坐标2D的转换" class="headerlink" title="1.1 世界坐标3D——图像坐标2D的转换"></a>1.1 世界坐标3D——图像坐标2D的转换</h2><h3 id="1-1-1-世界坐标3D——相机坐标3D"><a href="#1-1-1-世界坐标3D——相机坐标3D" class="headerlink" title="1.1.1 世界坐标3D——相机坐标3D"></a>1.1.1 世界坐标3D——相机坐标3D</h3><p>为相机坐标系坐标，R为外参旋转矩阵，为世界坐标系坐标，T为外参平移向量</p>
+<h3 id="1-1-2-相机坐标3D——校正图像坐标2D"><a href="#1-1-2-相机坐标3D——校正图像坐标2D" class="headerlink" title="1.1.2 相机坐标3D——校正图像坐标2D"></a>1.1.2 相机坐标3D——校正图像坐标2D</h3><p>鱼眼相机模型的内参包括投影函数的多项式映射系数。对齐系数与传感器对齐以及从传感器平面到相机图像平面中的像素位置的转换有关。是矫正后的图像坐标2D点，是Scaramuzza模型[1]中描述的多项式系数，是scalar factor。，是相关的函数，仅与像素点与图像中心的距离有关</p>
+<h3 id="1-1-3-校正图像坐标2D——原始图像的像素坐标2D"><a href="#1-1-3-校正图像坐标2D——原始图像的像素坐标2D" class="headerlink" title="1.1.3 校正图像坐标2D——原始图像的像素坐标2D"></a>1.1.3 校正图像坐标2D——原始图像的像素坐标2D</h3><p>内参也包括了拉伸和变形（仿射变换）。 拉伸矩阵补偿传感器到镜头的失准，失真向量调整图像平面的 (0,0) 位置。为Stretch Matrix，为原始图像的像素坐标，为Distortion Center</p>
+<h2 id="1-2-Matlab鱼眼相机标定参数使用Pipeline"><a href="#1-2-Matlab鱼眼相机标定参数使用Pipeline" class="headerlink" title="1.2 Matlab鱼眼相机标定参数使用Pipeline"></a>1.2 Matlab鱼眼相机标定参数使用Pipeline</h2><p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1666253197535-721350c7-79c4-4739-95b0-858158975ec2.png#clientId=u654a0bfa-568e-4&errorMessage=unknown%20error&from=paste&height=358&id=uvJr4&originHeight=715&originWidth=931&originalType=binary&ratio=1&rotation=0&showTitle=false&size=42621&status=error&style=none&taskId=uc8644ffb-0ff3-4e32-8696-68956c7097a&title=&width=466" alt="image.png"></p>
+<h3 id="1-2-1-Fisheye-Model，根据鱼眼相机内参校正图像（数据预处理）"><a href="#1-2-1-Fisheye-Model，根据鱼眼相机内参校正图像（数据预处理）" class="headerlink" title="1.2.1 Fisheye Model，根据鱼眼相机内参校正图像（数据预处理）"></a>1.2.1 Fisheye Model，根据鱼眼相机内参校正图像（数据预处理）</h3><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">params = struct();</span><br><span class="line">params.pattern_origin_height = <span class="number">0</span>; <span class="comment">% Pattern is on ground</span></span><br><span class="line"><span class="comment">% 1.加载预先标定好的鱼眼相机内参</span></span><br><span class="line">camera_intrinsics = &#123;</span><br><span class="line">    <span class="string">&#x27;/home/kk/map_data/hongqi1_intrinsics/front_center_intrinsics.mat&#x27;</span>,...</span><br><span class="line">&#125;;</span><br><span class="line">intrinsics_mat = load(camera_intrinsics&#123;<span class="number">1</span>&#125;);</span><br><span class="line">front_intrinsics = intrinsics_mat.front_center_cameraParams.Intrinsics;</span><br><span class="line"></span><br><span class="line"><span class="comment">% 2.得到校正后的虚拟内参以及校正图像</span></span><br><span class="line">img = imread(<span class="string">&#x27;/home/kk/Desktop/024010.jpg&#x27;</span>);</span><br><span class="line">[J, cam_intrinsics] = undistortFisheyeImage(img, front_intrinsics, <span class="string">&#x27;Output&#x27;</span>, <span class="string">&#x27;full&#x27;</span>);</span><br><span class="line">subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>);imshow(img);title(<span class="string">&#x27;原始图像&#x27;</span>)</span><br><span class="line">subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>);imshow(J);title(<span class="string">&#x27;校正图像&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1666250346268-f77af30d-c5db-4344-9b5b-dbcd5fd4a9b6.png#clientId=uf53b3c9d-69b2-4&errorMessage=unknown%20error&from=paste&height=366&id=iSx3i&originHeight=549&originWidth=2006&originalType=binary&ratio=1&rotation=0&showTitle=false&size=1021201&status=error&style=none&taskId=u51ed1323-c9cd-4c11-84f6-79da6375e1b&title=&width=1337.3333333333333" alt="image.png"><br>Matlab工具箱 校正效果展示<br>校正图像放大后的效果对比<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1666250498775-76fecb34-9c31-4d9c-951a-6e2c0a27d6b3.png#clientId=uf53b3c9d-69b2-4&errorMessage=unknown%20error&from=paste&height=355&id=CcSCO&originHeight=533&originWidth=2001&originalType=binary&ratio=1&rotation=0&showTitle=false&size=1197037&status=error&style=none&taskId=u3bdf80ea-946d-4af4-b1d1-a868b98fcb7&title=&width=1334" alt="image.png"><br>Matlab工具箱 校正效果展示（放大版）</p>
+<h3 id="1-2-2-Pinhole-Model，校正图像的坐标转换（模型中）"><a href="#1-2-2-Pinhole-Model，校正图像的坐标转换（模型中）" class="headerlink" title="1.2.2 Pinhole Model，校正图像的坐标转换（模型中）"></a>1.2.2 Pinhole Model，校正图像的坐标转换（模型中）</h3><p>在数据预处理过程中，原始图像已经经过鱼眼模型校正，校正后的图像可以近似为小孔成像模型。因此，可以利用校正图像的虚拟相机的内参去标定外参，由此得到转换过程中需要的全部坐标转换矩阵。</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 3.加载预先标定的2D-3D匹配点 img_points和world_points</span></span><br><span class="line">load(<span class="string">&#x27;./img_points.mat&#x27;</span>);</span><br><span class="line">load(<span class="string">&#x27;./world_points.mat&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% 4.求解鱼眼相机外参</span></span><br><span class="line">[params.front_extri.pitch, params.front_extri.yaw, params.front_extri.roll, params.front_extri.x, params.front_extri.y, params.front_extri.height, params.front_extri.R, params.front_extri.T] = estimateMonoCameraParametersModify(front_intrinsics, ...</span><br><span class="line">                            img_points,world_points, params.pattern_origin_height);</span><br><span class="line"></span><br><span class="line"><span class="comment">% 5.得到虚拟的小孔成像模型的内参</span></span><br><span class="line">sensor = monoCamera(cam_intrinsics, params.front_extri.height, <span class="string">&#x27;pitch&#x27;</span>, params.front_extri.pitch, <span class="string">&#x27;yaw&#x27;</span>, params.front_extri.yaw, <span class="string">&#x27;roll&#x27;</span>, params.front_extri.roll);</span><br><span class="line">new_intrin = sensor.Intrinsics;</span><br><span class="line"></span><br><span class="line"><span class="comment">% 6.img_points从畸变图像转到校正图像</span></span><br><span class="line">[size_1,size_2] = <span class="built_in">size</span>(img_points);</span><br><span class="line">new_img_points=[];</span><br><span class="line"><span class="keyword">for</span> n = <span class="number">1</span>:size_1</span><br><span class="line">    u_v = [img_points(n*<span class="number">2</span><span class="number">-1</span>);img_points(n*<span class="number">2</span>)];</span><br><span class="line">    u_v = (inv(front_intrinsics.StretchMatrix))*(u_v - front_intrinsics.DistortionCenter.&#x27;);</span><br><span class="line">    new_img_points = [new_img_points;u_v.&#x27;];</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% 7.得到虚拟的小孔成像模型的外参</span></span><br><span class="line">[pitch, yaw, roll, x, y, height, R, T] = estimateMonoCameraParametersModify(new_intrin, ...</span><br><span class="line">                             new_img_points,world_points, params.pattern_origin_height);</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><p>[1] Scaramuzza, D., A. Martinelli, and R. Siegwart. “A Toolbox for Easy Calibrating Omnidirectional Cameras.” <em>Proceedings to IEEE International Conference on Intelligent Robots and Systems, (IROS)</em>. Beijing, China, October 7–15, 2006.</p>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/Principle/">Principle</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/Calibration/">Calibration</a><a href="/tags/Fisheye/">Fisheye</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+
+
+
+
+
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2023 Jingyi Yu
+    
+  </p>
+</footer>
+    
+    
+  </div>
+</div>
+</body>
+</html>

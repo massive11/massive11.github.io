@@ -463,14 +463,14 @@
 <li>无须复杂的后处理过程</li>
 <li><p>层级式的结构，先预测元素，再确定每个元素具体的点集</p>
 <h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3></li>
-<li><p>有向折线表示地图元素和顺序预测点会引起定义歧义（MapTR提出的）</p>
+<li><p>有向折线表示地图元素和顺序预测点会引起定义歧义</p>
 </li>
-<li>以循环的方式预测点，并采用级联的由粗到细框架，导致较长的推理时间和对实时场景的有限可伸缩性（MapTR提出的）</li>
-<li>自回归解码器的周期性导致了累积误差的问题，需要更长的训练时间才能收敛（MapTR提出的）<h2 id="MapTR-202208"><a href="#MapTR-202208" class="headerlink" title="MapTR-202208"></a>MapTR-202208</h2><blockquote>
+<li>以循环的方式预测点，并采用级联的由粗到细框架，导致较长的推理时间和对实时场景的有限可伸缩性</li>
+<li>自回归解码器的周期性导致了累积误差的问题，需要更长的训练时间才能收敛</li>
+</ol>
+<h2 id="MapTR-202208"><a href="#MapTR-202208" class="headerlink" title="MapTR-202208"></a>MapTR-202208</h2><blockquote>
 <p>We propose a unified permutation-based modeling approach, i.e., modeling map element as a point set with a group of equivalent permutations, which avoids the definition ambiguity of map element and eases learning.<br>We adopt a hierarchical query embedding scheme to flexibly encode structured map information and perform hierarchical bipartite matching for map element learning.</p>
 </blockquote>
-</li>
-</ol>
 <h3 id="Motivation-2"><a href="#Motivation-2" class="headerlink" title="Motivation"></a>Motivation</h3><p>针对当下地图元素的定义中存在的歧义性，提出了基于排列的方案。</p>
 <h3 id="Method-2"><a href="#Method-2" class="headerlink" title="Method"></a>Method</h3><p>MapTR是一个完全的set prediction任务。</p>
 <h4 id="pipeline-2"><a href="#pipeline-2" class="headerlink" title="pipeline"></a>pipeline</h4><p>MapTR将训练过程定义为一个层级式的set prediction任务。<br>MapTR将每个地图元素视为一个有一组等价排列方式的点集，首先采用常规的view transformation方案将6帧图像转到BEV视角下，然后使用层级式的二分匹配设计，依次进行instance-level、point-level的匹配<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1671284083624-1f59ef29-1885-4550-a0dd-55eff269edf3.png#averageHue=%23e8e6e4&amp;clientId=u60fb81b1-bee3-4&amp;from=drop&amp;id=u150bf02c&amp;originHeight=1396&amp;originWidth=2044&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=739234&amp;status=done&amp;style=none&amp;taskId=u5fc5016b-c25f-4f32-aa27-7d36e7378e1&amp;title=" alt="截屏2022-12-17 21.34.39.png"></p>
@@ -479,13 +479,14 @@
 <p>点对点的损失限制的是每个点的位置，使用的是距离</p>
 <p>点对点的损失仅限制折线和多边形的节点，不考虑边(相邻点之间的连接线)。但是对于地图元素来说，边的方向也同样重要，方向损失使用余弦相似度进行度量</p>
 <h3 id="优点-2"><a href="#优点-2" class="headerlink" title="优点"></a>优点</h3><ol>
-<li><p>SOTA，精度高的同时速度非常快</p>
-<h3 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h3></li>
-<li><p>部分线性元素的方向对下游任务来说比较重要，但本模型的方案将不同的排列方式都视为等价了</p>
-</li>
-<li>本文的性能指标实验，其他两个模型都是[-51.2, 51.2]的范围，但是MapTR自己取的是[-15，15] [-30，30]的范围，这样的比较是否合理？<h1 id="2-其他研究工作"><a href="#2-其他研究工作" class="headerlink" title="2.其他研究工作"></a>2.其他研究工作</h1></li>
+<li>SOTA，精度高的同时速度非常快</li>
+<li>提出了地图构造问题中组成每个元素的有序点集的排列等价性，从实验中可以看出有效提升了模型性能。</li>
 </ol>
-
+<h3 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h3><ol>
+<li>等数量插值，模型性能会受每个元素的点集数量的影响</li>
+<li>元素之间、元素内部的结构关系约束比较弱，可能因此导致模型收敛速度慢</li>
+</ol>
+<h1 id="2-其他研究工作"><a href="#2-其他研究工作" class="headerlink" title="2.其他研究工作"></a>2.其他研究工作</h1><h2 id="HRAN"><a href="#HRAN" class="headerlink" title="HRAN"></a>HRAN</h2>
                 
             </div>
             <hr/>

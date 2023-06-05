@@ -4,8 +4,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Tag: Multi-view 3D, Untitled.">
-    <meta name="description" content="Untitled.">
+    <meta name="keywords" content="匈牙利匹配, Untitled.">
+    <meta name="description" content="匈牙利匹配原理和实现
+
+匈牙利匹配概述分配问题是组合优化领域中的一个基本问题，其目标是确定最佳分配，如使总成本最小化或使团队效率最大化。匈牙利匹配是求解二分图最大匹配的经典算法，算法的核心是根据一个初始匹配不停的找增广路径，直到没有增广路径">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +19,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Tag: Multi-view 3D | Untitled.</title>
+    <title>匈牙利匹配 | Untitled.</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -330,312 +332,473 @@
 
 </header>
 
-    <div class="bg-cover pd-header about-cover">
-    <div class="container">
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">匈牙利匹配</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
     <div class="row">
-    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
-        <div class="brand">
-            <div class="title center-align">
-                
-                    subtitle
-                
-            </div>
-
-            <div class="description center-align">
-                
-                <span id="subtitle"></span>
-                <script src="/libs/typed/typed.js"></script>
-                <script>
-                    var typed = new Typed("#subtitle", {
-                        strings: [ 
-                            
-                                "从来没有真正的绝境, 只有心灵的迷途",
-                            
-                                "Never really desperate, only the lost of the soul",
-                            
-                        ],
-                        startDelay: 300,
-                        typeSpeed: 100,
-                        loop: true,
-                        backSpeed: 50,
-                        showCursor: true
-                    });
-                </script>
-                
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<script>
-    // 每天切换 banner 图.  Switch banner image every day.
-    var bannerUrl = "/medias/banner/" + new Date().getDay() + '.jpg';
-    $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
-</script>
-<script>
-    
-      var bannerUrl = "/medias/featureimages/" + Math.floor(Math.random() * 24) + '.jpg';
-    
-    $('.bg-cover.about-cover').css('background-image', 'url(' + bannerUrl + ')');
-
-</script>
-
-
-    </div>
-</div>
-
-<main class="content">
-
-    
-
-<div id="tags" class="container chip-container">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
     <div class="card">
-        <div class="card-content">
-            <div class="tag-title center-align">
-                <i class="fas fa-tags"></i>&nbsp;&nbsp;Post Tags
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Match/">
+                                <span class="chip bg-color">Match</span>
+                            </a>
+                        
+                            <a href="/tags/algorithm/">
+                                <span class="chip bg-color">algorithm</span>
+                            </a>
+                        
+                            <a href="/tags/Graph-Theory/">
+                                <span class="chip bg-color">Graph Theory</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Principle/" class="post-category">
+                                Principle
+                            </a>
+                        
+                    </div>
+                    
+                </div>
             </div>
-            <div class="tag-chips">
+
+            <div class="post-info">
                 
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2023-04-02
+                </div>
                 
-                <a href="/tags/Multi-view-3D/" title="Multi-view 3D: 4">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-active "
-                            data-tagname="Multi-view 3D" style="background-color: #F9EBEA;">Multi-view 3D
-                        <span class="tag-length">4</span>
-                    </span>
-                </a>
+
                 
+
                 
-                <a href="/tags/DFS/" title="DFS: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="DFS" style="background-color: #F5EEF8;">DFS
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
+
                 
+
                 
-                <a href="/tags/PAT/" title="PAT: 4">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="PAT" style="background-color: #D5F5E3;">PAT
-                        <span class="tag-length">4</span>
-                    </span>
-                </a>
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>匈牙利匹配原理和实现</p>
+<span id="more"></span>
+<h1 id="匈牙利匹配概述"><a href="#匈牙利匹配概述" class="headerlink" title="匈牙利匹配概述"></a>匈牙利匹配概述</h1><p>分配问题是组合优化领域中的一个基本问题，其目标是确定最佳分配，如使总成本最小化或使团队效率最大化。匈牙利匹配是求解二分图最大匹配的经典算法，算法的核心是根据一个初始匹配不停的找增广路径，直到没有增广路径为止。</p>
+<h2 id="二分图"><a href="#二分图" class="headerlink" title="二分图"></a>二分图</h2><p>图中所有顶点可以划分两个子集，任取一条边，边的两个顶点不在同一个子集中。</p>
+<h2 id="最大匹配"><a href="#最大匹配" class="headerlink" title="最大匹配"></a>最大匹配</h2><p>一个图的所有匹配中，所含匹配边数最多的匹配，称为这个图的最大匹配。最大匹配数，就是最大匹配时边的数目。</p>
+<h2 id="交替路径"><a href="#交替路径" class="headerlink" title="交替路径"></a>交替路径</h2><p>给定图G的一个匹配M，如果一条路径的边交替出现在M中和不出现在M中，我们称之为一条M-交错路径。</p>
+<h2 id="增广路径"><a href="#增广路径" class="headerlink" title="增广路径"></a>增广路径</h2><p>从一个未匹配点出发，走交替路，如果途径另一个未匹配点（出发的点不算），则这条交替路径称为增广路径。<br>增广路径的特点：路径长度为奇数（因为起点和终点必须分属两个集合）</p>
+<h1 id="匈牙利匹配原理"><a href="#匈牙利匹配原理" class="headerlink" title="匈牙利匹配原理"></a>匈牙利匹配原理</h1><p>通过寻找增广路径，把增广路径中的匹配边和非匹配边的相互交换，这样就会多出一条匹配边，直到找不到增广路径为止。</p>
+<h1 id="匈牙利匹配实现"><a href="#匈牙利匹配实现" class="headerlink" title="匈牙利匹配实现"></a>匈牙利匹配实现</h1><h2 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h2><p>步骤1：减去行最小值<br>找到邻接矩阵中每一行的最小元素，并且将每一行中的元素都减去该行中的最小元素。<br>步骤2：减去列最小值<br>在剩下的矩阵中找到每一列的最小元素，并且将每一列中的元素都减去该列中的最小元素。<br>步骤3：用最少的横线&#x2F;竖线覆盖所有零<br>使用最少数量的水平和垂直线覆盖结果矩阵中的所有零。如果需要n行，则零之间存在最佳分配。执行步骤5。<br>如果少于n行，继续执行步骤4。<br>步骤4：生成额外的零<br>在没有被覆盖的元素中找到最小值，并且将没有被覆盖的元素减去这个最小值，同时将不同线条交叉位置上的元素加上这个最小值。回到步骤3。<br>步骤5：得到结果<br>最后从剩余的矩阵元素中找到最合适的零元素作为匹配结果。这里每个零元素对应筛选后的两个节点之间的边。</p>
+<h2 id="Python实现"><a href="#Python实现" class="headerlink" title="Python实现"></a>Python实现</h2><p>scipy提供了linear_sum_assignment函数可以直接调用求解匈牙利匹配问题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cost = np.array([[<span class="number">4</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">2</span>, <span class="number">0</span>, <span class="number">5</span>], [<span class="number">3</span>, <span class="number">2</span>, <span class="number">2</span>]])</span><br><span class="line"><span class="keyword">from</span> scipy.optimize <span class="keyword">import</span> linear_sum_assignment</span><br><span class="line">row_ind, col_ind = linear_sum_assignment(cost)</span><br></pre></td></tr></table></figure>
+
                 
-                
-                <a href="/tags/hash/" title="hash: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="hash" style="background-color: #E8F8F5;">hash
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/Mono3D/" title="Mono3D: 2">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="Mono3D" style="background-color: #FEF9E7;">Mono3D
-                        <span class="tag-length">2</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/HD-Map/" title="HD Map: 2">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="HD Map" style="background-color: #F8F9F9;">HD Map
-                        <span class="tag-length">2</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/Calibration/" title="Calibration: 2">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="Calibration" style="background-color: #82E0AA;">Calibration
-                        <span class="tag-length">2</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/Fisheye/" title="Fisheye: 2">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="Fisheye" style="background-color: #D7BDE2;">Fisheye
-                        <span class="tag-length">2</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/Match/" title="Match: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="Match" style="background-color: #A3E4D7;">Match
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/algorithm/" title="algorithm: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="algorithm" style="background-color: #85C1E9;">algorithm
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/Graph-Theory/" title="Graph Theory: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="Graph Theory" style="background-color: #F8C471;">Graph Theory
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Jingyi Yu</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://yoursite.com/2023/04/02/Principle-%E5%8C%88%E7%89%99%E5%88%A9%E5%8C%B9%E9%85%8D/">http://yoursite.com/2023/04/02/Principle-%E5%8C%88%E7%89%99%E5%88%A9%E5%8C%B9%E9%85%8D/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint policy. If reproduced, please indicate source
+                    <a href="/about" target="_blank">Jingyi Yu</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Match/">
+                                    <span class="chip bg-color">Match</span>
+                                </a>
+                            
+                                <a href="/tags/algorithm/">
+                                    <span class="chip bg-color">algorithm</span>
+                                </a>
+                            
+                                <a href="/tags/Graph-Theory/">
+                                    <span class="chip bg-color">Graph Theory</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-    
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
 
-    <article id="articles" class="container articles">
-        <div class="row tags-posts">
-            
-            
-            <div class="article tag-post col s12 m6 l4" data-tags="Multi-view 3D, Mono3D" data-aos="fade-up">
-                <div class="card">
-                    <a href="/2022/12/08/Paper-3D%E7%9B%AE%E6%A0%87%E6%A1%86%E8%A7%A3%E8%80%A6%E6%96%B9%E6%A1%88%E6%A2%B3%E7%90%86/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="3D目标框解耦方案梳理">
-                            
-                            <span class="card-title">3D目标框解耦方案梳理</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-12-08
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/Paper/" class="post-category">
-                                Paper
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            
-            <div class="article tag-post col s12 m6 l4" data-tags="Multi-view 3D" data-aos="fade-up">
-                <div class="card">
-                    <a href="/2022/10/25/Paper-PGD-Probabilistic%20and%20Geometric%20Depth_%20Detecting%20Objects%20in%20Perspective/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="PGD-Probabilistic and Geometric Depth_ Detecting Objects in Perspective">
-                            
-                            <span class="card-title">PGD-Probabilistic and Geometric Depth_ Detecting Objects in Perspective</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-25
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/Paper/" class="post-category">
-                                Paper
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            
-            <div class="article tag-post col s12 m6 l4" data-tags="Multi-view 3D" data-aos="fade-up">
-                <div class="card">
-                    <a href="/2022/10/20/Code-%E5%9F%BA%E4%BA%8EBEVDET%E5%89%96%E6%9E%90MMDet3D%E6%9E%B6%E6%9E%84/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="基于BEVDET剖析MMDet3D框架">
-                            
-                            <span class="card-title">基于BEVDET剖析MMDet3D框架</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-20
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/Code/" class="post-category">
-                                Code
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            
-            <div class="article tag-post col s12 m6 l4" data-tags="Multi-view 3D" data-aos="fade-up">
-                <div class="card">
-                    <a href="/2022/09/26/Paper-BEV%E6%A8%A1%E5%9E%8B%E6%B7%B1%E5%BA%A6%E4%BC%B0%E8%AE%A1%E6%A8%A1%E5%9D%97Overview/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="BEV模型深度估计模块Overview">
-                            
-                            <span class="card-title">BEV模型深度估计模块Overview</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-09-26
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/Paper/" class="post-category">
-                                Paper
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
             
         </div>
-    </article>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
+            <div class="card">
+                <a href="/2023/04/02/Principle-%E5%8C%88%E7%89%99%E5%88%A9%E5%8C%B9%E9%85%8D/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="匈牙利匹配">
+                        
+                        <span class="card-title">匈牙利匹配</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            匈牙利匹配原理和实现
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-02
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Principle/" class="post-category">
+                                    Principle
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Match/">
+                        <span class="chip bg-color">Match</span>
+                    </a>
+                    
+                    <a href="/tags/algorithm/">
+                        <span class="chip bg-color">algorithm</span>
+                    </a>
+                    
+                    <a href="/tags/Graph-Theory/">
+                        <span class="chip bg-color">Graph Theory</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/01/05/Paper-Online%20HDMap%20Construction%E6%95%B4%E7%90%86/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Online HD Map Construction 整理">
+                        
+                        <span class="card-title">Online HD Map Construction 整理</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            本文总结了当前在线地图构造任务的相关工作
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-01-05
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Paper/" class="post-category">
+                                    Paper
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/HD-Map/">
+                        <span class="chip bg-color">HD Map</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
 </main>
 
 

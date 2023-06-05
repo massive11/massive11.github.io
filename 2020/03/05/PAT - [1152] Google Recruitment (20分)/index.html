@@ -399,7 +399,7 @@ transcendental">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    948
+                    1.1k
                 </div>
                 
 
@@ -433,119 +433,119 @@ transcendental">
 </ol>
 <h2 id="个人解题思路"><a href="#个人解题思路" class="headerlink" title="个人解题思路"></a>个人解题思路</h2><p>本题使用暴力解的方法成功AC，本来担心会不会超时，但是并没有。只是实现的思路略复杂，也导致了在判断的时候遗漏了部分关键信息。</p>
 <p>自己的复杂思路：采用枚举法，从左至右一依次寻找k位数，为了缩短时间，首先判断最后一位是否是偶数。在这里隐含了两种情况。第一种情况是是偶数，但这个数为2，2为素数；第二种情况是是除2以外的偶数，可以直接判断为非素数进入下一次的循环。<br>如果最后一位为奇数，且9位以下的数在int范围内，则将其该k位数转为int型，通过isPrime函数进行判断是否为素数，如果是素数则按位输出，谨防丢掉前面的几位0。<br>最后如果没有找到则输出404。</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;algorithm></span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;vector></span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;cmath></span></span>
-using namespace std<span class="token punctuation">;</span>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+using namespace std;
 
-bool <span class="token function">isPrime</span><span class="token punctuation">(</span><span class="token keyword">int</span> q<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-    bool flag <span class="token operator">=</span> true<span class="token punctuation">;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>q<span class="token operator">==</span><span class="token number">1</span><span class="token operator">||</span>q<span class="token operator">==</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> flag<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">;</span>i<span class="token operator">&lt;=</span><span class="token function">sqrt</span><span class="token punctuation">(</span>q<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>q<span class="token operator">%</span>i<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                flag <span class="token operator">=</span> false<span class="token punctuation">;</span>
-                <span class="token keyword">break</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">return</span> flag<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+bool isPrime(int q)&#123;
+    bool flag &#x3D; true;
+    if(q&#x3D;&#x3D;1||q&#x3D;&#x3D;2)&#123;
+        return flag;
+    &#125;else&#123;
+        for(int i&#x3D;2;i&lt;&#x3D;sqrt(q);++i)&#123;
+            if(q%i&#x3D;&#x3D;0)&#123;
+                flag &#x3D; false;
+                break;
+            &#125;
+        &#125;
+        return flag;
+    &#125;
+&#125;
 
-<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">int</span> l<span class="token punctuation">,</span>k<span class="token punctuation">;</span>
-    <span class="token function">scanf</span><span class="token punctuation">(</span><span class="token string">"%d%d"</span><span class="token punctuation">,</span><span class="token operator">&amp;</span>l<span class="token punctuation">,</span><span class="token operator">&amp;</span>k<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">char</span> s<span class="token punctuation">[</span>l<span class="token punctuation">]</span><span class="token punctuation">;</span>
-    <span class="token function">scanf</span><span class="token punctuation">(</span><span class="token string">"%s"</span><span class="token punctuation">,</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    bool f <span class="token operator">=</span> false<span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">+</span>k<span class="token operator">-</span><span class="token number">1</span><span class="token operator">&lt;</span>l<span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token comment">//此种情况表示这个k位数为偶数，偶数不是素数，除2外</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span>i<span class="token operator">+</span>k<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">-</span><span class="token char">'0'</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">2</span><span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-            bool flag <span class="token operator">=</span> true<span class="token punctuation">;</span>
-            <span class="token comment">//如果不是00002，那么一定是偶数</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span>i<span class="token operator">+</span>k<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">-</span><span class="token char">'0'</span><span class="token punctuation">)</span><span class="token operator">!=</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                flag <span class="token operator">=</span> false<span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
-                <span class="token comment">//如果flag为false，表示不是素数，为true表示是素数</span>
-                <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> i<span class="token punctuation">;</span>j<span class="token operator">&lt;</span>i<span class="token operator">+</span>k<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span><span class="token operator">++</span>j<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                    <span class="token keyword">if</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">!=</span><span class="token char">'0'</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                        flag <span class="token operator">=</span> false<span class="token punctuation">;</span>
-                        <span class="token keyword">break</span><span class="token punctuation">;</span>
-                    <span class="token punctuation">&#125;</span>
-                <span class="token punctuation">&#125;</span>
-            <span class="token punctuation">&#125;</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>flag<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                f <span class="token operator">=</span> true<span class="token punctuation">;</span>
-                <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> i<span class="token punctuation">;</span>j<span class="token operator">&lt;</span>i<span class="token operator">+</span>k<span class="token punctuation">;</span><span class="token operator">++</span>j<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                    cout<span class="token operator">&lt;&lt;</span>s<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
-                <span class="token punctuation">&#125;</span>
-                <span class="token keyword">break</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
-                <span class="token keyword">continue</span><span class="token punctuation">;</span><span class="token comment">//向后寻找素数</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span><span class="token comment">//非偶数的情况</span>
-            <span class="token keyword">int</span> iP <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-            <span class="token keyword">int</span> su <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
-            <span class="token keyword">int</span> t <span class="token operator">=</span> i<span class="token operator">+</span>k<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
-            <span class="token keyword">while</span><span class="token punctuation">(</span>t<span class="token operator">>=</span>i<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                iP <span class="token operator">+=</span> <span class="token punctuation">(</span>s<span class="token punctuation">[</span>t<span class="token punctuation">]</span><span class="token operator">-</span><span class="token char">'0'</span><span class="token punctuation">)</span><span class="token operator">*</span>su<span class="token punctuation">;</span>
-                <span class="token operator">--</span>t<span class="token punctuation">;</span>
-                su<span class="token operator">*=</span><span class="token number">10</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">isPrime</span><span class="token punctuation">(</span>iP<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                f <span class="token operator">=</span>true<span class="token punctuation">;</span>
-                <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> i<span class="token punctuation">;</span>j<span class="token operator">&lt;</span>i<span class="token operator">+</span>k<span class="token punctuation">;</span><span class="token operator">++</span>j<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                    cout<span class="token operator">&lt;&lt;</span>s<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
-                <span class="token punctuation">&#125;</span>
-                <span class="token keyword">break</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>f<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        cout<span class="token operator">&lt;&lt;</span><span class="token string">"404"</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="代码优化"><a href="#代码优化" class="headerlink" title="代码优化"></a>代码优化</h2><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">//代码链接 https://www.liuchuo.net/archives/category/code/page/5</span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;string></span></span>
-using namespace std<span class="token punctuation">;</span>
-bool <span class="token function">isPrime</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">||</span> n <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span> false<span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span> i <span class="token operator">*</span> i <span class="token operator">&lt;=</span> n<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">%</span> i <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> false<span class="token punctuation">;</span>
-    <span class="token keyword">return</span> true<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">int</span> l<span class="token punctuation">,</span> k<span class="token punctuation">;</span>
-    string s<span class="token punctuation">;</span>
-    cin <span class="token operator">>></span> l <span class="token operator">>></span> k <span class="token operator">>></span> s<span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> l <span class="token operator">-</span> k<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        string t <span class="token operator">=</span> s<span class="token punctuation">.</span><span class="token function">substr</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> k<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> num <span class="token operator">=</span> <span class="token function">stoi</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isPrime</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            cout <span class="token operator">&lt;&lt;</span> t<span class="token punctuation">;</span>
-            <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"404\n"</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+int main() &#123;
+    int l,k;
+    scanf(&quot;%d%d&quot;,&amp;l,&amp;k);
+    char s[l];
+    scanf(&quot;%s&quot;,s);
+    bool f &#x3D; false;
+    for(int i&#x3D;0;i+k-1&lt;l;++i)&#123;
+        &#x2F;&#x2F;此种情况表示这个k位数为偶数，偶数不是素数，除2外
+        if((s[i+k-1]-&#39;0&#39;)%2&#x3D;&#x3D;0)&#123;
+            bool flag &#x3D; true;
+            &#x2F;&#x2F;如果不是00002，那么一定是偶数
+            if((s[i+k-1]-&#39;0&#39;)!&#x3D;2)&#123;
+                flag &#x3D; false;
+            &#125;else&#123;
+                &#x2F;&#x2F;如果flag为false，表示不是素数，为true表示是素数
+                for(int j &#x3D; i;j&lt;i+k-1;++j)&#123;
+                    if(s[j]!&#x3D;&#39;0&#39;)&#123;
+                        flag &#x3D; false;
+                        break;
+                    &#125;
+                &#125;
+            &#125;
+            if(flag)&#123;
+                f &#x3D; true;
+                for(int j &#x3D; i;j&lt;i+k;++j)&#123;
+                    cout&lt;&lt;s[j];
+                &#125;
+                break;
+            &#125;else&#123;
+                continue;&#x2F;&#x2F;向后寻找素数
+            &#125;
+        &#125;else&#123;&#x2F;&#x2F;非偶数的情况
+            int iP &#x3D; 0;
+            int su &#x3D; 1;
+            int t &#x3D; i+k-1;
+            while(t&gt;&#x3D;i)&#123;
+                iP +&#x3D; (s[t]-&#39;0&#39;)*su;
+                --t;
+                su*&#x3D;10;
+            &#125;
+            if(isPrime(iP))&#123;
+                f &#x3D;true;
+                for(int j &#x3D; i;j&lt;i+k;++j)&#123;
+                    cout&lt;&lt;s[j];
+                &#125;
+                break;
+            &#125;
+        &#125;
+    &#125;
+    if(!f)&#123;
+        cout&lt;&lt;&quot;404&quot;;
+    &#125;
+    return 0;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="代码优化"><a href="#代码优化" class="headerlink" title="代码优化"></a>代码优化</h2><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F;代码链接 https:&#x2F;&#x2F;www.liuchuo.net&#x2F;archives&#x2F;category&#x2F;code&#x2F;page&#x2F;5
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+bool isPrime(int n) &#123;
+    if (n &#x3D;&#x3D; 0 || n &#x3D;&#x3D; 1) return false;
+    for (int i &#x3D; 2; i * i &lt;&#x3D; n; i++)
+        if (n % i &#x3D;&#x3D; 0) return false;
+    return true;
+&#125;
+int main() &#123;
+    int l, k;
+    string s;
+    cin &gt;&gt; l &gt;&gt; k &gt;&gt; s;
+    for (int i &#x3D; 0; i &lt;&#x3D; l - k; i++) &#123;
+        string t &#x3D; s.substr(i, k);
+        int num &#x3D; stoi(t);
+        if (isPrime(num)) &#123;
+            cout &lt;&lt; t;
+            return 0;
+        &#125;
+    &#125;
+    cout &lt;&lt; &quot;404\n&quot;;
+    return 0;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>学习心得：<br>该题考虑了多种情况提高代码速度反而带来了更多的漏洞，可以先直接尝试暴力解是否得解，超时的话再考虑代码优化问题。</p>
-<h3 id="C-stoi函数使用："><a href="#C-stoi函数使用：" class="headerlink" title="C++ stoi函数使用："></a>C++ stoi函数使用：</h3><p>引入头文件<br><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;string></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br>作用：将n进制的字符串转为十进制</p>
+<h3 id="C-stoi函数使用："><a href="#C-stoi函数使用：" class="headerlink" title="C++ stoi函数使用："></a>C++ stoi函数使用：</h3><p>引入头文件<br><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include &lt;string&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br>作用：将n进制的字符串转为十进制</p>
 <p>用法</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">//stoi（字符串，起始位置，n进制），将 n 进制的字符串转化为十进制</span>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F;stoi（字符串，起始位置，n进制），将 n 进制的字符串转化为十进制
 
-<span class="token function">stoi</span><span class="token punctuation">(</span>str<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//将字符串 str 从 0 位置开始到末尾的 2 进制转换为十进制</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="C-substr函数使用"><a href="#C-substr函数使用" class="headerlink" title="C++ substr函数使用"></a>C++ substr函数使用</h3><p>引入头文件<br><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;string></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br>作用：返回一个从指定位置开始的指定长度的子字符串</p>
+stoi(str, 0, 2); &#x2F;&#x2F;将字符串 str 从 0 位置开始到末尾的 2 进制转换为十进制<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="C-substr函数使用"><a href="#C-substr函数使用" class="headerlink" title="C++ substr函数使用"></a>C++ substr函数使用</h3><p>引入头文件<br><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include &lt;string&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br>作用：返回一个从指定位置开始的指定长度的子字符串</p>
 <p>用法</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">//只有一个数字5表示从下标为5开始一直到结尾：sub1 = "56789"</span>
-string sub1 <span class="token operator">=</span> s<span class="token punctuation">.</span><span class="token function">substr</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F;只有一个数字5表示从下标为5开始一直到结尾：sub1 &#x3D; &quot;56789&quot;
+string sub1 &#x3D; s.substr(5);
 
-<span class="token comment">//从下标为5开始截取长度为3位：sub2 = "567"</span>
-string sub2 <span class="token operator">=</span> s<span class="token punctuation">.</span><span class="token function">substr</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#x2F;&#x2F;从下标为5开始截取长度为3位：sub2 &#x3D; &quot;567&quot;
+string sub2 &#x3D; s.substr(5, 3); <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
                 
             </div>
             <hr/>
@@ -889,7 +889,7 @@ string sub2 <span class="token operator">=</span> s<span class="token punctuatio
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">22.2k</span>
+                        class="white-color">22.6k</span>
             
             
             

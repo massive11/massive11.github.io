@@ -447,7 +447,7 @@ loss计算
 </ul>
 <p>[H/16, W/16]的特征图和相应的真值之间计算BCE loss。<br>真值是将LiDAR点云先通过内外参投影到像素坐标系，经过resize处理后得到[256, 704]的depth真值。划分16×16的patch，每个patch取有深度点的<strong>最小深度值</strong>，若不在深度范围内则赋值0。得到[16, 44]的gt_depth。</p>
 <ul>
-<li>LiDAR点云真值downsample代码<pre class="line-numbers language-none"><code class="language-none">def get_downsampled_gt_depth(self, gt_depths):
+<li>LiDAR点云真值downsample代码<pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">def get_downsampled_gt_depth(self, gt_depths):
     B, N, H, W &#x3D; gt_depths.shape
     gt_depths &#x3D; gt_depths.view(B*N, H&#x2F;&#x2F;self.downsample_factor,
         self.downsample_factor,
@@ -856,7 +856,7 @@ loss计算
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">22.2k</span>
+                        class="white-color">22.6k</span>
             
             
             

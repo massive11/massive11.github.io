@@ -400,7 +400,7 @@ ascending 升序的
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    830
+                    945
                 </div>
                 
 
@@ -430,103 +430,103 @@ ascending 升序的
 <li>ascending 升序的</li>
 </ol>
 <h2 id="自己的想法"><a href="#自己的想法" class="headerlink" title="自己的想法"></a>自己的想法</h2><p>进行模拟，假定两个人为狼人看是否符合条件<br>冷静可以解决一切问题！<br>思路没有问题，但是代码可以精简很多</p>
-<h2 id="自己的代码"><a href="#自己的代码" class="headerlink" title="自己的代码"></a>自己的代码</h2><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;vector></span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;algorithm></span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;set></span></span>
-using namespace std<span class="token punctuation">;</span>
-<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">int</span> n<span class="token punctuation">;</span>
-    <span class="token function">scanf</span><span class="token punctuation">(</span><span class="token string">"%d"</span><span class="token punctuation">,</span><span class="token operator">&amp;</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> in<span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>n<span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token keyword">int</span> t<span class="token punctuation">;</span>
-        <span class="token function">scanf</span><span class="token punctuation">(</span><span class="token string">"%d"</span><span class="token punctuation">,</span><span class="token operator">&amp;</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        in<span class="token punctuation">.</span><span class="token function">emplace_back</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">int</span> w1 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span>w2 <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span><span class="token comment">//假设狼人为w1和w2</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        bool flag <span class="token operator">=</span> true<span class="token punctuation">;</span>
-        <span class="token keyword">int</span> countL <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-        <span class="token comment">//1.先判断两个狼人是否全说的真话，若全说的真话则为假，若全说的假话则为假</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>in<span class="token punctuation">[</span>w1<span class="token punctuation">]</span><span class="token operator">></span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-            <span class="token comment">//w1说某人是人，判断这个人是不是两个狼人之一，若是则为假话，否则为真话</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>in<span class="token punctuation">[</span>w1<span class="token punctuation">]</span><span class="token operator">==</span><span class="token punctuation">(</span>w1<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">||</span>in<span class="token punctuation">[</span>w1<span class="token punctuation">]</span><span class="token operator">==</span><span class="token punctuation">(</span>w2<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">++</span>countL<span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
-            <span class="token comment">//w1说某人是狼人，如果这个人不是二者之一，则说的假话</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">-</span>in<span class="token punctuation">[</span>w1<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">!=</span><span class="token punctuation">(</span>w1<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span><span class="token punctuation">(</span><span class="token operator">-</span>in<span class="token punctuation">[</span>w1<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">!=</span><span class="token punctuation">(</span>w2<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">++</span>countL<span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token comment">//判断w2</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>in<span class="token punctuation">[</span>w2<span class="token punctuation">]</span><span class="token operator">></span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>in<span class="token punctuation">[</span>w2<span class="token punctuation">]</span><span class="token operator">==</span><span class="token punctuation">(</span>w1<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">||</span>in<span class="token punctuation">[</span>w2<span class="token punctuation">]</span><span class="token operator">==</span><span class="token punctuation">(</span>w2<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">++</span>countL<span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">-</span>in<span class="token punctuation">[</span>w2<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">!=</span><span class="token punctuation">(</span>w1<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span><span class="token punctuation">(</span><span class="token operator">-</span>in<span class="token punctuation">[</span>w2<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">!=</span><span class="token punctuation">(</span>w2<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">++</span>countL<span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
+<h2 id="自己的代码"><a href="#自己的代码" class="headerlink" title="自己的代码"></a>自己的代码</h2><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;set&gt;
+using namespace std;
+int main() &#123;
+    int n;
+    scanf(&quot;%d&quot;,&amp;n);
+    vector&lt;int&gt; in;
+    for(int i&#x3D;0;i&lt;n;++i)&#123;
+        int t;
+        scanf(&quot;%d&quot;,&amp;t);
+        in.emplace_back(t);
+    &#125;
+    int w1 &#x3D; 0,w2 &#x3D; 1;&#x2F;&#x2F;假设狼人为w1和w2
+    for(;;)&#123;
+        bool flag &#x3D; true;
+        int countL &#x3D; 0;
+        &#x2F;&#x2F;1.先判断两个狼人是否全说的真话，若全说的真话则为假，若全说的假话则为假
+        if(in[w1]&gt;0)&#123;
+            &#x2F;&#x2F;w1说某人是人，判断这个人是不是两个狼人之一，若是则为假话，否则为真话
+            if(in[w1]&#x3D;&#x3D;(w1+1)||in[w1]&#x3D;&#x3D;(w2+1)) ++countL;
+        &#125;else&#123;
+            &#x2F;&#x2F;w1说某人是狼人，如果这个人不是二者之一，则说的假话
+            if((-in[w1])!&#x3D;(w1+1)&amp;&amp;(-in[w1])!&#x3D;(w2+1)) ++countL;
+        &#125;
+        &#x2F;&#x2F;判断w2
+        if(in[w2]&gt;0)&#123;
+            if(in[w2]&#x3D;&#x3D;(w1+1)||in[w2]&#x3D;&#x3D;(w2+1)) ++countL;
+        &#125;else&#123;
+            if((-in[w2])!&#x3D;(w1+1)&amp;&amp;(-in[w2])!&#x3D;(w2+1)) ++countL;
+        &#125;
 
-        <span class="token comment">//2.判断共有几个说谎的人，如果不为2则为假</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>countL<span class="token operator">==</span><span class="token number">0</span><span class="token operator">||</span>countL<span class="token operator">==</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-            flag <span class="token operator">=</span> false<span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
-            <span class="token comment">//剩下的人中必须只能有一个说谎的人</span>
-            <span class="token keyword">int</span> count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-            <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>j<span class="token operator">&lt;</span>n<span class="token punctuation">;</span><span class="token operator">++</span>j<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                <span class="token keyword">if</span><span class="token punctuation">(</span>j<span class="token operator">==</span>w1<span class="token operator">||</span>j<span class="token operator">==</span>w2<span class="token punctuation">)</span> <span class="token keyword">continue</span><span class="token punctuation">;</span>
-                <span class="token keyword">if</span><span class="token punctuation">(</span>in<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">></span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                    <span class="token comment">//这个人类说某人是人，若某人是w1或w2则为说谎</span>
-                    <span class="token keyword">if</span><span class="token punctuation">(</span>in<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">==</span><span class="token punctuation">(</span>w1<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">||</span>in<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">==</span><span class="token punctuation">(</span>w2<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">++</span>count<span class="token punctuation">;</span>
-                <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
-                    <span class="token comment">//这个人说某人是狼，若这个人不是w1且不是w2则为说谎</span>
-                    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">-</span>in<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">!=</span><span class="token punctuation">(</span>w1<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span><span class="token operator">-</span>in<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">!=</span><span class="token punctuation">(</span>w2<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">++</span>count<span class="token punctuation">;</span>
-                <span class="token punctuation">&#125;</span>
-                <span class="token keyword">if</span><span class="token punctuation">(</span>count<span class="token operator">></span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                    flag <span class="token operator">=</span> false<span class="token punctuation">;</span>
-                    <span class="token keyword">break</span><span class="token punctuation">;</span>
-                <span class="token punctuation">&#125;</span>
-            <span class="token punctuation">&#125;</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>count<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span> flag <span class="token operator">=</span> false<span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>flag<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>w1<span class="token operator">==</span>in<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">2</span><span class="token operator">&amp;&amp;</span>w2<span class="token operator">==</span>in<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                cout<span class="token operator">&lt;&lt;</span><span class="token string">"No Solution"</span><span class="token punctuation">;</span>
-                <span class="token keyword">break</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span><span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>w2<span class="token operator">==</span>in<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                <span class="token operator">++</span>w1<span class="token punctuation">;</span>
-                w2 <span class="token operator">=</span> w1<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
-                <span class="token operator">++</span>w2<span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
-            cout<span class="token operator">&lt;&lt;</span>w1<span class="token operator">+</span><span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token string">" "</span><span class="token operator">&lt;&lt;</span>w2<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
-            <span class="token keyword">break</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        &#x2F;&#x2F;2.判断共有几个说谎的人，如果不为2则为假
+        if(countL&#x3D;&#x3D;0||countL&#x3D;&#x3D;2)&#123;
+            flag &#x3D; false;
+        &#125;else&#123;
+            &#x2F;&#x2F;剩下的人中必须只能有一个说谎的人
+            int count &#x3D; 0;
+            for(int j&#x3D;0;j&lt;n;++j)&#123;
+                if(j&#x3D;&#x3D;w1||j&#x3D;&#x3D;w2) continue;
+                if(in[j]&gt;0)&#123;
+                    &#x2F;&#x2F;这个人类说某人是人，若某人是w1或w2则为说谎
+                    if(in[j]&#x3D;&#x3D;(w1+1)||in[j]&#x3D;&#x3D;(w2+1)) ++count;
+                &#125;else&#123;
+                    &#x2F;&#x2F;这个人说某人是狼，若这个人不是w1且不是w2则为说谎
+                    if(-in[j]!&#x3D;(w1+1)&amp;&amp;-in[j]!&#x3D;(w2+1)) ++count;
+                &#125;
+                if(count&gt;1)&#123;
+                    flag &#x3D; false;
+                    break;
+                &#125;
+            &#125;
+            if(count&#x3D;&#x3D;0) flag &#x3D; false;
+        &#125;
+        if(!flag)&#123;
+            if(w1&#x3D;&#x3D;in.size()-2&amp;&amp;w2&#x3D;&#x3D;in.size()-1)&#123;
+                cout&lt;&lt;&quot;No Solution&quot;;
+                break;
+            &#125;else if(w2&#x3D;&#x3D;in.size()-1)&#123;
+                ++w1;
+                w2 &#x3D; w1+1;
+            &#125;else&#123;
+                ++w2;
+            &#125;
+        &#125;else&#123;
+            cout&lt;&lt;w1+1&lt;&lt;&quot; &quot;&lt;&lt;w2+1;
+            break;
+        &#125;
+    &#125;
+    return 0;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>每个人说的数字保存在v数组中，i从1～n、j从i+1～n遍历，分别假设i和j是狼人，a数组表示该人是狼人还是好人，等于1表示是好人，等于-1表示是狼人。k从1～n分别判断k所说的话是真是假，k说的话和真实情况不同（即v[k] * a[abs(v[k])] &lt; 0）则表示k在说谎，则将k放在lie数组中；遍历完成后判断lie数组，如果说谎人数等于2并且这两个说谎的人一个是好人一个是狼人（即a[lie[0]] + a[lie[1]] == 0）表示满足题意，此时输出i和j并return，否则最后的时候输出No Solution～</p>
-<h2 id="代码优化"><a href="#代码优化" class="headerlink" title="代码优化"></a>代码优化</h2><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">//代码链接 https://blog.csdn.net/liuchuo/article/details/82560876</span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;vector></span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;cmath></span></span>
-using namespace std<span class="token punctuation">;</span>
-<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">int</span> n<span class="token punctuation">;</span>
-    cin <span class="token operator">>></span> n<span class="token punctuation">;</span>
-    vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">v</span><span class="token punctuation">(</span>n<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> n<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> cin <span class="token operator">>></span> v<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> n<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> j <span class="token operator">&lt;=</span> n<span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> lie<span class="token punctuation">,</span> <span class="token function">a</span><span class="token punctuation">(</span>n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            a<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> a<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
-            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> k <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> k <span class="token operator">&lt;=</span> n<span class="token punctuation">;</span> k<span class="token operator">++</span><span class="token punctuation">)</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span>v<span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">*</span> a<span class="token punctuation">[</span><span class="token function">abs</span><span class="token punctuation">(</span>v<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> lie<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>k<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>lie<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">2</span> <span class="token operator">&amp;&amp;</span> a<span class="token punctuation">[</span>lie<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">+</span> a<span class="token punctuation">[</span>lie<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                cout <span class="token operator">&lt;&lt;</span> i <span class="token operator">&lt;&lt;</span> <span class="token string">" "</span> <span class="token operator">&lt;&lt;</span> j<span class="token punctuation">;</span>
-                <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"No Solution"</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="代码优化"><a href="#代码优化" class="headerlink" title="代码优化"></a>代码优化</h2><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F;代码链接 https:&#x2F;&#x2F;blog.csdn.net&#x2F;liuchuo&#x2F;article&#x2F;details&#x2F;82560876
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+using namespace std;
+int main() &#123;
+    int n;
+    cin &gt;&gt; n;
+    vector&lt;int&gt; v(n+1);
+    for (int i &#x3D; 1; i &lt;&#x3D; n; i++) cin &gt;&gt; v[i];
+    for (int i &#x3D; 1; i &lt;&#x3D; n; i++) &#123;
+        for (int j &#x3D; i + 1; j &lt;&#x3D; n; j++) &#123;
+            vector&lt;int&gt; lie, a(n + 1, 1);
+            a[i] &#x3D; a[j] &#x3D; -1;
+            for (int k &#x3D; 1; k &lt;&#x3D; n; k++)
+                if (v[k] * a[abs(v[k])] &lt; 0) lie.push_back(k);
+            if (lie.size() &#x3D;&#x3D; 2 &amp;&amp; a[lie[0]] + a[lie[1]] &#x3D;&#x3D; 0) &#123;
+                cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j;
+                return 0;
+            &#125;
+        &#125;
+    &#125;
+    cout &lt;&lt; &quot;No Solution&quot;;
+    return 0;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
                 
             </div>
             <hr/>
@@ -869,7 +869,7 @@ using namespace std<span class="token punctuation">;</span>
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">22.2k</span>
+                        class="white-color">22.6k</span>
             
             
             

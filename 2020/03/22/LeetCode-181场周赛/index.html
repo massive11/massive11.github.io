@@ -399,7 +399,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.7k
+                    1.8k
                 </div>
                 
 
@@ -434,38 +434,38 @@
 </ul>
 <p>题目保证数字插入位置总是存在。</p>
 <p>示例：<br>输入：nums = [0,1,2,3,4], index = [0,1,2,2,1]<br>输出：[0,4,1,3,2]<br>解释：<br>nums       index     target<br>0            0        [0]<br>1            1        [0,1]<br>2            2        [0,1,2]<br>3            2        [0,1,3,2]<br>4            1        [0,4,1,3,2]</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c">class Solution <span class="token punctuation">&#123;</span>
-public<span class="token operator">:</span>
-    vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">createTargetArray</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">&amp;</span> nums<span class="token punctuation">,</span> vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">&amp;</span> index<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">result</span><span class="token punctuation">(</span>index<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> f<span class="token punctuation">[</span>index<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token function">memset</span><span class="token punctuation">(</span>f<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>index<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>f<span class="token punctuation">[</span>result<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                result<span class="token punctuation">[</span>index<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-                f<span class="token punctuation">[</span>index<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
-                <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j<span class="token operator">=</span>index<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>j<span class="token operator">></span>index<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token operator">--</span>j<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                    result<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> result<span class="token punctuation">[</span>j<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-                <span class="token punctuation">&#125;</span>
-                result<span class="token punctuation">[</span>index<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">return</span> result<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">class Solution &#123;
+public:
+    vector&lt;int&gt; createTargetArray(vector&lt;int&gt;&amp; nums, vector&lt;int&gt;&amp; index) &#123;
+        vector&lt;int&gt; result(index.size(),0);
+        int f[index.size()];
+        memset(f,0,sizeof(f));
+        for(int i&#x3D;0;i&lt;index.size();++i)&#123;
+            if(f[result[i]]&#x3D;&#x3D;0)&#123;
+                result[index[i]] &#x3D; nums[i];
+                f[index[i]] &#x3D; 1;
+            &#125;else&#123;
+                for(int j&#x3D;index.size()-1;j&gt;index[i];--j)&#123;
+                    result[j] &#x3D; result[j-1];
+                &#125;
+                result[index[i]] &#x3D; nums[i];
+            &#125;
+        &#125;
+        return result;
+    &#125;
+&#125;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>代码优化<br>使用库方法</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">//代码链接：https://leetcode-cn.com/problems/create-target-array-in-the-given-order/solution/di-181chang-zhou-sai-jie-ti-bao-gao-by-time-limit/</span>
-class Solution <span class="token punctuation">&#123;</span>
-public<span class="token operator">:</span>
-    vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">createTargetArray</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">&amp;</span> nums<span class="token punctuation">,</span> vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">&amp;</span> index<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> infoVec<span class="token punctuation">;</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> n <span class="token operator">=</span> nums<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            infoVec<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>infoVec<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> index<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">return</span> infoVec<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F;代码链接：https:&#x2F;&#x2F;leetcode-cn.com&#x2F;problems&#x2F;create-target-array-in-the-given-order&#x2F;solution&#x2F;di-181chang-zhou-sai-jie-ti-bao-gao-by-time-limit&#x2F;
+class Solution &#123;
+public:
+    vector&lt;int&gt; createTargetArray(vector&lt;int&gt;&amp; nums, vector&lt;int&gt;&amp; index) &#123;
+        vector&lt;int&gt; infoVec;
+        for(int i &#x3D; 0, n &#x3D; nums.size(); i &lt; n; i++) &#123;
+            infoVec.insert(infoVec.begin() + index[i], nums[i]);
+        &#125;
+        return infoVec;
+    &#125;
+&#125;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h1 id="2-四因数"><a href="#2-四因数" class="headerlink" title="2. 四因数"></a>2. 四因数</h1><p>给你一个整数数组 nums，请你返回该数组中恰有四个因数的这些整数的各因数之和。</p>
 <p>如果数组中不存在满足题意的整数，则返回 0 。</p>
 <p>示例：<br>输入：nums = [21,4,7]<br>输出：32<br>解释：<br>21 有 4 个因数：1, 3, 7, 21<br>4 有 3 个因数：1, 2, 4<br>7 有 2 个因数：1, 7<br>答案仅为 21 的所有因数的和。</p>
@@ -499,58 +499,58 @@ public<span class="token operator">:</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>代码优化<br>思路上没有发现较好的解法，只是代码量能减少很多</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c">class Solution <span class="token punctuation">&#123;</span>
-public<span class="token operator">:</span>
-    <span class="token keyword">int</span> <span class="token function">sumFourDivisors</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">&amp;</span> nums<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">int</span> ans<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span>i<span class="token punctuation">,</span>j<span class="token punctuation">,</span>k<span class="token punctuation">;</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">auto</span> c<span class="token operator">:</span>nums<span class="token punctuation">)</span>
-        <span class="token punctuation">&#123;</span>
-            <span class="token keyword">for</span><span class="token punctuation">(</span>i<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span>j<span class="token operator">=</span>k<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">*</span>i<span class="token operator">&lt;=</span>c<span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token keyword">if</span><span class="token punctuation">(</span>c<span class="token operator">%</span>i<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span>
-            <span class="token punctuation">&#123;</span>
-                j<span class="token operator">++</span><span class="token punctuation">;</span>
-                k<span class="token operator">+=</span>i<span class="token punctuation">;</span>
-                <span class="token keyword">if</span><span class="token punctuation">(</span>i<span class="token operator">*</span>i<span class="token operator">&lt;</span>c<span class="token punctuation">)</span>
-                <span class="token punctuation">&#123;</span>
-                    j<span class="token operator">++</span><span class="token punctuation">;</span>
-                    k<span class="token operator">+=</span>c<span class="token operator">/</span>i<span class="token punctuation">;</span>
-                <span class="token punctuation">&#125;</span>
-            <span class="token punctuation">&#125;</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>j<span class="token operator">==</span><span class="token number">4</span><span class="token punctuation">)</span>ans<span class="token operator">+=</span>k<span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">return</span> ans<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">class Solution &#123;
+public:
+    int sumFourDivisors(vector&lt;int&gt;&amp; nums) &#123;
+        int ans&#x3D;0,i,j,k;
+        for(auto c:nums)
+        &#123;
+            for(i&#x3D;1,j&#x3D;k&#x3D;0;i*i&lt;&#x3D;c;i++)if(c%i&#x3D;&#x3D;0)
+            &#123;
+                j++;
+                k+&#x3D;i;
+                if(i*i&lt;c)
+                &#123;
+                    j++;
+                    k+&#x3D;c&#x2F;i;
+                &#125;
+            &#125;
+            if(j&#x3D;&#x3D;4)ans+&#x3D;k;
+        &#125;
+        return ans;
+    &#125;
+&#125;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h1 id="3-检查网格中是否存在有效路径"><a href="#3-检查网格中是否存在有效路径" class="headerlink" title="3. 检查网格中是否存在有效路径"></a>3. 检查网格中是否存在有效路径</h1><p>给你一个 m x n 的网格 grid。网格里的每个单元都代表一条街道。grid[i][j] 的街道可以是：</p>
 <p>1 表示连接左单元格和右单元格的街道。<br>2 表示连接上单元格和下单元格的街道。<br>3 表示连接左单元格和下单元格的街道。<br>4 表示连接右单元格和下单元格的街道。<br>5 表示连接左单元格和上单元格的街道。<br>6 表示连接右单元格和上单元格的街道。<br><img src="/img/181-1.png" alt=""><br>你最开始从左上角的单元格 (0,0) 开始出发，网格中的「有效路径」是指从左上方的单元格 (0,0) 开始、一直到右下方的 (m-1,n-1) 结束的路径。该路径必须只沿着街道走。</p>
 <p>注意：你不能变更街道。<br>如果网格中存在有效的路径，则返回 true，否则返回 false 。</p>
 <p>示例：<br><img src="/img/181-2.png" alt=""></p>
 <p>将该问题转化为DFS问题</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">//参考代码：https://leetcode-cn.com/problems/check-if-there-is-a-valid-path-in-a-grid/solution/cdfsjie-fa-rong-yi-li-jie-dai-ma-duan-zhu-shi-duo-/</span>
-class Solution <span class="token punctuation">&#123;</span>
-    <span class="token keyword">int</span> m<span class="token punctuation">,</span>n<span class="token punctuation">,</span>dx<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>dy<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span class="token comment">//0下、1右、2上、3左</span>
-    <span class="token keyword">int</span> pipe<span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span class="token punctuation">&#123;</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span class="token punctuation">&#123;</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span class="token punctuation">&#123;</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span class="token punctuation">&#123;</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span class="token punctuation">&#123;</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span class="token punctuation">&#123;</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
-    <span class="token comment">//记录各个拼图块路径的方向，0、1、2、3代表方向，-1代表不可走。</span>
-    bool <span class="token function">dfs</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">,</span><span class="token keyword">int</span> y<span class="token punctuation">,</span><span class="token keyword">int</span> dir<span class="token punctuation">,</span>vector<span class="token operator">&lt;</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">>></span><span class="token operator">&amp;</span> grid<span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token comment">//(x,y,当前方向,地图)</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>x<span class="token operator">==</span>m<span class="token operator">-</span><span class="token number">1</span><span class="token operator">&amp;&amp;</span>y<span class="token operator">==</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span><span class="token comment">//到达终点</span>
-        <span class="token keyword">int</span> xx<span class="token operator">=</span>x<span class="token operator">+</span>dx<span class="token punctuation">[</span>dir<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> yy<span class="token operator">=</span>y<span class="token operator">+</span>dy<span class="token punctuation">[</span>dir<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token comment">//得到下一个准备走的坐标</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>xx<span class="token operator">&lt;</span><span class="token number">0</span><span class="token operator">||</span>yy<span class="token operator">&lt;</span><span class="token number">0</span><span class="token operator">||</span>xx<span class="token operator">>=</span>m<span class="token operator">||</span>yy<span class="token operator">>=</span>n<span class="token punctuation">)</span><span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span><span class="token comment">//越界</span>
-        <span class="token keyword">int</span> nxt<span class="token operator">=</span>grid<span class="token punctuation">[</span>xx<span class="token punctuation">]</span><span class="token punctuation">[</span>yy<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token comment">//得到下一块拼图的编号</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>pipe<span class="token punctuation">[</span>nxt<span class="token punctuation">]</span><span class="token punctuation">[</span>dir<span class="token punctuation">]</span><span class="token operator">!=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token keyword">return</span> <span class="token function">dfs</span><span class="token punctuation">(</span>xx<span class="token punctuation">,</span>yy<span class="token punctuation">,</span>pipe<span class="token punctuation">[</span>nxt<span class="token punctuation">]</span><span class="token punctuation">[</span>dir<span class="token punctuation">]</span><span class="token punctuation">,</span>grid<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//如果当前方向可走，则方向改变，继续走。</span>
-        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span><span class="token comment">//无法走，返回0</span>
-    <span class="token punctuation">&#125;</span>
-    public<span class="token operator">:</span>
-    bool <span class="token function">hasValidPath</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">>></span><span class="token operator">&amp;</span> grid<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>    
-        m<span class="token operator">=</span>grid<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        n<span class="token operator">=</span>grid<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> sta<span class="token operator">=</span>grid<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token comment">//起点的拼图编号</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span><span class="token number">4</span><span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token comment">//朝着四个方向都试一下</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>pipe<span class="token punctuation">[</span>sta<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">!=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token comment">//当前方向可以走</span>
-                <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">dfs</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>pipe<span class="token punctuation">[</span>sta<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span>grid<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token comment">//沿着当前方向搜索</span>
-                    <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span><span class="token comment">//拼图都有两个方向可以走，只要沿着一个初始方向走通就可以。</span>
-        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F;参考代码：https:&#x2F;&#x2F;leetcode-cn.com&#x2F;problems&#x2F;check-if-there-is-a-valid-path-in-a-grid&#x2F;solution&#x2F;cdfsjie-fa-rong-yi-li-jie-dai-ma-duan-zhu-shi-duo-&#x2F;
+class Solution &#123;
+    int m,n,dx[4]&#x3D;&#123;1,0,-1,0&#125;,dy[4]&#x3D;&#123;0,1,0,-1&#125;;&#x2F;&#x2F;0下、1右、2上、3左
+    int pipe[7][4]&#x3D;&#123;&#123;-1,-1,-1,-1&#125;,&#123;-1,1,-1,3&#125;,&#123;0,-1,2,-1&#125;,&#123;-1,0,3,-1&#125;,&#123;-1,-1,1,0&#125;,&#123;3,2,-1,-1&#125;,&#123;1,-1,-1,2&#125;&#125;;
+    &#x2F;&#x2F;记录各个拼图块路径的方向，0、1、2、3代表方向，-1代表不可走。
+    bool dfs(int x,int y,int dir,vector&lt;vector&lt;int&gt;&gt;&amp; grid)&#123;&#x2F;&#x2F;(x,y,当前方向,地图)
+        if(x&#x3D;&#x3D;m-1&amp;&amp;y&#x3D;&#x3D;n-1) return 1;&#x2F;&#x2F;到达终点
+        int xx&#x3D;x+dx[dir];
+        int yy&#x3D;y+dy[dir];&#x2F;&#x2F;得到下一个准备走的坐标
+        if(xx&lt;0||yy&lt;0||xx&gt;&#x3D;m||yy&gt;&#x3D;n)return 0;&#x2F;&#x2F;越界
+        int nxt&#x3D;grid[xx][yy];&#x2F;&#x2F;得到下一块拼图的编号
+        if(pipe[nxt][dir]!&#x3D;-1)return dfs(xx,yy,pipe[nxt][dir],grid);&#x2F;&#x2F;如果当前方向可走，则方向改变，继续走。
+        return 0;&#x2F;&#x2F;无法走，返回0
+    &#125;
+    public:
+    bool hasValidPath(vector&lt;vector&lt;int&gt;&gt;&amp; grid) &#123;    
+        m&#x3D;grid.size();
+        n&#x3D;grid[0].size();
+        int sta&#x3D;grid[0][0];&#x2F;&#x2F;起点的拼图编号
+        for(int i&#x3D;0;i&lt;4;++i)&#x2F;&#x2F;朝着四个方向都试一下
+            if(pipe[sta][i]!&#x3D;-1)&#x2F;&#x2F;当前方向可以走
+                if(dfs(0,0,pipe[sta][i],grid))&#x2F;&#x2F;沿着当前方向搜索
+                    return 1;&#x2F;&#x2F;拼图都有两个方向可以走，只要沿着一个初始方向走通就可以。
+        return 0;
+    &#125;
+&#125;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h1 id="4-最长快乐前缀"><a href="#4-最长快乐前缀" class="headerlink" title="4. 最长快乐前缀"></a>4. 最长快乐前缀</h1><p>「快乐前缀」是在原字符串中既是 非空 前缀也是后缀（不包括原字符串自身）的字符串。</p>
 <p>给你一个字符串 s，请你返回它的 最长快乐前缀。</p>
 <p>如果不存在满足题意的前缀，则返回一个空字符串。</p>
@@ -954,7 +954,7 @@ public<span class="token operator">:</span>
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">22.2k</span>
+                        class="white-color">22.6k</span>
             
             
             

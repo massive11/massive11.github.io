@@ -400,7 +400,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    791
+                    836
                 </div>
                 
 
@@ -439,52 +439,52 @@
 <li>collision 冲突</li>
 </ul>
 <h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>先找到大于tsize的最小的素数为真正的tsize，然后建立一个tsize长度的数组。首先用平方探测法插入数字a，每次pos = (a + j <em> j) % tsize，j是从0～tsize-1的数字，如果当前位置可以插入就将a赋值给v[pos]，如果一次都没有能够插入成功就输出”X cannot be inserted.”。其次计算平均查找时间，每次计算pos = (a + j </em> j) % tsize，其中j &lt;= tsize，如果v[pos]处正是a则查找到了，则退出循环，如果v[pos]处不存在数字表示没查找到，那么也要退出循环。每次查找的时候，退出循环之前的j就是这个数字的查找长度。最后ans除以m得到平均查找时间然后输出。<br>本题其实并不难，只是很多hash相关的基础知识容易遗忘，需要多复习巩固一下。</p>
-<h1 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h1><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">//代码链接：https://blog.csdn.net/liuchuo/article/details/79819316</span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;cstdio></span></span>
-$#include<span class="token operator">&lt;</span>cmath<span class="token operator">></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;vector></span></span>
-using namespace std<span class="token punctuation">;</span>
-<span class="token keyword">int</span> Msize<span class="token punctuation">,</span>n<span class="token punctuation">,</span>m<span class="token punctuation">,</span>t<span class="token punctuation">;</span>
-bool <span class="token function">isPrime</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-	<span class="token keyword">if</span><span class="token punctuation">(</span>n<span class="token operator">&lt;</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">return</span> false<span class="token punctuation">;</span>
-	<span class="token keyword">int</span> sqrtN<span class="token operator">=</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token function">sqrt</span><span class="token punctuation">(</span><span class="token number">1.0</span><span class="token operator">*</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">;</span>i<span class="token operator">&lt;=</span>sqrtN<span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-		<span class="token keyword">if</span><span class="token punctuation">(</span>n<span class="token operator">%</span>i<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span> 
-			<span class="token keyword">return</span> false<span class="token punctuation">;</span>
-	<span class="token punctuation">&#125;</span>
-	<span class="token keyword">return</span> true<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#123;</span>
-	<span class="token function">scanf</span><span class="token punctuation">(</span><span class="token string">"%d%d%d"</span><span class="token punctuation">,</span><span class="token operator">&amp;</span>Msize<span class="token punctuation">,</span><span class="token operator">&amp;</span>n<span class="token punctuation">,</span><span class="token operator">&amp;</span>m<span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">isPrime</span><span class="token punctuation">(</span>Msize<span class="token punctuation">)</span><span class="token punctuation">)</span> Msize<span class="token operator">++</span><span class="token punctuation">;</span>
-	vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">ht</span><span class="token punctuation">(</span>Msize<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>n<span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-		<span class="token function">scanf</span><span class="token punctuation">(</span><span class="token string">"%d"</span><span class="token punctuation">,</span><span class="token operator">&amp;</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
-		bool flag<span class="token operator">=</span>false<span class="token punctuation">;</span>
-		<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>j<span class="token operator">&lt;</span>Msize<span class="token operator">&amp;&amp;</span><span class="token operator">!</span>flag<span class="token punctuation">;</span>j<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-			<span class="token keyword">int</span> pos<span class="token operator">=</span><span class="token punctuation">(</span>t<span class="token operator">+</span>j<span class="token operator">*</span>j<span class="token punctuation">)</span><span class="token operator">%</span>Msize<span class="token punctuation">;</span>
-			<span class="token keyword">if</span><span class="token punctuation">(</span>ht<span class="token punctuation">[</span>pos<span class="token punctuation">]</span><span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-				ht<span class="token punctuation">[</span>pos<span class="token punctuation">]</span><span class="token operator">=</span>t<span class="token punctuation">;</span>
-				flag<span class="token operator">=</span>true<span class="token punctuation">;</span>
-			<span class="token punctuation">&#125;</span>
-		<span class="token punctuation">&#125;</span>
-		<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>flag<span class="token punctuation">)</span> <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%d cannot be inserted.\n"</span><span class="token punctuation">,</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token punctuation">&#125;</span>
-	<span class="token keyword">int</span> total<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
-	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>m<span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-		<span class="token function">scanf</span><span class="token punctuation">(</span><span class="token string">"%d"</span><span class="token punctuation">,</span><span class="token operator">&amp;</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>j<span class="token operator">&lt;=</span>Msize<span class="token punctuation">;</span>j<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-			total<span class="token operator">++</span><span class="token punctuation">;</span>
-			<span class="token keyword">int</span> pos<span class="token operator">=</span><span class="token punctuation">(</span>t<span class="token operator">+</span>j<span class="token operator">*</span>j<span class="token punctuation">)</span><span class="token operator">%</span>Msize<span class="token punctuation">;</span>
-			<span class="token keyword">if</span><span class="token punctuation">(</span>ht<span class="token punctuation">[</span>pos<span class="token punctuation">]</span><span class="token operator">==</span>t<span class="token operator">||</span>ht<span class="token punctuation">[</span>pos<span class="token punctuation">]</span><span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-				<span class="token keyword">break</span><span class="token punctuation">;</span>
-			<span class="token punctuation">&#125;</span>
-		<span class="token punctuation">&#125;</span>
-	<span class="token punctuation">&#125;</span>
-	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%.1f\n"</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span>total<span class="token operator">/</span>m<span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h1><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F;代码链接：https:&#x2F;&#x2F;blog.csdn.net&#x2F;liuchuo&#x2F;article&#x2F;details&#x2F;79819316
+#include&lt;cstdio&gt;
+$#include&lt;cmath&gt;
+#include&lt;vector&gt;
+using namespace std;
+int Msize,n,m,t;
+bool isPrime(int n)&#123;
+	if(n&lt;2) return false;
+	int sqrtN&#x3D;(int)sqrt(1.0*n);
+	for(int i&#x3D;2;i&lt;&#x3D;sqrtN;i++)&#123;
+		if(n%i&#x3D;&#x3D;0) 
+			return false;
+	&#125;
+	return true;
+&#125;
+int main()
+&#123;
+	scanf(&quot;%d%d%d&quot;,&amp;Msize,&amp;n,&amp;m);
+	while(!isPrime(Msize)) Msize++;
+	vector&lt;int&gt; ht(Msize,0);
+	for(int i&#x3D;0;i&lt;n;i++)&#123;
+		scanf(&quot;%d&quot;,&amp;t);
+		bool flag&#x3D;false;
+		for(int j&#x3D;0;j&lt;Msize&amp;&amp;!flag;j++)&#123;
+			int pos&#x3D;(t+j*j)%Msize;
+			if(ht[pos]&#x3D;&#x3D;0)&#123;
+				ht[pos]&#x3D;t;
+				flag&#x3D;true;
+			&#125;
+		&#125;
+		if(!flag) printf(&quot;%d cannot be inserted.\n&quot;,t);
+	&#125;
+	int total&#x3D;0;
+	for(int i&#x3D;0;i&lt;m;i++)&#123;
+		scanf(&quot;%d&quot;,&amp;t);
+		for(int j&#x3D;0;j&lt;&#x3D;Msize;j++)&#123;
+			total++;
+			int pos&#x3D;(t+j*j)%Msize;
+			if(ht[pos]&#x3D;&#x3D;t||ht[pos]&#x3D;&#x3D;0)&#123;
+				break;
+			&#125;
+		&#125;
+	&#125;
+	printf(&quot;%.1f\n&quot;,(float)total&#x2F;m);
+	return 0;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
                 
             </div>
             <hr/>
@@ -831,7 +831,7 @@ bool <span class="token function">isPrime</span><span class="token punctuation">
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">22.2k</span>
+                        class="white-color">22.6k</span>
             
             
             

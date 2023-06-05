@@ -1,16 +1,12 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="zh-CN">
 
 
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="MapTR论文与代码解读, Untitled.">
     <meta name="description" content="本文对MapTR的论文和代码进行了解读。
-
-
-
-
-本文主要改进的地方在于针对地图元素的数据结构进行了instance-point点集的层级式设计，模型直接预测了每个地图元素的点集，而非HDMapNet类的方法去预测分割的tensor。Nus">
+本文主要改进的地方在于针对地图元素的数据结构进行了instance-point点集的层级式设计，模型直接预测了每个地图元素的点集，而非HDMapNet类的方法去预测分割的tensor。Nuscene">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -81,7 +77,7 @@
       
       <i class="fas fa-home" style="zoom: 0.6;"></i>
       
-      <span>Index</span>
+      <span>首页</span>
     </a>
     
   </li>
@@ -92,7 +88,7 @@
       
       <i class="fas fa-tags" style="zoom: 0.6;"></i>
       
-      <span>Tags</span>
+      <span>标签</span>
     </a>
     
   </li>
@@ -103,7 +99,7 @@
       
       <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
       
-      <span>Categories</span>
+      <span>分类</span>
     </a>
     
   </li>
@@ -114,7 +110,7 @@
       
       <i class="fas fa-archive" style="zoom: 0.6;"></i>
       
-      <span>Archives</span>
+      <span>归档</span>
     </a>
     
   </li>
@@ -125,7 +121,7 @@
       
       <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
       
-      <span>About</span>
+      <span>关于</span>
     </a>
     
   </li>
@@ -136,7 +132,7 @@
       
       <i class="fas fa-comments" style="zoom: 0.6;"></i>
       
-      <span>Contact</span>
+      <span>留言板</span>
     </a>
     
   </li>
@@ -147,14 +143,14 @@
       
       <i class="fas fa-address-book" style="zoom: 0.6;"></i>
       
-      <span>Friends</span>
+      <span>友情链接</span>
     </a>
     
   </li>
   
   <li>
     <a href="#searchModal" class="modal-trigger waves-effect waves-light">
-      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
     </a>
   </li>
   <li>
@@ -187,7 +183,7 @@
 			
 			    <i class="fa-fw fas fa-home"></i>
 			
-			Index
+			首页
 		</a>
           
         </li>
@@ -198,7 +194,7 @@
 			
 			    <i class="fa-fw fas fa-tags"></i>
 			
-			Tags
+			标签
 		</a>
           
         </li>
@@ -209,7 +205,7 @@
 			
 			    <i class="fa-fw fas fa-bookmark"></i>
 			
-			Categories
+			分类
 		</a>
           
         </li>
@@ -220,7 +216,7 @@
 			
 			    <i class="fa-fw fas fa-archive"></i>
 			
-			Archives
+			归档
 		</a>
           
         </li>
@@ -231,7 +227,7 @@
 			
 			    <i class="fa-fw fas fa-user-circle"></i>
 			
-			About
+			关于
 		</a>
           
         </li>
@@ -242,7 +238,7 @@
 			
 			    <i class="fa-fw fas fa-comments"></i>
 			
-			Contact
+			留言板
 		</a>
           
         </li>
@@ -253,7 +249,7 @@
 			
 			    <i class="fa-fw fas fa-address-book"></i>
 			
-			Friends
+			友情链接
 		</a>
           
         </li>
@@ -390,7 +386,7 @@
             <div class="post-info">
                 
                 <div class="post-date info-break-policy">
-                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
                     2022-12-10
                 </div>
                 
@@ -399,15 +395,15 @@
 
                 
                 <div class="info-break-policy">
-                    <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
                     2.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
-                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    11 Min
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    11 分
                 </div>
                 
 
@@ -427,24 +423,19 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>本文对MapTR的论文和代码进行了解读。</p>
-<span id="more"></span>
-
-
-
+                <p>本文对MapTR的论文和代码进行了解读。<br><span id="more"></span></p>
 <p>本文主要改进的地方在于针对地图元素的数据结构进行了instance-point点集的层级式设计，模型直接预测了每个地图元素的点集，而非HDMapNet类的方法去预测分割的tensor。Nuscenes Map所提供的数据本身也就是点集的形式，以下将首先对Nuscenes Map数据集进行简要介绍。</p>
-<h1 id="0-Nuscenes-Map"><a href="#0-Nuscenes-Map" class="headerlink" title="0.Nuscenes Map"></a>0.Nuscenes Map</h1><p>Nuscenes地图分为两个图层，几何图层和非几何图层，几何图层包括（polygon, line, node）,　非几何图层包括(drivable_area, road_segment, road_block, lane, ped_crossing, walkway, stop_line, ‘carpark_area’, ‘road divider’, ‘lane divider’, ‘traffic light’)<br>下载<a target="_blank" rel="noopener" href="https://www.nuscenes.org/nuscenes#download">Nuscenes Map expansion</a>可以看到地图元素的细节描述，以下以expansion&#x2F;boston-seaport.json为例进行具体分析</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;polygon&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;token&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1b161e64-fe37-4f3f-96db-299edefe9f8c&quot;</span><span class="punctuation">,</span> </span><br><span class="line">      <span class="attr">&quot;exterior_node_tokens&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;ee85f1a6-38c4-4491-8a3b-93e1d5bf2911&quot;</span><span class="punctuation">,</span> </span><br><span class="line">        ...</span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span> </span><br><span class="line">      <span class="attr">&quot;holes&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;line&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;token&quot;</span><span class="punctuation">:</span> <span class="string">&quot;7a8fcfed-9c66-475a-8dcf-9efe983acc98&quot;</span><span class="punctuation">,</span> </span><br><span class="line">      <span class="attr">&quot;node_tokens&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;fde59d81-e200-4a78-80e7-b8044d417b02&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;0cffed4b-c5b7-4cd2-95ec-0d4252a1c896&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;node&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;token&quot;</span><span class="punctuation">:</span> <span class="string">&quot;16af4f78-e195-4954-bf2a-889e9fa4d751&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;x&quot;</span><span class="punctuation">:</span> <span class="number">525.7599033618623</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;y&quot;</span><span class="punctuation">:</span> <span class="number">752.3132939140847</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span> </span><br><span class="line">  ...</span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
+<h1 id="0-Nuscenes-Map"><a href="#0-Nuscenes-Map" class="headerlink" title="0.Nuscenes Map"></a>0.Nuscenes Map</h1><p>Nuscenes地图分为两个图层，几何图层和非几何图层，几何图层包括（polygon, line, node）,　非几何图层包括(drivable_area, road_segment, road_block, lane, ped_crossing, walkway, stop_line, ‘carpark_area’, ‘road divider’, ‘lane divider’, ‘traffic light’)<br>下载<a target="_blank" rel="noopener" href="https://www.nuscenes.org/nuscenes#download">Nuscenes Map expansion</a>可以看到地图元素的细节描述，以下以expansion/boston-seaport.json为例进行具体分析<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;polygon&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;token&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1b161e64-fe37-4f3f-96db-299edefe9f8c&quot;</span><span class="punctuation">,</span> </span><br><span class="line">      <span class="attr">&quot;exterior_node_tokens&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;ee85f1a6-38c4-4491-8a3b-93e1d5bf2911&quot;</span><span class="punctuation">,</span> </span><br><span class="line">        ...</span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span> </span><br><span class="line">      <span class="attr">&quot;holes&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;line&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;token&quot;</span><span class="punctuation">:</span> <span class="string">&quot;7a8fcfed-9c66-475a-8dcf-9efe983acc98&quot;</span><span class="punctuation">,</span> </span><br><span class="line">      <span class="attr">&quot;node_tokens&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;fde59d81-e200-4a78-80e7-b8044d417b02&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;0cffed4b-c5b7-4cd2-95ec-0d4252a1c896&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;node&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;token&quot;</span><span class="punctuation">:</span> <span class="string">&quot;16af4f78-e195-4954-bf2a-889e9fa4d751&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;x&quot;</span><span class="punctuation">:</span> <span class="number">525.7599033618623</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;y&quot;</span><span class="punctuation">:</span> <span class="number">752.3132939140847</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span> </span><br><span class="line">  ...</span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></p>
 <h1 id="1-论文"><a href="#1-论文" class="headerlink" title="1.论文"></a>1.论文</h1><blockquote>
 <p><em>We present Map TRansformer (MapTR), for efficient online vectorized HD map construction.</em> <em>MapTR is a unified permutation-based modeling approach, i.e., modeling map element as a point set with a group of equivalent permutations, which avoids the definition ambiguity of map element and eases learning.</em></p>
 </blockquote>
 <p>MapTR是一个基于排列的HD Map构造方法，它将每个地图元素视为有着一组等价排列方式的点集，通过这样的方式避免地图元素定义上的歧义。</p>
-<h2 id="The-definition-ambiguity-of-map-element"><a href="#The-definition-ambiguity-of-map-element" class="headerlink" title="The definition ambiguity of map element"></a>The definition ambiguity of map element</h2><p>地图元素可以抽象为多段线（车道线等）和多边形（人行横道等）两种。对于多段线而言，两个端点都可以视作起始点；对于多边形而言，从点集中任何一点以任意方向排列都是合理的。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1670658144856-5b3778d7-1998-4d02-826a-020790c401bd.png#averageHue=%237f7565&clientId=ub4351085-37d1-4&from=paste&height=291&id=u0c24d53d&originHeight=581&originWidth=1311&originalType=binary&ratio=1&rotation=0&showTitle=false&size=534954&status=done&style=none&taskId=ub617010c-bb15-460f-a806-eb7c271e27a&title=&width=656" alt="image.png"><br>图1 The definition ambiguity of map element</p>
-<h2 id="Permutation-based-modeling-of-MapTR"><a href="#Permutation-based-modeling-of-MapTR" class="headerlink" title="Permutation-based modeling of MapTR"></a>Permutation-based modeling of MapTR</h2><p>为了弥补这种差距，MapTR使用$\mathcal{V}&#x3D;(V,\Gamma)$建模每个地图元素，$V&#x3D;{v_j}_{j&#x3D;0}^{N_v-1}$表示该地图元素的点集，$\Gamma&#x3D;{\gamma_k }$表示这个点集的一组等效的排列，包含所有可能的组织序列。<br>对于多段线而言，有两种等价的排列方式；对于多边形而言，有$2N_v$种等价的配列方式。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1670659104340-812a3dc6-a06d-4fbf-ba80-cf8dd36483c6.png#averageHue=%23dedddc&clientId=ub4351085-37d1-4&from=paste&height=326&id=u4cedbb99&originHeight=652&originWidth=1140&originalType=binary&ratio=1&rotation=0&showTitle=false&size=172876&status=done&style=none&taskId=u8470cd32-c9f8-4818-9d05-d3d29ce873d&title=&width=570" alt="image.png"><br>图2 llustration of permutation-based modeling of MapTR</p>
+<h2 id="The-definition-ambiguity-of-map-element"><a href="#The-definition-ambiguity-of-map-element" class="headerlink" title="The definition ambiguity of map element"></a>The definition ambiguity of map element</h2><p>地图元素可以抽象为多段线（车道线等）和多边形（人行横道等）两种。对于多段线而言，两个端点都可以视作起始点；对于多边形而言，从点集中任何一点以任意方向排列都是合理的。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1670658144856-5b3778d7-1998-4d02-826a-020790c401bd.png#averageHue=%237f7565&amp;clientId=ub4351085-37d1-4&amp;from=paste&amp;height=291&amp;id=u0c24d53d&amp;originHeight=581&amp;originWidth=1311&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=534954&amp;status=done&amp;style=none&amp;taskId=ub617010c-bb15-460f-a806-eb7c271e27a&amp;title=&amp;width=656" alt="image.png"><br>图1 The definition ambiguity of map element</p>
+<h2 id="Permutation-based-modeling-of-MapTR"><a href="#Permutation-based-modeling-of-MapTR" class="headerlink" title="Permutation-based modeling of MapTR"></a>Permutation-based modeling of MapTR</h2><p>为了弥补这种差距，MapTR使用$\mathcal{V}=(V,\Gamma)$建模每个地图元素，$V={v<em>j}</em>{j=0}^{N_v-1}$表示该地图元素的点集，$\Gamma={\gamma_k }$表示这个点集的一组等效的排列，包含所有可能的组织序列。<br>对于多段线而言，有两种等价的排列方式；对于多边形而言，有$2N_v$种等价的配列方式。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1670659104340-812a3dc6-a06d-4fbf-ba80-cf8dd36483c6.png#averageHue=%23dedddc&amp;clientId=ub4351085-37d1-4&amp;from=paste&amp;height=326&amp;id=u4cedbb99&amp;originHeight=652&amp;originWidth=1140&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=172876&amp;status=done&amp;style=none&amp;taskId=u8470cd32-c9f8-4818-9d05-d3d29ce873d&amp;title=&amp;width=570" alt="image.png"><br>图2 llustration of permutation-based modeling of MapTR</p>
 <h2 id="Hierarchical-matching"><a href="#Hierarchical-matching" class="headerlink" title="Hierarchical matching"></a>Hierarchical matching</h2><p>在此基础上，MapTR进一步引入了层级式的二分匹配，依次执行instance-level和point-level的匹配。<br>instance-level的匹配是在预测的instance和真值的instance之间寻找一个最优的标签分配，参考DETR的方法使用的是匈牙利匹配算法。<br>得到instance-level的结果之后，使用point-level找到最优的点对点的匹配，利用 Manhattan 距离度量。</p>
-<h2 id="Overall-architecture-of-MapTR"><a href="#Overall-architecture-of-MapTR" class="headerlink" title="Overall architecture of MapTR"></a>Overall architecture of MapTR</h2><p>MapTR的整体结构<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1670660573409-041979b6-9c36-44b4-9afe-2f2a7ac78a39.png#averageHue=%23f1ede9&clientId=ub4351085-37d1-4&from=paste&height=394&id=u6ad1b6b9&originHeight=788&originWidth=1133&originalType=binary&ratio=1&rotation=0&showTitle=false&size=317190&status=done&style=none&taskId=ue2760a28-29c4-4dd4-b04f-0dce249827c&title=&width=567" alt="image.png"><br>图3 The overall architecture of MapTR</p>
-<h1 id="2-代码"><a href="#2-代码" class="headerlink" title="2.代码"></a>2.代码</h1><h2 id="代码模块划分"><a href="#代码模块划分" class="headerlink" title="代码模块划分"></a>代码模块划分</h2><table>
+<h2 id="Overall-architecture-of-MapTR"><a href="#Overall-architecture-of-MapTR" class="headerlink" title="Overall architecture of MapTR"></a>Overall architecture of MapTR</h2><p>MapTR的整体结构<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1670660573409-041979b6-9c36-44b4-9afe-2f2a7ac78a39.png#averageHue=%23f1ede9&amp;clientId=ub4351085-37d1-4&amp;from=paste&amp;height=394&amp;id=u6ad1b6b9&amp;originHeight=788&amp;originWidth=1133&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=317190&amp;status=done&amp;style=none&amp;taskId=ue2760a28-29c4-4dd4-b04f-0dce249827c&amp;title=&amp;width=567" alt="image.png"><br>图3 The overall architecture of MapTR</p>
+<h1 id="2-代码"><a href="#2-代码" class="headerlink" title="2.代码"></a>2.代码</h1><h2 id="代码模块划分"><a href="#代码模块划分" class="headerlink" title="代码模块划分"></a>代码模块划分</h2><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>论文模块</th>
@@ -456,7 +447,8 @@
 <th>输出维度</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>MapEncoder</td>
 <td>img_backbone</td>
 <td>-</td>
@@ -490,38 +482,22 @@
 <td>DETRDecoderLayer</td>
 <td>MultiHead Attention</td>
 <td>[50*20, B, 256]</td>
-<td></td>
 </tr>
-<tr>
-<td>[B, 20000, 256]</td>
-<td>[N, 50*20, B, 256]</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>Deformable Attention</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
+<p>[B, 20000, 256] | [N, 50*20, B, 256] |<br>|  |  |  |  | Deformable Attention |  |  |</p>
 <h2 id="BEVFormerEncoder"><a href="#BEVFormerEncoder" class="headerlink" title="BEVFormerEncoder"></a>BEVFormerEncoder</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, mlvl_feats, img_metas, prev_bev=<span class="literal">None</span>,  only_bev=<span class="literal">False</span></span>):</span><br><span class="line">    bs, num_cam, _, _, _ = mlvl_feats[<span class="number">0</span>].shape  <span class="comment"># [B, N, 256, 15, 25]</span></span><br><span class="line"></span><br><span class="line">    pts_embeds = self.pts_embedding.weight.unsqueeze(<span class="number">0</span>)  <span class="comment"># [1, 20, 512]</span></span><br><span class="line">    instance_embeds = self.instance_embedding.weight.unsqueeze(<span class="number">1</span>)  <span class="comment"># [50, 1, 512]</span></span><br><span class="line">    object_query_embeds = (pts_embeds + instance_embeds).flatten(<span class="number">0</span>, <span class="number">1</span>) <span class="comment"># [1000, 512]</span></span><br><span class="line">    </span><br><span class="line">    bev_queries = self.bev_embedding.weight  <span class="comment"># [200*100, 256]</span></span><br><span class="line">    bev_queries = bev_queries.unsqueeze(<span class="number">1</span>).repeat(<span class="number">1</span>, bs, <span class="number">1</span>)  <span class="comment"># [200*100, 2, 256]</span></span><br><span class="line"></span><br><span class="line">    bev_mask = torch.zeros((bs, self.bev_h, self.bev_w), device=bev_queries.device)  <span class="comment"># [B, 200, 100]</span></span><br><span class="line">    bev_pos = self.positional_encoding(bev_mask).flatten(<span class="number">2</span>).permute(<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>)  <span class="comment"># [200*100, B, 256]</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># add can bus signals</span></span><br><span class="line">    can_bus = bev_queries.new_tensor([each[<span class="string">&#x27;can_bus&#x27;</span>] <span class="keyword">for</span> each <span class="keyword">in</span> kwargs[<span class="string">&#x27;img_metas&#x27;</span>]])  <span class="comment"># [B, 18]</span></span><br><span class="line">    can_bus = self.can_bus_mlp(can_bus)[<span class="literal">None</span>, :, :]  <span class="comment"># [1, B, 256]</span></span><br><span class="line">    bev_queries = bev_queries + can_bus * self.use_can_bus    <span class="comment"># [200*100, 2, 256]</span></span><br><span class="line"></span><br><span class="line">    feat_flatten = []</span><br><span class="line">    spatial_shapes = []</span><br><span class="line">    <span class="keyword">for</span> lvl, feat <span class="keyword">in</span> <span class="built_in">enumerate</span>(mlvl_feats):</span><br><span class="line">        bs, num_cam, c, h, w = feat.shape</span><br><span class="line">        spatial_shape = (h, w)</span><br><span class="line">        feat = feat.flatten(<span class="number">3</span>).permute(<span class="number">1</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="number">2</span>)  <span class="comment"># [N, B, 15*25, 256]</span></span><br><span class="line">        <span class="keyword">if</span> self.use_cams_embeds:  <span class="comment"># camera的所有层级特征</span></span><br><span class="line">            feat = feat + self.cams_embeds[:, <span class="literal">None</span>, <span class="literal">None</span>, :].to(feat.dtype)</span><br><span class="line">        feat = feat + self.level_embeds[<span class="literal">None</span>, <span class="literal">None</span>, lvl:lvl + <span class="number">1</span>, :].to(feat.dtype)</span><br><span class="line">        spatial_shapes.append(spatial_shape)  <span class="comment"># (15, 25)</span></span><br><span class="line">        feat_flatten.append(feat)  <span class="comment"># [N, B, 15*25, 256]</span></span><br><span class="line"></span><br><span class="line">    feat_flatten = torch.cat(feat_flatten, <span class="number">2</span>)</span><br><span class="line">    feat_flatten = feat_flatten.permute(<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>)  <span class="comment"># (num_cam, H*W, bs, embed_dims)</span></span><br><span class="line">    spatial_shapes = torch.as_tensor(spatial_shapes, dtype=torch.long, device=bev_pos.device)</span><br><span class="line">    level_start_index = torch.cat((spatial_shapes.new_zeros((<span class="number">1</span>,)), spatial_shapes.prod(<span class="number">1</span>).cumsum(<span class="number">0</span>)[:-<span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">    bev_embed = self.encoder(</span><br><span class="line">            bev_queries,  <span class="comment"># Q [200*100, 2, 256]</span></span><br><span class="line">            feat_flatten, <span class="comment"># K [N, 15*25, B, 256]</span></span><br><span class="line">            feat_flatten, <span class="comment"># V</span></span><br><span class="line">            bev_h=bev_h,</span><br><span class="line">            bev_w=bev_w,</span><br><span class="line">            bev_pos=bev_pos,  <span class="comment"># [200*100, B, 256]</span></span><br><span class="line">            spatial_shapes=spatial_shapes,</span><br><span class="line">            level_start_index=level_start_index,</span><br><span class="line">            prev_bev=prev_bev,</span><br><span class="line">            shift=shift,</span><br><span class="line">            **kwargs</span><br><span class="line">        )</span><br><span class="line">	<span class="keyword">return</span> bev_embed  <span class="comment"># [B, 20000, 256]</span></span><br></pre></td></tr></table></figure>
-
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self,</span></span><br><span class="line"><span class="params">            bev_query,</span></span><br><span class="line"><span class="params">            key,</span></span><br><span class="line"><span class="params">            value,</span></span><br><span class="line"><span class="params">            *args,</span></span><br><span class="line"><span class="params">            bev_h=<span class="literal">None</span>,</span></span><br><span class="line"><span class="params">            bev_w=<span class="literal">None</span>,</span></span><br><span class="line"><span class="params">            bev_pos=<span class="literal">None</span>,</span></span><br><span class="line"><span class="params">            spatial_shapes=<span class="literal">None</span>,</span></span><br><span class="line"><span class="params">            level_start_index=<span class="literal">None</span>,</span></span><br><span class="line"><span class="params">            valid_ratios=<span class="literal">None</span>,</span></span><br><span class="line"><span class="params">            prev_bev=<span class="literal">None</span>,</span></span><br><span class="line"><span class="params">            shift=<span class="number">0.</span>,</span></span><br><span class="line"><span class="params">            **kwargs</span>):</span><br><span class="line">    output = bev_query  <span class="comment"># [200*100, 2, 256]</span></span><br><span class="line">    intermediate = []</span><br><span class="line"></span><br><span class="line">    <span class="comment"># reference point in 3D space, used in spatial cross-attention</span></span><br><span class="line">    <span class="comment"># BEVFormer的设计，bev query查询reference point周围的RoI，每个query对应4个不同高度的point，每个point采样4个特征点。</span></span><br><span class="line">    <span class="comment"># 通过只对参考点附近的位置进行采样，减少计算量，提高模型的收敛速度</span></span><br><span class="line">    ref_3d = self.get_reference_points(  </span><br><span class="line">        bev_h, bev_w, self.pc_range[<span class="number">5</span>]-self.pc_range[<span class="number">2</span>], self.num_points_in_pillar, dim=<span class="string">&#x27;3d&#x27;</span>, bs=bev_query.size(<span class="number">1</span>),  device=bev_query.device, dtype=bev_query.dtype)</span><br><span class="line">    <span class="comment"># reference point in 2D BEV space, used in temporal cross-attention</span></span><br><span class="line">    ref_2d = self.get_reference_points(</span><br><span class="line">        bev_h, bev_w, dim=<span class="string">&#x27;2d&#x27;</span>, bs=bev_query.size(<span class="number">1</span>), device=bev_query.device, dtype=bev_query.dtype)</span><br><span class="line"></span><br><span class="line">    reference_points_cam, bev_mask = self.point_sampling(ref_3d, self.pc_range, kwargs[<span class="string">&#x27;img_metas&#x27;</span>])</span><br><span class="line">    <span class="comment"># reference_points_cam[N, B, 20000, 4, 2] 参考点的图像坐标，空间范围是20000*4</span></span><br><span class="line">    <span class="comment"># bev_mask[N, B, 20000, 4] 3D点在图像上是否可见</span></span><br><span class="line"></span><br><span class="line">    bev_query = bev_query.permute(<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">    bev_pos = bev_pos.permute(<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">    bs, len_bev, num_bev_level, _ = ref_2d.shape</span><br><span class="line">    </span><br><span class="line">    hybird_ref_2d = torch.stack([ref_2d, ref_2d], <span class="number">1</span>).reshape(bs*<span class="number">2</span>, len_bev, num_bev_level, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> lid, layer <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.layers):</span><br><span class="line">        <span class="comment"># DETR Decoder layer</span></span><br><span class="line">        output = layer(</span><br><span class="line">            bev_query,</span><br><span class="line">            key,</span><br><span class="line">            value,</span><br><span class="line">            *args,</span><br><span class="line">            bev_pos=bev_pos,</span><br><span class="line">            ref_2d=hybird_ref_2d,</span><br><span class="line">            ref_3d=ref_3d,</span><br><span class="line">            bev_h=bev_h,</span><br><span class="line">            bev_w=bev_w,</span><br><span class="line">            spatial_shapes=spatial_shapes,</span><br><span class="line">            level_start_index=level_start_index,</span><br><span class="line">            reference_points_cam=reference_points_cam,</span><br><span class="line">            bev_mask=bev_mask,</span><br><span class="line">            prev_bev=prev_bev,</span><br><span class="line">            **kwargs)</span><br><span class="line"></span><br><span class="line">        bev_query = output</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> output  <span class="comment"># [B, 20000, 256]</span></span><br></pre></td></tr></table></figure>
 <h2 id="MapTRDecoder"><a href="#MapTRDecoder" class="headerlink" title="MapTRDecoder"></a>MapTRDecoder</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self,</span></span><br><span class="line"><span class="params">            mlvl_feats,</span></span><br><span class="line"><span class="params">            bev_queries,</span></span><br><span class="line"><span class="params">            object_query_embed,</span></span><br><span class="line"><span class="params">            bev_h,</span></span><br><span class="line"><span class="params">            bev_w,</span></span><br><span class="line"><span class="params">            grid_length=[<span class="number">0.512</span>, <span class="number">0.512</span>],</span></span><br><span class="line"><span class="params">            bev_pos=<span class="literal">None</span>,</span></span><br><span class="line"><span class="params">            reg_branches=<span class="literal">None</span>,</span></span><br><span class="line"><span class="params">            cls_branches=<span class="literal">None</span>,</span></span><br><span class="line"><span class="params">            prev_bev=<span class="literal">None</span>,</span></span><br><span class="line"><span class="params">            **kwargs</span>):</span><br><span class="line">    bev_embed = self.get_bev_features(...)  <span class="comment"># Encoder的输出  [B, 20000, 256]</span></span><br><span class="line"></span><br><span class="line">    bs = mlvl_feats[<span class="number">0</span>].size(<span class="number">0</span>)</span><br><span class="line">    query_pos, query = torch.split(object_query_embed, self.embed_dims, dim=<span class="number">1</span>)  <span class="comment"># query_pos [1000, 256]</span></span><br><span class="line">    query_pos = query_pos.unsqueeze(<span class="number">0</span>).expand(bs, -<span class="number">1</span>, -<span class="number">1</span>)</span><br><span class="line">    query = query.unsqueeze(<span class="number">0</span>).expand(bs, -<span class="number">1</span>, -<span class="number">1</span>)</span><br><span class="line">    reference_points = self.reference_points(query_pos)</span><br><span class="line">    reference_points = reference_points.sigmoid()</span><br><span class="line">    init_reference_out = reference_points  <span class="comment"># [B, 1000, 2]</span></span><br><span class="line"></span><br><span class="line">    query = query.permute(<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">    query_pos = query_pos.permute(<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">    bev_embed = bev_embed.permute(<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    inter_states, inter_references = self.decoder(</span><br><span class="line">        query=query,  <span class="comment"># [1000, B, 256]</span></span><br><span class="line">        key=<span class="literal">None</span>,</span><br><span class="line">        value=bev_embed,  <span class="comment"># [20000, B, 256]</span></span><br><span class="line">        query_pos=query_pos,  <span class="comment"># [1000, B, 256]</span></span><br><span class="line">        reference_points=reference_points,  <span class="comment"># reference points of offset</span></span><br><span class="line">        reg_branches=reg_branches,</span><br><span class="line">        cls_branches=cls_branches,</span><br><span class="line">        spatial_shapes=torch.tensor([[bev_h, bev_w]], device=query.device),</span><br><span class="line">        level_start_index=torch.tensor([<span class="number">0</span>], device=query.device),</span><br><span class="line">        **kwargs)</span><br><span class="line"></span><br><span class="line">    inter_references_out = inter_references</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> bev_embed, inter_states, init_reference_out, inter_references_out</span><br><span class="line">    <span class="comment"># [20000, B, 256] [N, 1000, B, 256] [B, 1000, 2]    [N, B, 1000, 2]  这里的N是层数</span></span><br></pre></td></tr></table></figure>
-
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self,</span></span><br><span class="line"><span class="params">            query,</span></span><br><span class="line"><span class="params">            *args,</span></span><br><span class="line"><span class="params">            reference_points=<span class="literal">None</span>,</span></span><br><span class="line"><span class="params">            reg_branches=<span class="literal">None</span>,</span></span><br><span class="line"><span class="params">            key_padding_mask=<span class="literal">None</span>,</span></span><br><span class="line"><span class="params">            **kwargs</span>):</span><br><span class="line">    output = query  <span class="comment"># [1000, B, 256]</span></span><br><span class="line">    intermediate = []</span><br><span class="line">    intermediate_reference_points = []</span><br><span class="line">    <span class="keyword">for</span> lid, layer <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.layers):</span><br><span class="line">        reference_points_input = reference_points[..., :<span class="number">2</span>].unsqueeze(<span class="number">2</span>)  <span class="comment"># BS NUM_QUERY NUM_LEVEL 2</span></span><br><span class="line">        output = layer(</span><br><span class="line">            output,</span><br><span class="line">            *args,</span><br><span class="line">            reference_points=reference_points_input,</span><br><span class="line">            key_padding_mask=key_padding_mask,</span><br><span class="line">            **kwargs)</span><br><span class="line">        output = output.permute(<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>)  <span class="comment"># [B, 1000, 256]</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 根据预测的偏移量更新参考点的位置，给级联的下一个decoder layer提供参考点位置</span></span><br><span class="line">        <span class="keyword">if</span> reg_branches <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            tmp = reg_branches[lid](output)  <span class="comment"># [B, 1000, 2]</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">assert</span> reference_points.shape[-<span class="number">1</span>] == <span class="number">2</span></span><br><span class="line"></span><br><span class="line">            new_reference_points = torch.zeros_like(reference_points)</span><br><span class="line">            new_reference_points[..., :<span class="number">2</span>] = tmp[..., :<span class="number">2</span>] + inverse_sigmoid(reference_points[..., :<span class="number">2</span>])</span><br><span class="line"></span><br><span class="line">            new_reference_points = new_reference_points.sigmoid()</span><br><span class="line"></span><br><span class="line">            reference_points = new_reference_points.detach()  <span class="comment"># [B, 1000, 2]</span></span><br><span class="line"></span><br><span class="line">        output = output.permute(<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">        intermediate.append(output)</span><br><span class="line">        intermediate_reference_points.append(reference_points)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> torch.stack(intermediate), torch.stack(intermediate_reference_points)</span><br><span class="line">    <span class="comment">#               [N, 1000, B, 256]               [N, B, 1000, 2] </span></span><br></pre></td></tr></table></figure>
-
-<h2 id="推理结果处理"><a href="#推理结果处理" class="headerlink" title="推理结果处理"></a>推理结果处理</h2><p>使用线性层将输出结果处理成points set的形式，每个points set使用bbox封装，最终形式为[x_min, y_min, x_max, y_max]</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">bev_embed, hs, init_reference, inter_references = outputs  <span class="comment"># decoder的输出</span></span><br><span class="line">hs = hs.permute(<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>)</span><br><span class="line">outputs_classes = []</span><br><span class="line">outputs_coords = []</span><br><span class="line">outputs_pts_coords = []</span><br><span class="line"><span class="keyword">for</span> lvl <span class="keyword">in</span> <span class="built_in">range</span>(hs.shape[<span class="number">0</span>]):  <span class="comment"># 6</span></span><br><span class="line">    <span class="keyword">if</span> lvl == <span class="number">0</span>:</span><br><span class="line">        reference = init_reference</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        reference = inter_references[lvl - <span class="number">1</span>]</span><br><span class="line">    reference = inverse_sigmoid(reference)</span><br><span class="line"></span><br><span class="line">    outputs_class = self.cls_branches[lvl](hs[lvl].view(bs,self.num_vec, self.num_pts_per_vec,-<span class="number">1</span>).mean(<span class="number">2</span>))  <span class="comment"># 线性层</span></span><br><span class="line">    tmp = self.reg_branches[lvl](hs[lvl])  <span class="comment"># 线性层</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">assert</span> reference.shape[-<span class="number">1</span>] == <span class="number">2</span></span><br><span class="line">    tmp[..., <span class="number">0</span>:<span class="number">2</span>] += reference[..., <span class="number">0</span>:<span class="number">2</span>]</span><br><span class="line">    tmp = tmp.sigmoid()</span><br><span class="line"></span><br><span class="line">    outputs_coord, outputs_pts_coord = self.transform_box(tmp)  <span class="comment"># 将点集转成bounding box的形式</span></span><br><span class="line">    outputs_classes.append(outputs_class)</span><br><span class="line">    outputs_coords.append(outputs_coord)</span><br><span class="line">    outputs_pts_coords.append(outputs_pts_coord)</span><br><span class="line"></span><br><span class="line">outputs_classes = torch.stack(outputs_classes)</span><br><span class="line">outputs_coords = torch.stack(outputs_coords)</span><br><span class="line">outputs_pts_coords = torch.stack(outputs_pts_coords)</span><br><span class="line">outs = &#123;</span><br><span class="line">    <span class="string">&#x27;bev_embed&#x27;</span>: bev_embed,  <span class="comment"># [20000, B, 256]</span></span><br><span class="line">    <span class="string">&#x27;all_cls_scores&#x27;</span>: outputs_classes,  <span class="comment"># [N, B, 50, 3]   最多50个instance</span></span><br><span class="line">    <span class="string">&#x27;all_bbox_preds&#x27;</span>: outputs_coords,  <span class="comment"># [N, B, 50, 4]  bounding box形式</span></span><br><span class="line">    <span class="string">&#x27;all_pts_preds&#x27;</span>: outputs_pts_coords,  <span class="comment"># [N, B, 50, 20, 2] 所有instance的points set，points set的长度固定</span></span><br><span class="line">    <span class="string">&#x27;enc_cls_scores&#x27;</span>: <span class="literal">None</span>,</span><br><span class="line">    <span class="string">&#x27;enc_bbox_preds&#x27;</span>: <span class="literal">None</span>,</span><br><span class="line">    <span class="string">&#x27;enc_pts_preds&#x27;</span>: <span class="literal">None</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> outs</span><br></pre></td></tr></table></figure>
-<h2 id="Loss计算"><a href="#Loss计算" class="headerlink" title="Loss计算"></a>Loss计算</h2><p>MapTR的损失函数由分类损失、point2point损失和方向损失三个部分组成<br>$\mathcal{L}&#x3D;\lambda \mathcal{L}<em>{cls}+\alpha \mathcal{L}</em>{p2p}+\beta \mathcal{L}<em>{dir}$<br>分类损失使用Focal loss<br>$\mathcal{L}</em>{cls} &#x3D; \mathcal{L}<em>{Focal}(\hat{p}</em>{\hat{\pi}(i)},c_i)$<br>point2point损失使用曼哈顿距离<br>$\mathcal{L}<em>{p2p}&#x3D;\sum</em>{i&#x3D;0}^{N-1}\mathbb{I}<em>{c_i\ne\varnothing} \sum</em>{j&#x3D;0}^{N_v-1}D_{Manhattan}(\hat{v}<em>{\hat{\pi}(i)},v</em>{i,\gamma(j)})$<br>方向损失使用配对的边之间的余弦相似度<br>$\mathcal{L}<em>{dir}&#x3D;-\sum</em>{i&#x3D;0}^{N-1}\mathbb{I}<em>{c_i\ne\varnothing}\sum</em>{j&#x3D;0}^{N_v-1}cosine_similarity(\hat{e}<em>{\hat{\pi}(i),j},e</em>{i,\hat{\gamma}_i}(j))$</p>
-<p>代码中实际由五个部分组成（decoder输出了六层的结果，实际只取了最后一层的loss）</p>
+<h2 id="推理结果处理"><a href="#推理结果处理" class="headerlink" title="推理结果处理"></a>推理结果处理</h2><p>使用线性层将输出结果处理成points set的形式，每个points set使用bbox封装，最终形式为[x_min, y_min, x_max, y_max]<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">bev_embed, hs, init_reference, inter_references = outputs  <span class="comment"># decoder的输出</span></span><br><span class="line">hs = hs.permute(<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>)</span><br><span class="line">outputs_classes = []</span><br><span class="line">outputs_coords = []</span><br><span class="line">outputs_pts_coords = []</span><br><span class="line"><span class="keyword">for</span> lvl <span class="keyword">in</span> <span class="built_in">range</span>(hs.shape[<span class="number">0</span>]):  <span class="comment"># 6</span></span><br><span class="line">    <span class="keyword">if</span> lvl == <span class="number">0</span>:</span><br><span class="line">        reference = init_reference</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        reference = inter_references[lvl - <span class="number">1</span>]</span><br><span class="line">    reference = inverse_sigmoid(reference)</span><br><span class="line"></span><br><span class="line">    outputs_class = self.cls_branches[lvl](hs[lvl].view(bs,self.num_vec, self.num_pts_per_vec,-<span class="number">1</span>).mean(<span class="number">2</span>))  <span class="comment"># 线性层</span></span><br><span class="line">    tmp = self.reg_branches[lvl](hs[lvl])  <span class="comment"># 线性层</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">assert</span> reference.shape[-<span class="number">1</span>] == <span class="number">2</span></span><br><span class="line">    tmp[..., <span class="number">0</span>:<span class="number">2</span>] += reference[..., <span class="number">0</span>:<span class="number">2</span>]</span><br><span class="line">    tmp = tmp.sigmoid()</span><br><span class="line"></span><br><span class="line">    outputs_coord, outputs_pts_coord = self.transform_box(tmp)  <span class="comment"># 将点集转成bounding box的形式</span></span><br><span class="line">    outputs_classes.append(outputs_class)</span><br><span class="line">    outputs_coords.append(outputs_coord)</span><br><span class="line">    outputs_pts_coords.append(outputs_pts_coord)</span><br><span class="line"></span><br><span class="line">outputs_classes = torch.stack(outputs_classes)</span><br><span class="line">outputs_coords = torch.stack(outputs_coords)</span><br><span class="line">outputs_pts_coords = torch.stack(outputs_pts_coords)</span><br><span class="line">outs = &#123;</span><br><span class="line">    <span class="string">&#x27;bev_embed&#x27;</span>: bev_embed,  <span class="comment"># [20000, B, 256]</span></span><br><span class="line">    <span class="string">&#x27;all_cls_scores&#x27;</span>: outputs_classes,  <span class="comment"># [N, B, 50, 3]   最多50个instance</span></span><br><span class="line">    <span class="string">&#x27;all_bbox_preds&#x27;</span>: outputs_coords,  <span class="comment"># [N, B, 50, 4]  bounding box形式</span></span><br><span class="line">    <span class="string">&#x27;all_pts_preds&#x27;</span>: outputs_pts_coords,  <span class="comment"># [N, B, 50, 20, 2] 所有instance的points set，points set的长度固定</span></span><br><span class="line">    <span class="string">&#x27;enc_cls_scores&#x27;</span>: <span class="literal">None</span>,</span><br><span class="line">    <span class="string">&#x27;enc_bbox_preds&#x27;</span>: <span class="literal">None</span>,</span><br><span class="line">    <span class="string">&#x27;enc_pts_preds&#x27;</span>: <span class="literal">None</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> outs</span><br></pre></td></tr></table></figure></p>
+<h2 id="Loss计算"><a href="#Loss计算" class="headerlink" title="Loss计算"></a>Loss计算</h2><p>MapTR的损失函数由分类损失、point2point损失和方向损失三个部分组成</p>
+<script type="math/tex; mode=display">\mathcal{L}=\lambda \mathcal{L}_{cls}+\alpha \mathcal{L}_{p2p}+\beta \mathcal{L}_{dir}</script><p>分类损失使用Focal loss</p>
+<script type="math/tex; mode=display">\mathcal{L}_{cls} = \mathcal{L}_{Focal}(\hat{p}_{\hat{\pi}(i)},c_i)</script><p>point2point损失使用曼哈顿距离</p>
+<script type="math/tex; mode=display">\mathcal{L}_{p2p}=\sum_{i=0}^{N-1}\mathbb{I}_{c_i\ne\varnothing} \sum_{j=0}^{N_v-1}D_{Manhattan}(\hat{v}_{\hat{\pi}(i)},v_{i,\gamma(j)})</script><p>方向损失使用配对的边之间的余弦相似度</p>
+<script type="math/tex; mode=display">\mathcal{L}_{dir}=-\sum_{i=0}^{N-1}\mathbb{I}_{c_i\ne\varnothing}\sum_{j=0}^{N_v-1}cosine\_similarity(\hat{e}_{\hat{\pi}(i),j},e_{i,\hat{\gamma}_i}(j))</script><p>代码中实际由五个部分组成（decoder输出了六层的结果，实际只取了最后一层的loss）</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -529,7 +505,8 @@
 <th>type</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>loss_cls</td>
 <td>Focal loss</td>
 </tr>
@@ -549,7 +526,9 @@
 <td>loss_dir</td>
 <td>pts dir cos loss</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 
                 
             </div>
@@ -562,7 +541,7 @@
             <div class="reprint__author">
                 <span class="reprint-meta" style="font-weight: bold;">
                     <i class="fas fa-user">
-                        Author:
+                        文章作者:
                     </i>
                 </span>
                 <span class="reprint-info">
@@ -572,7 +551,7 @@
             <div class="reprint__type">
                 <span class="reprint-meta" style="font-weight: bold;">
                     <i class="fas fa-link">
-                        Link:
+                        文章链接:
                     </i>
                 </span>
                 <span class="reprint-info">
@@ -582,13 +561,13 @@
             <div class="reprint__notice">
                 <span class="reprint-meta" style="font-weight: bold;">
                     <i class="fas fa-copyright">
-                        Reprint policy:
+                        版权声明:
                     </i>
                 </span>
                 <span class="reprint-info">
-                    All articles in this blog are used except for special statements
+                    本博客所有文章除特別声明外，均采用
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
-                    reprint policy. If reproduced, please indicate source
+                    许可协议。转载请注明来源
                     <a href="/about" target="_blank">Jingyi Yu</a>
                     !
                 </span>
@@ -598,7 +577,7 @@
 
     <script async defer>
       document.addEventListener("copy", function (e) {
-        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
         M.toast({html: toastHTML})
       });
 
@@ -663,7 +642,7 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
                 <a href="/2022/12/12/Paper-Mono3D%20paper%E8%B7%AF%E7%BA%BF%E6%A2%B3%E7%90%86/">
                     <div class="card-image">
@@ -711,7 +690,7 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
                 <a href="/2022/12/08/Paper-3D%E7%9B%AE%E6%A0%87%E6%A1%86%E8%A7%A3%E8%80%A6%E6%96%B9%E6%A1%88%E6%A2%B3%E7%90%86/">
@@ -792,7 +771,7 @@
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
         <div class="toc-widget card" style="background-color: white;">
-            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
     </div>
@@ -900,7 +879,7 @@
             
             <br>
             
-                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
                         class="white-color">22.9k</span>
             
             
@@ -909,13 +888,13 @@
             
             
                 <span id="busuanzi_container_site_pv">
-                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
                     <span id="busuanzi_value_site_pv" class="white-color"></span>
             </span>
             
             
                 <span id="busuanzi_container_site_uv">
-                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
                     <span id="busuanzi_value_site_uv" class="white-color"></span>
             </span>
             
@@ -951,7 +930,7 @@
                         var diffDays = Math.floor((diff / days) - diffYears * 365);
 
                         // 区分是否有年份.
-                        var language = 'en';
+                        var language = 'zh-CN';
                         if (startYear === String(todayYear)) {
                             document.getElementById("year").innerHTML = todayYear;
                             var daysTip = 'This site has been running for ' + diffDays + ' days';
@@ -1014,8 +993,8 @@
 <div id="searchModal" class="modal">
     <div class="modal-content">
         <div class="search-header">
-            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
-            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
                    class="search-input">
         </div>
         <div id="searchResult"></div>

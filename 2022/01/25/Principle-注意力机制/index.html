@@ -431,7 +431,7 @@ An attention function can be described as mapping a query and a set of key-value
 <p>An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors. The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility function of the query with the corresponding key. (Attention is all you need, 2017)</p>
 </blockquote>
 <p>根据原论文中的描述，注意力机制可以描述为将query和一系列的key-value对映射到某个输出的过程，而这个输出的向量就是根据query和key计算得到的权重作用于value上的权重和。其结构为</p>
-<p><img src="/images/Attention_scheme.png" width="30%" height="30%"></p>
+<p><img src="/images/Attention_scheme.png" width="30%" height="30%"/></p>
 <p>如图所示，自注意力机制的核心过程就是通过Q和K计算得到注意力权重，然后再作用于V得到整个权重和输出。<br>对于输入Q、K和V来说，其输出向量的计算公式为：</p>
 <script type="math/tex; mode=display">{Attention(Q, K, V) = softmax(\frac{QK^T}{\sqrt{d_k}})V}</script><h2 id="多头自注意力"><a href="#多头自注意力" class="headerlink" title="多头自注意力"></a>多头自注意力</h2>
                 

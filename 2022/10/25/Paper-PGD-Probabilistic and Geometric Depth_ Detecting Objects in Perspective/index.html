@@ -6,10 +6,8 @@
     <meta charset="utf-8">
     <meta name="keywords" content="PGD-Probabilistic and Geometric Depth_ Detecting Objects in Perspective, Untitled.">
     <meta name="description" content="本文整理了Probabilistic and Geometric Depth_ Detecting Objects in Perspective论文主要内容
-
-
-
-本文核心思想：利用目标之间的相对位置关系构造深度传播图以获取更准确的深度估计">
+本文核心思想：利用目标之间的相对位置关系构造深度传播图以获取更准确的深度估计值。
+">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -424,10 +422,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>本文整理了Probabilistic and Geometric Depth_ Detecting Objects in Perspective论文主要内容</p>
-<span id="more"></span>
-
-
+                <p>本文整理了Probabilistic and Geometric Depth_ Detecting Objects in Perspective论文主要内容<br><span id="more"></span></p>
 <p><strong>本文核心思想</strong>：利用目标之间的相对位置关系构造深度传播图以获取更准确的深度估计值。</p>
 <h1 id="0-Overview"><a href="#0-Overview" class="headerlink" title="0.Overview"></a>0.Overview</h1><ul>
 <li>作者提出的主要观点<ul>
@@ -440,7 +435,7 @@
 <li>作者认为准确地估计物体深度其实是一件非常难的事情，因此把原本的确定性深度转化为概率性深度，有点类似于hard label → soft label</li>
 </ol>
 </li>
-<li><ol start="2">
+<li><ol>
 <li>作者认为仅依靠单一物体进行深度估计是不准确的，因此引入了Graph-Based Depth Propagation，利用多个物体间的关系获得更准确的深度估计结果。</li>
 </ol>
 </li>
@@ -453,7 +448,7 @@
 <p>To establish an effective depth propagation mechanism, modeling the uncertainty of depth estimation for each instance is an important preliminary, which can provide useful guidance for weighing the propagation among instances.</p>
 </blockquote>
 <p>为了建立有效的深度传播机制，对每个实例的深度估计不确定度进行建模是一个重要的前期工作，可以为实例间的传播赋权提供有益的指导。</p>
-<p>是_probabilistic depth_，</p>
+<p>是<em>probabilistic depth</em>，</p>
 <p>是每个孤立实例的局部深度估计，它与得到的深度评分一起作为构造深度传播图的基础。</p>
 <h2 id="1-2-Depth-Propagation-from-Perspective-Geometry"><a href="#1-2-Depth-Propagation-from-Perspective-Geometry" class="headerlink" title="1.2 Depth Propagation from Perspective Geometry"></a>1.2 Depth Propagation from Perspective Geometry</h2><p>针对深度估计问题，我们提出了一种几何深度传播机制，考虑了实例之间的相互依赖性。我们将首先推导两个实例之间的透视关系，然后给出带有边缘修剪和门控的基于图的深度传播方案的细节。</p>
 <h3 id="Perspective-Relationship"><a href="#Perspective-Relationship" class="headerlink" title="Perspective Relationship"></a>Perspective Relationship</h3><p>注：本文的方法也是基于平面假设的</p>
@@ -461,7 +456,7 @@
 <p>From our observation, the same category of nearby objects can well satisfy the “same ground” condition, so we select the following 3 most important factors to decide which edges are influential and reliable, including the depth confidence sd j , 2D distance score s2D ij , and classification similarity scls ij .</p>
 </blockquote>
 <p>此处针对地面假设的部分做了补充。</p>
-<h2 id="1-3-Probabilistic-and-Geometric-Depth-Estimation"><a href="#1-3-Probabilistic-and-Geometric-Depth-Estimation" class="headerlink" title="1.3 Probabilistic and Geometric Depth Estimation"></a>1.3 Probabilistic and Geometric Depth Estimation</h2><h1 id="2-Coding"><a href="#2-Coding" class="headerlink" title="2.Coding"></a>2.Coding</h1><p>PGD在代码实现上，实质上就是FCOS3D的基础上扩充了深度估计模块。模型的Backbone为DCN v2，Neck为FPN，Head部分的结构图如图1<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1666493133769-8a4cac8a-61b0-4bcb-a64a-73e5092b5ad7.png#clientId=ub5dee652-7dc8-4&errorMessage=unknown%20error&from=drop&id=udd02e737&originHeight=1300&originWidth=2464&originalType=binary&ratio=1&rotation=0&showTitle=false&size=195957&status=error&style=none&taskId=ue3b64591-a44c-43c8-b989-133cdbdfadb&title=" alt="截屏2022-10-23 10.45.30.png"></p>
+<h2 id="1-3-Probabilistic-and-Geometric-Depth-Estimation"><a href="#1-3-Probabilistic-and-Geometric-Depth-Estimation" class="headerlink" title="1.3 Probabilistic and Geometric Depth Estimation"></a>1.3 Probabilistic and Geometric Depth Estimation</h2><h1 id="2-Coding"><a href="#2-Coding" class="headerlink" title="2.Coding"></a>2.Coding</h1><p>PGD在代码实现上，实质上就是FCOS3D的基础上扩充了深度估计模块。模型的Backbone为DCN v2，Neck为FPN，Head部分的结构图如图1<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1666493133769-8a4cac8a-61b0-4bcb-a64a-73e5092b5ad7.png#clientId=ub5dee652-7dc8-4&amp;errorMessage=unknown%20error&amp;from=drop&amp;id=udd02e737&amp;originHeight=1300&amp;originWidth=2464&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=195957&amp;status=error&amp;style=none&amp;taskId=ue3b64591-a44c-43c8-b989-133cdbdfadb&amp;title=" alt="截屏2022-10-23 10.45.30.png"></p>
 <h1 id="3-Conclusion"><a href="#3-Conclusion" class="headerlink" title="3.Conclusion"></a>3.Conclusion</h1>
                 
             </div>
@@ -809,7 +804,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">22.6k</span>
+                        class="white-color">22.2k</span>
             
             
             

@@ -6,8 +6,7 @@
     <meta charset="utf-8">
     <meta name="keywords" content="匈牙利匹配, Untitled.">
     <meta name="description" content="匈牙利匹配原理和实现
-
-匈牙利匹配概述分配问题是组合优化领域中的一个基本问题，其目标是确定最佳分配，如使总成本最小化或使团队效率最大化。匈牙利匹配是求解二分图最大匹配的经典算法，算法的核心是根据一个初始匹配不停的找增广路径，直到没有增广路径">
+匈牙利匹配概述分配问题是组合优化领域中的一个基本问题，其目标是确定最佳分配，如使总成本最小化或使团队效率最大化。匈牙利匹配是求解二分图最大匹配的经典算法，算法的核心是根据一个初始匹配不停的找增广路径，直到没有增广路径为">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -405,7 +404,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    724
+                    726
                 </div>
                 
 
@@ -430,17 +429,17 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>匈牙利匹配原理和实现</p>
-<span id="more"></span>
+                <p>匈牙利匹配原理和实现<br><span id="more"></span></p>
 <h1 id="匈牙利匹配概述"><a href="#匈牙利匹配概述" class="headerlink" title="匈牙利匹配概述"></a>匈牙利匹配概述</h1><p>分配问题是组合优化领域中的一个基本问题，其目标是确定最佳分配，如使总成本最小化或使团队效率最大化。匈牙利匹配是求解二分图最大匹配的经典算法，算法的核心是根据一个初始匹配不停的找增广路径，直到没有增广路径为止。</p>
 <h2 id="二分图"><a href="#二分图" class="headerlink" title="二分图"></a>二分图</h2><p>图中所有顶点可以划分两个子集，任取一条边，边的两个顶点不在同一个子集中。</p>
 <h2 id="最大匹配"><a href="#最大匹配" class="headerlink" title="最大匹配"></a>最大匹配</h2><p>一个图的所有匹配中，所含匹配边数最多的匹配，称为这个图的最大匹配。最大匹配数，就是最大匹配时边的数目。</p>
 <h2 id="交替路径"><a href="#交替路径" class="headerlink" title="交替路径"></a>交替路径</h2><p>给定图G的一个匹配M，如果一条路径的边交替出现在M中和不出现在M中，我们称之为一条M-交错路径。</p>
 <h2 id="增广路径"><a href="#增广路径" class="headerlink" title="增广路径"></a>增广路径</h2><p>从一个未匹配点出发，走交替路，如果途径另一个未匹配点（出发的点不算），则这条交替路径称为增广路径。<br>增广路径的特点：路径长度为奇数（因为起点和终点必须分属两个集合）</p>
 <h1 id="匈牙利匹配原理"><a href="#匈牙利匹配原理" class="headerlink" title="匈牙利匹配原理"></a>匈牙利匹配原理</h1><p>通过寻找增广路径，把增广路径中的匹配边和非匹配边的相互交换，这样就会多出一条匹配边，直到找不到增广路径为止。</p>
-<h1 id="匈牙利匹配实现"><a href="#匈牙利匹配实现" class="headerlink" title="匈牙利匹配实现"></a>匈牙利匹配实现</h1><h2 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h2><p>步骤1：减去行最小值<br>找到邻接矩阵中每一行的最小元素，并且将每一行中的元素都减去该行中的最小元素。<br>步骤2：减去列最小值<br>在剩下的矩阵中找到每一列的最小元素，并且将每一列中的元素都减去该列中的最小元素。<br>步骤3：用最少的横线&#x2F;竖线覆盖所有零<br>使用最少数量的水平和垂直线覆盖结果矩阵中的所有零。如果需要n行，则零之间存在最佳分配。执行步骤5。<br>如果少于n行，继续执行步骤4。<br>步骤4：生成额外的零<br>在没有被覆盖的元素中找到最小值，并且将没有被覆盖的元素减去这个最小值，同时将不同线条交叉位置上的元素加上这个最小值。回到步骤3。<br>步骤5：得到结果<br>最后从剩余的矩阵元素中找到最合适的零元素作为匹配结果。这里每个零元素对应筛选后的两个节点之间的边。</p>
-<h2 id="Python实现"><a href="#Python实现" class="headerlink" title="Python实现"></a>Python实现</h2><p>scipy提供了linear_sum_assignment函数可以直接调用求解匈牙利匹配问题。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cost = np.array([[<span class="number">4</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">2</span>, <span class="number">0</span>, <span class="number">5</span>], [<span class="number">3</span>, <span class="number">2</span>, <span class="number">2</span>]])</span><br><span class="line"><span class="keyword">from</span> scipy.optimize <span class="keyword">import</span> linear_sum_assignment</span><br><span class="line">row_ind, col_ind = linear_sum_assignment(cost)</span><br></pre></td></tr></table></figure>
+<h1 id="匈牙利匹配实现"><a href="#匈牙利匹配实现" class="headerlink" title="匈牙利匹配实现"></a>匈牙利匹配实现</h1><h2 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h2><p>步骤1：减去行最小值<br>找到邻接矩阵中每一行的最小元素，并且将每一行中的元素都减去该行中的最小元素。<br>步骤2：减去列最小值<br>在剩下的矩阵中找到每一列的最小元素，并且将每一列中的元素都减去该列中的最小元素。<br>步骤3：用最少的横线/竖线覆盖所有零<br>使用最少数量的水平和垂直线覆盖结果矩阵中的所有零。如果需要n行，则零之间存在最佳分配。执行步骤5。<br>如果少于n行，继续执行步骤4。<br>步骤4：生成额外的零<br>在没有被覆盖的元素中找到最小值，并且将没有被覆盖的元素减去这个最小值，同时将不同线条交叉位置上的元素加上这个最小值。回到步骤3。<br>步骤5：得到结果<br>最后从剩余的矩阵元素中找到最合适的零元素作为匹配结果。这里每个零元素对应筛选后的两个节点之间的边。</p>
+<h2 id="Python实现"><a href="#Python实现" class="headerlink" title="Python实现"></a>Python实现</h2><p>scipy提供了linear_sum_assignment函数可以直接调用求解匈牙利匹配问题。<br><pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">cost &#x3D; np.array([[4, 1, 3], [2, 0, 5], [3, 2, 2]])
+from scipy.optimize import linear_sum_assignment
+row_ind, col_ind &#x3D; linear_sum_assignment(cost)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></p>
 
                 
             </div>
@@ -802,7 +801,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">22.6k</span>
+                        class="white-color">22.2k</span>
             
             
             

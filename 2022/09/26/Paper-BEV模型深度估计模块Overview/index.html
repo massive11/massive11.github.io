@@ -6,9 +6,6 @@
     <meta charset="utf-8">
     <meta name="keywords" content="BEV模型深度估计模块Overview, Untitled.">
     <meta name="description" content="本文对BEV模型深度估计模块进行了梳理。
-
-
-
 1.图像特征直接卷积LSS、Fiery、BEVDet
 深度估计模块（均为原始的LSS的模块，这里以Fiery的模块为例）
 
@@ -16,7 +13,7 @@
 
 loss计算
 
-没有单独计算Depth部分的loss，直接计算的">
+没有单独计算Depth部分的loss，直接计算的3D ">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -406,7 +403,7 @@ loss计算
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    566
+                    586
                 </div>
                 
 
@@ -431,14 +428,11 @@ loss计算
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>本文对BEV模型深度估计模块进行了梳理。</p>
-<span id="more"></span>
-
-
+                <p>本文对BEV模型深度估计模块进行了梳理。<br><span id="more"></span></p>
 <h2 id="1-图像特征直接卷积"><a href="#1-图像特征直接卷积" class="headerlink" title="1.图像特征直接卷积"></a>1.图像特征直接卷积</h2><h3 id="LSS、Fiery、BEVDet"><a href="#LSS、Fiery、BEVDet" class="headerlink" title="LSS、Fiery、BEVDet"></a>LSS、Fiery、BEVDet</h3><ul>
 <li>深度估计模块（均为原始的LSS的模块，这里以Fiery的模块为例）</li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664348295899-ef580e6c-5d37-434d-9bbd-1d9ca12c09f9.png#clientId=u73016541-a3c0-4&errorMessage=unknown%20error&from=ui&id=u979da66c&originHeight=582&originWidth=1750&originalType=binary&ratio=1&rotation=0&showTitle=false&size=119663&status=error&style=none&taskId=u74358c08-0cea-45f0-855b-3745b3fb6cd&title=" alt="截屏2022-09-28 14.57.39.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664348295899-ef580e6c-5d37-434d-9bbd-1d9ca12c09f9.png#clientId=u73016541-a3c0-4&amp;errorMessage=unknown%20error&amp;from=ui&amp;id=u979da66c&amp;originHeight=582&amp;originWidth=1750&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=119663&amp;status=error&amp;style=none&amp;taskId=u74358c08-0cea-45f0-855b-3745b3fb6cd&amp;title=" alt="截屏2022-09-28 14.57.39.png"></p>
 <ul>
 <li>loss计算</li>
 </ul>
@@ -447,22 +441,45 @@ loss计算
 <h2 id="2-Camera-Aware卷积"><a href="#2-Camera-Aware卷积" class="headerlink" title="2.Camera-Aware卷积"></a>2.Camera-Aware卷积</h2><h3 id="BEVDepth"><a href="#BEVDepth" class="headerlink" title="BEVDepth"></a>BEVDepth</h3><ul>
 <li>深度估计模块</li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664333207590-285175fa-af3c-4b4e-81fd-ee06c1221fba.png#clientId=uc9f89468-6e64-4&errorMessage=unknown%20error&from=paste&height=363&id=ub85d9bca&originHeight=545&originWidth=786&originalType=binary&ratio=1&rotation=0&showTitle=false&size=135374&status=error&style=none&taskId=u7405615b-15a1-41cd-a083-9467cc45656&title=&width=524" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664333207590-285175fa-af3c-4b4e-81fd-ee06c1221fba.png#clientId=uc9f89468-6e64-4&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=363&amp;id=ub85d9bca&amp;originHeight=545&amp;originWidth=786&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=135374&amp;status=error&amp;style=none&amp;taskId=u7405615b-15a1-41cd-a083-9467cc45656&amp;title=&amp;width=524" alt="image.png"></p>
 <ul>
 <li>loss计算</li>
 </ul>
-<p>[H&#x2F;16, W&#x2F;16]的特征图和相应的真值之间计算BCE loss。<br>真值是将LiDAR点云先通过内外参投影到像素坐标系，经过resize处理后得到[256, 704]的depth真值。划分16×16的patch，每个patch取有深度点的<strong>最小深度值</strong>，若不在深度范围内则赋值0。得到[16, 44]的gt_depth。</p>
+<p>[H/16, W/16]的特征图和相应的真值之间计算BCE loss。<br>真值是将LiDAR点云先通过内外参投影到像素坐标系，经过resize处理后得到[256, 704]的depth真值。划分16×16的patch，每个patch取有深度点的<strong>最小深度值</strong>，若不在深度范围内则赋值0。得到[16, 44]的gt_depth。</p>
 <ul>
-<li>LiDAR点云真值downsample代码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">def get_downsampled_gt_depth(self, gt_depths):</span><br><span class="line">    B, N, H, W = gt_depths.shape</span><br><span class="line">    gt_depths = gt_depths.view(B*N, H//self.downsample_factor,</span><br><span class="line">        self.downsample_factor,</span><br><span class="line">        W // self.downsample_factor, self.downsample_factor, 1)</span><br><span class="line">    gt_depths = gt_depths.permute(0, 1, 3, 5, 2, 4).contiguous()</span><br><span class="line">    gt_depths = gt_depths.view(</span><br><span class="line">        -1, self.downsample_factor * self.downsample_factor)</span><br><span class="line">    gt_depths_tmp = torch.where(gt_depths == 0.0,</span><br><span class="line">                                1e5 * torch.ones_like(gt_depths),</span><br><span class="line">                                gt_depths)</span><br><span class="line">    gt_depths = torch.min(gt_depths_tmp, dim=-1).values</span><br><span class="line">    gt_depths = gt_depths.view(B * N, H // self.downsample_factor,</span><br><span class="line">                               W // self.downsample_factor)</span><br><span class="line">    gt_depths = (gt_depths -</span><br><span class="line">                 (self.dbound[0] - self.dbound[2])) / self.dbound[2]</span><br><span class="line">    gt_depths = torch.where(</span><br><span class="line">        (gt_depths &lt; self.depth_channels + 1) &amp; (gt_depths &gt;= 0.0),</span><br><span class="line">        gt_depths, torch.zeros_like(gt_depths))   # 6, 16, 44</span><br><span class="line">    gt_depths = F.one_hot(gt_depths.long(),</span><br><span class="line">                          num_classes=self.depth_channels + 1).view(</span><br><span class="line">                              -1, self.depth_channels + 1)[:, 1:]</span><br><span class="line">    return gt_depths.float()</span><br></pre></td></tr></table></figure></li>
+<li>LiDAR点云真值downsample代码<pre class="line-numbers language-none"><code class="language-none">def get_downsampled_gt_depth(self, gt_depths):
+    B, N, H, W &#x3D; gt_depths.shape
+    gt_depths &#x3D; gt_depths.view(B*N, H&#x2F;&#x2F;self.downsample_factor,
+        self.downsample_factor,
+        W &#x2F;&#x2F; self.downsample_factor, self.downsample_factor, 1)
+    gt_depths &#x3D; gt_depths.permute(0, 1, 3, 5, 2, 4).contiguous()
+    gt_depths &#x3D; gt_depths.view(
+        -1, self.downsample_factor * self.downsample_factor)
+    gt_depths_tmp &#x3D; torch.where(gt_depths &#x3D;&#x3D; 0.0,
+                                1e5 * torch.ones_like(gt_depths),
+                                gt_depths)
+    gt_depths &#x3D; torch.min(gt_depths_tmp, dim&#x3D;-1).values
+    gt_depths &#x3D; gt_depths.view(B * N, H &#x2F;&#x2F; self.downsample_factor,
+                               W &#x2F;&#x2F; self.downsample_factor)
+    gt_depths &#x3D; (gt_depths -
+                 (self.dbound[0] - self.dbound[2])) &#x2F; self.dbound[2]
+    gt_depths &#x3D; torch.where(
+        (gt_depths &lt; self.depth_channels + 1) &amp; (gt_depths &gt;&#x3D; 0.0),
+        gt_depths, torch.zeros_like(gt_depths))   # 6, 16, 44
+    gt_depths &#x3D; F.one_hot(gt_depths.long(),
+                          num_classes&#x3D;self.depth_channels + 1).view(
+                              -1, self.depth_channels + 1)[:, 1:]
+    return gt_depths.float()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="单目上Camera-Aware卷积的模型"><a href="#单目上Camera-Aware卷积的模型" class="headerlink" title="单目上Camera-Aware卷积的模型"></a>单目上Camera-Aware卷积的模型</h3><h4 id="DD3D"><a href="#DD3D" class="headerlink" title="DD3D"></a>DD3D</h4></li>
 </ul>
-<h3 id="单目上Camera-Aware卷积的模型"><a href="#单目上Camera-Aware卷积的模型" class="headerlink" title="单目上Camera-Aware卷积的模型"></a>单目上Camera-Aware卷积的模型</h3><h4 id="DD3D"><a href="#DD3D" class="headerlink" title="DD3D"></a>DD3D</h4><ul>
+<ul>
 <li>深度估计模块</li>
 </ul>
 <p>先进行深度网络预训练。<br>“Two paths in DD3D from the input image to the 3D bounding box and to the dense depth prediction differ only in the last 3×3 convolutional layer, and thus share nearly all parameters.”</p>
 <ul>
 <li>loss计算</li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664352247582-6513d9b6-0753-4cc6-87db-0384d7ba8f3a.png#clientId=u7261c876-16a5-4&errorMessage=unknown%20error&from=paste&height=299&id=u83b85434&originHeight=449&originWidth=924&originalType=binary&ratio=1&rotation=0&showTitle=false&size=93733&status=error&style=none&taskId=u9f8cda92-d471-43b9-9662-d5fec36cc53&title=&width=616" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664352247582-6513d9b6-0753-4cc6-87db-0384d7ba8f3a.png#clientId=u7261c876-16a5-4&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=299&amp;id=u83b85434&amp;originHeight=449&amp;originWidth=924&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=93733&amp;status=error&amp;style=none&amp;taskId=u9f8cda92-d471-43b9-9662-d5fec36cc53&amp;title=&amp;width=616" alt="image.png"></p>
 <hr>
 <h2 id="3-Gaussian参数估计"><a href="#3-Gaussian参数估计" class="headerlink" title="3.Gaussian参数估计"></a>3.Gaussian参数估计</h2><h3 id="BEVStereo"><a href="#BEVStereo" class="headerlink" title="BEVStereo"></a>BEVStereo</h3><ul>
 <li>深度估计模块<ul>
@@ -470,19 +487,19 @@ loss计算
 </ul>
 </li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664334366753-81bcf681-64f7-4579-a7fe-43834f263167.png#clientId=uc9f89468-6e64-4&errorMessage=unknown%20error&from=paste&height=678&id=u0d32a70e&originHeight=1017&originWidth=2167&originalType=binary&ratio=1&rotation=0&showTitle=false&size=615610&status=error&style=none&taskId=u53b7a47e-d78b-4bea-ad4f-c90fbc26c7d&title=&width=1444.6666666666667" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664334366753-81bcf681-64f7-4579-a7fe-43834f263167.png#clientId=uc9f89468-6e64-4&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=678&amp;id=u0d32a70e&amp;originHeight=1017&amp;originWidth=2167&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=615610&amp;status=error&amp;style=none&amp;taskId=u53b7a47e-d78b-4bea-ad4f-c90fbc26c7d&amp;title=&amp;width=1444.6666666666667" alt="image.png"></p>
 <ul>
 <li>loss计算</li>
 </ul>
-<p>[H&#x2F;4, W&#x2F;4]的特征图和相应的真值之间计算BCE loss</p>
+<p>[H/4, W/4]的特征图和相应的真值之间计算BCE loss</p>
 <h3 id="单目上Gaussian参数估计的模型"><a href="#单目上Gaussian参数估计的模型" class="headerlink" title="单目上Gaussian参数估计的模型"></a>单目上Gaussian参数估计的模型</h3><h4 id="MaGNet"><a href="#MaGNet" class="headerlink" title="MaGNet"></a>MaGNet</h4><ul>
 <li>深度估计模块</li>
 </ul>
-<p>DNet将每个像素(u, v)的分布参数化为高斯分布。预训练DNet，完整训练时固定DNet的网络参数。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664350299798-da8e63cb-70ec-48d9-be6b-6631b92ff589.png#clientId=u7261c876-16a5-4&errorMessage=unknown%20error&from=paste&height=515&id=ue19e96bb&originHeight=773&originWidth=1596&originalType=binary&ratio=1&rotation=0&showTitle=false&size=521747&status=error&style=none&taskId=u81f63b6d-398c-4fde-a9d9-f078fa02c5c&title=&width=1064" alt="image.png"><br>本文的contribution主要是融合单视图深度概率与多视图几何，具体由以下几个模块组成</p>
+<p>DNet将每个像素(u, v)的分布参数化为高斯分布。预训练DNet，完整训练时固定DNet的网络参数。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664350299798-da8e63cb-70ec-48d9-be6b-6631b92ff589.png#clientId=u7261c876-16a5-4&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=515&amp;id=ue19e96bb&amp;originHeight=773&amp;originWidth=1596&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=521747&amp;status=error&amp;style=none&amp;taskId=u81f63b6d-398c-4fde-a9d9-f078fa02c5c&amp;title=&amp;width=1064" alt="image.png"><br>本文的contribution主要是融合单视图深度概率与多视图几何，具体由以下几个模块组成</p>
 <ul>
 <li>Probabilistic Depth Sampling</li>
 </ul>
-<p>在<img src="https://cdn.nlark.com/yuque/__latex/17a8f206259a783f10b67682ecb10278.svg#card=math&code=%5B%5Cmu-%5Cbeta%5Csigma%2C%20%5Cmu%2B%5Cbeta%5Csigma%5D&id=XyE3S">的搜索区间里面去找depth candidates，搜索范围更接近Gaussian的参数<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664350349804-d1a004d5-3ff6-4f90-b006-af313f227430.png#clientId=u7261c876-16a5-4&errorMessage=unknown%20error&from=paste&height=285&id=ubaa7a5d6&originHeight=427&originWidth=793&originalType=binary&ratio=1&rotation=0&showTitle=false&size=70934&status=error&style=none&taskId=ub3ad164a-6859-4f1e-8f97-2e6c3db3396&title=&width=528.6666666666666" alt="image.png"></p>
+<p>在<img src="https://cdn.nlark.com/yuque/__latex/17a8f206259a783f10b67682ecb10278.svg#card=math&amp;code=%5B%5Cmu-%5Cbeta%5Csigma%2C%20%5Cmu%2B%5Cbeta%5Csigma%5D&amp;id=XyE3S" alt="">的搜索区间里面去找depth candidates，搜索范围更接近Gaussian的参数<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664350349804-d1a004d5-3ff6-4f90-b006-af313f227430.png#clientId=u7261c876-16a5-4&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=285&amp;id=ubaa7a5d6&amp;originHeight=427&amp;originWidth=793&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=70934&amp;status=error&amp;style=none&amp;taskId=ub3ad164a-6859-4f1e-8f97-2e6c3db3396&amp;title=&amp;width=528.6666666666666" alt="image.png"></p>
 <ul>
 <li>Depth consistency weighting for multi-view matching</li>
 </ul>
@@ -490,11 +507,11 @@ loss计算
 <ul>
 <li>Iterative refinement</li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664350428858-380bfa02-6410-4958-8e3f-5050fcc7eaf6.png#clientId=u7261c876-16a5-4&errorMessage=unknown%20error&from=paste&height=454&id=u9a8cdc2f&originHeight=681&originWidth=1695&originalType=binary&ratio=1&rotation=0&showTitle=false&size=367191&status=error&style=none&taskId=u7ba05a05-5cf8-45ad-81e4-5c167938a4e&title=&width=1130" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664350428858-380bfa02-6410-4958-8e3f-5050fcc7eaf6.png#clientId=u7261c876-16a5-4&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=454&amp;id=u9a8cdc2f&amp;originHeight=681&amp;originWidth=1695&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=367191&amp;status=error&amp;style=none&amp;taskId=u7ba05a05-5cf8-45ad-81e4-5c167938a4e&amp;title=&amp;width=1130" alt="image.png"></p>
 <ul>
 <li>loss计算</li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664350492107-fd0ec7b3-f712-4ff6-9b61-f57fe1528eee.png#clientId=u7261c876-16a5-4&errorMessage=unknown%20error&from=paste&height=75&id=ubad58ffd&originHeight=113&originWidth=837&originalType=binary&ratio=1&rotation=0&showTitle=false&size=23693&status=error&style=none&taskId=ubf9251eb-b325-409d-83cb-e8ce2f972a9&title=&width=558" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1664350492107-fd0ec7b3-f712-4ff6-9b61-f57fe1528eee.png#clientId=u7261c876-16a5-4&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=75&amp;id=ubad58ffd&amp;originHeight=113&amp;originWidth=837&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=23693&amp;status=error&amp;style=none&amp;taskId=ubf9251eb-b325-409d-83cb-e8ce2f972a9&amp;title=&amp;width=558" alt="image.png"></p>
 <hr>
 <h2 id="4-单目时序深度估计模型"><a href="#4-单目时序深度估计模型" class="headerlink" title="4.单目时序深度估计模型"></a>4.单目时序深度估计模型</h2><h3 id="DFM"><a href="#DFM" class="headerlink" title="DFM"></a>DFM</h3>
                 
@@ -839,7 +856,7 @@ loss计算
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">22.6k</span>
+                        class="white-color">22.2k</span>
             
             
             

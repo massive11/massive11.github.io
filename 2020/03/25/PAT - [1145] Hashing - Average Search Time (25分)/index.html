@@ -6,8 +6,7 @@
     <meta charset="utf-8">
     <meta name="keywords" content="PAT - [1145] Hashing - Average Search Time (25分), Untitled.">
     <meta name="description" content="本题其实并不难，只是很多hash相关的基础知识容易遗忘，需要多复习巩固一下。
-
-题目The task of this problem is simple: insert a sequence of distinct positive int">
+题目The task of this problem is simple: insert a sequence of distinct positive inte">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -52,7 +51,8 @@
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"></head>
+<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -401,14 +401,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    810
+                    623
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    3 分
                 </div>
                 
 
@@ -420,17 +420,11 @@
         
 
         
-        <!-- 代码块折行 -->
-        <style type="text/css">
-            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
-        </style>
-        
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>本题其实并不难，只是很多hash相关的基础知识容易遗忘，需要多复习巩固一下。</p>
-<span id="more"></span>
-<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>The task of this problem is simple: insert a sequence of distinct positive integers into a hash table first. Then try to find another sequence of integer keys from the table and output the average search time (the number of comparisons made to find whether or not the key is in the table). The hash function is defined to be H(key)&#x3D;key%TSize where TSize is the maximum size of the hash table. Quadratic probing (with positive increments only) is used to solve the collisions.</p>
+                <p>本题其实并不难，只是很多hash相关的基础知识容易遗忘，需要多复习巩固一下。<br><span id="more"></span></p>
+<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>The task of this problem is simple: insert a sequence of distinct positive integers into a hash table first. Then try to find another sequence of integer keys from the table and output the average search time (the number of comparisons made to find whether or not the key is in the table). The hash function is defined to be H(key)=key%TSize where TSize is the maximum size of the hash table. Quadratic probing (with positive increments only) is used to solve the collisions.</p>
 <p>Note that the table size is better to be prime. If the maximum size given by the user is not prime, you must re-define the table size to be the smallest prime number which is larger than the size given by the user.</p>
 <h1 id="输入说明"><a href="#输入说明" class="headerlink" title="输入说明"></a>输入说明</h1><p>Each input file contains one test case. For each case, the first line contains 3 positive numbers: MSize, N, and M, which are the user-defined table size, the number of input numbers, and the number of keys to be found, respectively. All the three numbers are no more than $10^4$.Then N distinct positive integers are given in the next line, followed by M positive integer keys in the next line. All the numbers in a line are separated by a space and are no more than $10^5$.</p>
 <h1 id="输出说明"><a href="#输出说明" class="headerlink" title="输出说明"></a>输出说明</h1><p>For each test case, in case it is impossible to insert some number, print in a line X cannot be inserted. where X is the input number. Finally print in a line the average search time for all the M keys, accurate up to 1 decimal place.</p>
@@ -442,8 +436,55 @@
 <li>quadratic probing 平方探测法</li>
 <li>collision 冲突</li>
 </ul>
-<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>先找到大于tsize的最小的素数为真正的tsize，然后建立一个tsize长度的数组。首先用平方探测法插入数字a，每次pos &#x3D; (a + j * j) % tsize，j是从0～tsize-1的数字，如果当前位置可以插入就将a赋值给v[pos]，如果一次都没有能够插入成功就输出”X cannot be inserted.”。其次计算平均查找时间，每次计算pos &#x3D; (a + j * j) % tsize，其中j &lt;&#x3D; tsize，如果v[pos]处正是a则查找到了，则退出循环，如果v[pos]处不存在数字表示没查找到，那么也要退出循环。每次查找的时候，退出循环之前的j就是这个数字的查找长度。最后ans除以m得到平均查找时间然后输出。<br>本题其实并不难，只是很多hash相关的基础知识容易遗忘，需要多复习巩固一下。</p>
-<h1 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//代码链接：https://blog.csdn.net/liuchuo/article/details/79819316</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;vector&gt;</span></span></span><br><span class="line">using namespace <span class="built_in">std</span>;</span><br><span class="line"><span class="type">int</span> Msize,n,m,t;</span><br><span class="line"><span class="type">bool</span> <span class="title function_">isPrime</span><span class="params">(<span class="type">int</span> n)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(n&lt;<span class="number">2</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	<span class="type">int</span> sqrtN=(<span class="type">int</span>)<span class="built_in">sqrt</span>(<span class="number">1.0</span>*n);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">2</span>;i&lt;=sqrtN;i++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(n%i==<span class="number">0</span>) </span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d&quot;</span>,&amp;Msize,&amp;n,&amp;m);</span><br><span class="line">	<span class="keyword">while</span>(!isPrime(Msize)) Msize++;</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="type">int</span>&gt; <span class="title function_">ht</span><span class="params">(Msize,<span class="number">0</span>)</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;t);</span><br><span class="line">		<span class="type">bool</span> flag=<span class="literal">false</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;Msize&amp;&amp;!flag;j++)&#123;</span><br><span class="line">			<span class="type">int</span> pos=(t+j*j)%Msize;</span><br><span class="line">			<span class="keyword">if</span>(ht[pos]==<span class="number">0</span>)&#123;</span><br><span class="line">				ht[pos]=t;</span><br><span class="line">				flag=<span class="literal">true</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(!flag) <span class="built_in">printf</span>(<span class="string">&quot;%d cannot be inserted.\n&quot;</span>,t);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> total=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;t);</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;=Msize;j++)&#123;</span><br><span class="line">			total++;</span><br><span class="line">			<span class="type">int</span> pos=(t+j*j)%Msize;</span><br><span class="line">			<span class="keyword">if</span>(ht[pos]==t||ht[pos]==<span class="number">0</span>)&#123;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%.1f\n&quot;</span>,(<span class="type">float</span>)total/m);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>先找到大于tsize的最小的素数为真正的tsize，然后建立一个tsize长度的数组。首先用平方探测法插入数字a，每次pos = (a + j <em> j) % tsize，j是从0～tsize-1的数字，如果当前位置可以插入就将a赋值给v[pos]，如果一次都没有能够插入成功就输出”X cannot be inserted.”。其次计算平均查找时间，每次计算pos = (a + j </em> j) % tsize，其中j &lt;= tsize，如果v[pos]处正是a则查找到了，则退出循环，如果v[pos]处不存在数字表示没查找到，那么也要退出循环。每次查找的时候，退出循环之前的j就是这个数字的查找长度。最后ans除以m得到平均查找时间然后输出。<br>本题其实并不难，只是很多hash相关的基础知识容易遗忘，需要多复习巩固一下。</p>
+<h1 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h1><pre class="line-numbers language-lang-c"><code class="language-lang-c">//代码链接：https://blog.csdn.net/liuchuo/article/details/79819316
+#include<cstdio>
+$#include<cmath>
+#include<vector>
+using namespace std;
+int Msize,n,m,t;
+bool isPrime(int n)&#123;
+    if(n<2) return false;
+    int sqrtN=(int)sqrt(1.0*n);
+    for(int i=2;i<=sqrtN;i++)&#123;
+        if(n%i==0) 
+            return false;
+    &#125;
+    return true;
+&#125;
+int main()
+&#123;
+    scanf("%d%d%d",&Msize,&n,&m);
+    while(!isPrime(Msize)) Msize++;
+    vector<int> ht(Msize,0);
+    for(int i=0;i<n;i++)&#123;
+        scanf("%d",&t);
+        bool flag=false;
+        for(int j=0;j<Msize&&!flag;j++)&#123;
+            int pos=(t+j*j)%Msize;
+            if(ht[pos]==0)&#123;
+                ht[pos]=t;
+                flag=true;
+            &#125;
+        &#125;
+        if(!flag) printf("%d cannot be inserted.\n",t);
+    &#125;
+    int total=0;
+    for(int i=0;i<m;i++)&#123;
+        scanf("%d",&t);
+        for(int j=0;j<=Msize;j++)&#123;
+            total++;
+            int pos=(t+j*j)%Msize;
+            if(ht[pos]==t||ht[pos]==0)&#123;
+                break;
+            &#125;
+        &#125;
+    &#125;
+    printf("%.1f\n",(float)total/m);
+    return 0;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
                 
             </div>
             <hr/>
@@ -787,7 +828,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">22.9k</span>
+                        class="white-color">22.6k</span>
             
             
             

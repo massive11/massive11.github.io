@@ -6,10 +6,7 @@
     <meta charset="utf-8">
     <meta name="keywords" content="3D目标框解耦方案梳理, Untitled.">
     <meta name="description" content="本文对3D目标框解耦方案进行了梳理。
-
-
-
-直接通过RGB图像预测3D目标框由于深度信息的缺失存在困难，但由于自动驾驶场景中关注的目标尺寸比较一致，可以通过借鉴2D-3D的一致性信息作为先验来提升模型效果。因此，存在不同的3D目标框解耦方案">
+直接通过RGB图像预测3D目标框由于深度信息的缺失存在困难，但由于自动驾驶场景中关注的目标尺寸比较一致，可以通过借鉴2D-3D的一致性信息作为先验来提升模型效果。因此，存在不同的3D目标框解耦方案，以下">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -54,7 +51,8 @@
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"></head>
+<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -422,55 +420,67 @@
         
 
         
-        <!-- 代码块折行 -->
-        <style type="text/css">
-            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
-        </style>
-        
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>本文对3D目标框解耦方案进行了梳理。</p>
-<span id="more"></span>
-
-
+                <p>本文对3D目标框解耦方案进行了梳理。<br><span id="more"></span></p>
 <p>直接通过RGB图像预测3D目标框由于深度信息的缺失存在困难，但由于自动驾驶场景中关注的目标尺寸比较一致，可以通过借鉴2D-3D的一致性信息作为先验来提升模型效果。因此，存在不同的3D目标框解耦方案，以下将对相关论文进行简单梳理。</p>
-<h1 id="2017–CVPR–Deep3DBox–3D-Bounding-Box-Estimation-Using-Deep-Learning-and-Geometry"><a href="#2017–CVPR–Deep3DBox–3D-Bounding-Box-Estimation-Using-Deep-Learning-and-Geometry" class="headerlink" title="2017–CVPR–Deep3DBox–3D Bounding Box Estimation Using Deep Learning and Geometry"></a>2017–CVPR–Deep3DBox–3D Bounding Box Estimation Using Deep Learning and Geometry</h1><p>[<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1612.00496.pdf">Paper</a>]     [Code]<br>本文认为3D框的透视投影与其2D检测窗口联系紧密，根据目标的2D框及周围像素估计目标的3D框和姿态，因此非常依赖2D框的精度。<br>针对size回归，计算了每个类别的均值，网络估计每个目标相对其类别的平均size的偏差；针对角度回归，本文提出MultiBin的方案回归local orientation；针对目标位置，得到上述信息后，通过最小二乘法最小化重投影误差进行计算。</p>
-<h2 id="Dimension"><a href="#Dimension" class="headerlink" title="Dimension"></a>Dimension</h2><p>深度估计的变化很小，同一类别的size比较接近，并且不随目标的朝向变化而变化。得到目标的类别后，dimension实际上就基本能确定下来。<br>对于目标的size，使用L2 loss，计算如下<br>$L_{dims}&#x3D;\frac{1}{n}  \sum (D^* - \overline{D} - \delta)^2$<br>其中，$D^*$是目标框的真值，$\overline{D}$是固定类别的目标框均值，$\delta$是网络估计的相对于均值的偏差。</p>
-<h2 id="Orientation"><a href="#Orientation" class="headerlink" title="Orientation"></a>Orientation</h2><p>仅从检测窗口中去估计相机坐标下的目标global orientation是不现实的。如下图所示，一辆沿直线行驶的车辆，尽管其global orientation没有发生变化，但其local orientation一直在发生变化导致外观上看起来很大的不同。仅从2D上的检测框范围内来确定其角度无法得到准确的结果，受到距离和角度两方面的影响。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1668927963099-c9e35577-0709-4c8a-a7c0-428d4bc1280c.png#averageHue=%2341453f&clientId=uefed95a9-2cad-4&from=paste&height=357&id=u904acb1f&originHeight=714&originWidth=833&originalType=binary&ratio=1&rotation=0&showTitle=false&size=635745&status=done&style=none&taskId=u0cb2b0c9-c70c-4ea7-8eb3-66ba3856f21&title=&width=417" alt="image.png"><br>因此，本文回归local orientation，local orientation和global orientation示意图如下图所示<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1668866616524-19703d13-6e4d-4019-90e1-f5e15cd6e2af.png#averageHue=%23e7e9e3&clientId=uad073999-40d0-4&from=paste&id=u839e9e14&originHeight=375&originWidth=382&originalType=binary&ratio=1&rotation=0&showTitle=false&size=67679&status=done&style=none&taskId=u029a028f-e836-4180-8b85-6159a41fdd2&title=" alt="image.png"><br>本文提出了MultiBin的分解方案。首先，将方向角离散化，并将其分成了n个重叠的bin。对于每个bin，CNN网络估计输出的角度位于第i个bin内的置信概率以及为了得到输出角度，需要应用于该bin中心射线方向的residual rotation error（剩余旋转矫正）。residual rotation使用角度的正弦和余弦两个数值来表示。因此，每个bin的输出一共三个：$(c_i,cos(\Delta \theta_i),sin(\Delta \theta_i))$。<br>有效的正弦和余弦数值是通过在二维输入上应用L2 normalization 层得到的。<br>MultiBin方案的整体loss计算如下<br>$L_\theta &#x3D; L_{conf} +\omega \times L_{loc}$<br>$L_{conf}$等价于每个bin的置信度的softmax loss。<br>$L_{loc}$在每个覆盖了角度真值的bin之中最小化估计的角度与真值的差异。由于bin之间存在重叠，每个包含真值的bin都需要估计正确的角度，其计算如下<br>$L_{loc}&#x3D;-\frac{1}{n_{\theta*}}  \sum cos(\theta ^ * - c_i  - \Delta \theta_i)$<br>其中，$n_{\theta*}$是覆盖了角度真值$\theta*$的bin的数量，$c_i$是bin $i$的中心的角度，$\Delta \theta_i$是在bin i的中心上施加的变化。</p>
-<h2 id="Location"><a href="#Location" class="headerlink" title="Location"></a>Location</h2><p>没有直接回归位置，得到目标的3D dimension和orientation以及2D检测框后，使用最小二乘来最小化重投影误差以计算目标相对于相机的平移T。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1668866601033-5fb855c0-0b3c-4764-9690-4b724d4a7390.png#averageHue=%239a9d87&clientId=uad073999-40d0-4&from=paste&height=337&id=u67445f08&originHeight=366&originWidth=380&originalType=binary&ratio=1&rotation=0&showTitle=false&size=141039&status=done&style=none&taskId=uf9e71a9a-fcf8-47eb-80e9-c6242343aeb&title=&width=350" alt="image.png"><br>总体的loss组成如下<br>$L &#x3D; \alpha \times L_{dims} + L_{\theta}$</p>
-<h1 id="2019–AAAI–MonoGRNet–MonoGRNet-A-Geometric-Reasoning-Network-for-Monocular-3D-Object-Localization"><a href="#2019–AAAI–MonoGRNet–MonoGRNet-A-Geometric-Reasoning-Network-for-Monocular-3D-Object-Localization" class="headerlink" title="2019–AAAI–MonoGRNet–MonoGRNet: A Geometric Reasoning Network for Monocular 3D Object Localization"></a>2019–AAAI–MonoGRNet–MonoGRNet: A Geometric Reasoning Network for Monocular 3D Object Localization</h1><p>[<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1811.10247.pdf">Paper</a>]     [<a target="_blank" rel="noopener" href="https://github.com/Zengyi-Qin/MonoGRNet">Code</a>]</p>
+<h1 id="2017—CVPR—Deep3DBox—3D-Bounding-Box-Estimation-Using-Deep-Learning-and-Geometry"><a href="#2017—CVPR—Deep3DBox—3D-Bounding-Box-Estimation-Using-Deep-Learning-and-Geometry" class="headerlink" title="2017—CVPR—Deep3DBox—3D Bounding Box Estimation Using Deep Learning and Geometry"></a>2017—CVPR—Deep3DBox—3D Bounding Box Estimation Using Deep Learning and Geometry</h1><p>[<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1612.00496.pdf">Paper</a>]     [Code]<br>本文认为3D框的透视投影与其2D检测窗口联系紧密，根据目标的2D框及周围像素估计目标的3D框和姿态，因此非常依赖2D框的精度。<br>针对size回归，计算了每个类别的均值，网络估计每个目标相对其类别的平均size的偏差；针对角度回归，本文提出MultiBin的方案回归local orientation；针对目标位置，得到上述信息后，通过最小二乘法最小化重投影误差进行计算。</p>
+<h2 id="Dimension"><a href="#Dimension" class="headerlink" title="Dimension"></a>Dimension</h2><p>深度估计的变化很小，同一类别的size比较接近，并且不随目标的朝向变化而变化。得到目标的类别后，dimension实际上就基本能确定下来。<br>对于目标的size，使用L2 loss，计算如下</p>
+<script type="math/tex; mode=display">L_{dims}=\frac{1}{n}  \sum (D^* - \overline{D} - \delta)^2</script><p>其中，$D^*$是目标框的真值，$\overline{D}$是固定类别的目标框均值，$\delta$是网络估计的相对于均值的偏差。</p>
+<h2 id="Orientation"><a href="#Orientation" class="headerlink" title="Orientation"></a>Orientation</h2><p>仅从检测窗口中去估计相机坐标下的目标global orientation是不现实的。如下图所示，一辆沿直线行驶的车辆，尽管其global orientation没有发生变化，但其local orientation一直在发生变化导致外观上看起来很大的不同。仅从2D上的检测框范围内来确定其角度无法得到准确的结果，受到距离和角度两方面的影响。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1668927963099-c9e35577-0709-4c8a-a7c0-428d4bc1280c.png#averageHue=%2341453f&amp;clientId=uefed95a9-2cad-4&amp;from=paste&amp;height=357&amp;id=u904acb1f&amp;originHeight=714&amp;originWidth=833&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=635745&amp;status=done&amp;style=none&amp;taskId=u0cb2b0c9-c70c-4ea7-8eb3-66ba3856f21&amp;title=&amp;width=417" alt="image.png"><br>因此，本文回归local orientation，local orientation和global orientation示意图如下图所示<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1668866616524-19703d13-6e4d-4019-90e1-f5e15cd6e2af.png#averageHue=%23e7e9e3&amp;clientId=uad073999-40d0-4&amp;from=paste&amp;id=u839e9e14&amp;originHeight=375&amp;originWidth=382&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=67679&amp;status=done&amp;style=none&amp;taskId=u029a028f-e836-4180-8b85-6159a41fdd2&amp;title=" alt="image.png"><br>本文提出了MultiBin的分解方案。首先，将方向角离散化，并将其分成了n个重叠的bin。对于每个bin，CNN网络估计输出的角度位于第i个bin内的置信概率以及为了得到输出角度，需要应用于该bin中心射线方向的residual rotation error（剩余旋转矫正）。residual rotation使用角度的正弦和余弦两个数值来表示。因此，每个bin的输出一共三个：$(c_i,cos(\Delta \theta_i),sin(\Delta \theta_i))$。<br>有效的正弦和余弦数值是通过在二维输入上应用L2 normalization 层得到的。<br>MultiBin方案的整体loss计算如下</p>
+<script type="math/tex; mode=display">L_\theta = L_{conf} +\omega \times L_{loc}</script><p>$L<em>{conf}$等价于每个bin的置信度的softmax loss。<br>$L</em>{loc}$在每个覆盖了角度真值的bin之中最小化估计的角度与真值的差异。由于bin之间存在重叠，每个包含真值的bin都需要估计正确的角度，其计算如下</p>
+<script type="math/tex; mode=display">L_{loc}=-\frac{1}{n_{\theta*}}  \sum cos(\theta ^ * - c_i  - \Delta \theta_i)</script><p>其中，$n_{\theta<em>}$是覆盖了角度真值$\theta</em>$的bin的数量，$c_i$是bin $i$的中心的角度，$\Delta \theta_i$是在bin i的中心上施加的变化。</p>
+<h2 id="Location"><a href="#Location" class="headerlink" title="Location"></a>Location</h2><p>没有直接回归位置，得到目标的3D dimension和orientation以及2D检测框后，使用最小二乘来最小化重投影误差以计算目标相对于相机的平移T。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1668866601033-5fb855c0-0b3c-4764-9690-4b724d4a7390.png#averageHue=%239a9d87&amp;clientId=uad073999-40d0-4&amp;from=paste&amp;height=337&amp;id=u67445f08&amp;originHeight=366&amp;originWidth=380&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=141039&amp;status=done&amp;style=none&amp;taskId=uf9e71a9a-fcf8-47eb-80e9-c6242343aeb&amp;title=&amp;width=350" alt="image.png"><br>总体的loss组成如下</p>
+<script type="math/tex; mode=display">L = \alpha \times L_{dims} + L_{\theta}</script><h1 id="2019—AAAI—MonoGRNet—MonoGRNet-A-Geometric-Reasoning-Network-for-Monocular-3D-Object-Localization"><a href="#2019—AAAI—MonoGRNet—MonoGRNet-A-Geometric-Reasoning-Network-for-Monocular-3D-Object-Localization" class="headerlink" title="2019—AAAI—MonoGRNet—MonoGRNet: A Geometric Reasoning Network for Monocular 3D Object Localization"></a>2019—AAAI—MonoGRNet—MonoGRNet: A Geometric Reasoning Network for Monocular 3D Object Localization</h1><p>[<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1811.10247.pdf">Paper</a>]     [<a target="_blank" rel="noopener" href="https://github.com/Zengyi-Qin/MonoGRNet">Code</a>]</p>
 <blockquote>
 <p>MonoGRNet predicts 3D object localizations from a monocular RGB image considering geometric reasoning in 2D projection and the unobserved depth dimension.<br>MonoPair</p>
 </blockquote>
-<p>本文核心是将3D定位问题解耦成几个循序渐进的子问题，这些子问题只需要RGB数据就能解决。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1669429825762-5b5885d3-9077-4cdc-8ec7-6aa1c128aeef.png#averageHue=%23f6f5f3&clientId=ud9dbc665-bd88-4&from=drop&id=u3423a3d6&originHeight=502&originWidth=1299&originalType=binary&ratio=1&rotation=0&showTitle=false&size=142671&status=done&style=none&taskId=u319f6500-cad7-4fcd-8fe9-90d133c9f1b&title=" alt="截屏2022-11-26 10.30.19.png"></p>
-<h2 id="3D-loc"><a href="#3D-loc" class="headerlink" title="3D loc"></a>3D loc</h2><p>本文将3D 定位任务ABBox-3D 定位$B_{3d}$分解成四个渐进式的子任务。<br>首先，检测3D框的2D 投影框$B_{2d}$的中心$b$和尺寸$(w,h)$。<br>然后，通过预测深度$Z_c$和3D中心点的2D投影点$c$定位3D中心点$C$<br>最后，基于局部特征回归相对于3D中心点的局部角$O$<br>定位任务可描述为<br>$B_{3d}&#x3D;(B_{2d},Z_c,c,O)$<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1669463677646-2b8bc33c-75eb-4ddc-8dbd-8fcfa91d3766.png#averageHue=%23f7f2ee&clientId=ud9dbc665-bd88-4&from=drop&id=ud2c9cb19&originHeight=329&originWidth=879&originalType=binary&ratio=1&rotation=0&showTitle=false&size=80114&status=done&style=none&taskId=u9322771f-ce08-41f7-9eaa-778a3e56779&title=" alt="截屏2022-11-26 19.54.32.png"><br>分别回归2D框的中心点$b$和3D框在2D图像上的投影$c$，由于透视变化，两个点通常不会重合。<br>首先回归$c$，然后基于估计的深度$Z_c$反投影到3D空间。<br>$X&#x3D;(u-p_x)*Z_c&#x2F;f_x$<br>$Y&#x3D;(v-p_y)*Z_c&#x2F;f_y$<br>因此，3D定位问题就能转化为一个2D关键点定位任务进行求解。</p>
-<h2 id="IDE-Instance-level-depth-estimation"><a href="#IDE-Instance-level-depth-estimation" class="headerlink" title="IDE(Instance-level depth estimation)"></a>IDE(Instance-level depth estimation)</h2><p>每个grid预测距离其在一定距离阈值内最近的实例的深度，距离更近的目标解决遮挡的问题。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1669454605948-5a209344-e4bc-4723-8e48-c1108bac7525.png#averageHue=%2399a792&clientId=ud9dbc665-bd88-4&from=drop&id=u6c1c56a3&originHeight=296&originWidth=777&originalType=binary&ratio=1&rotation=0&showTitle=false&size=135690&status=done&style=none&taskId=ua10202b2-69c0-40e5-a665-e890bfa3da1&title=" alt="截屏2022-11-26 17.23.20.png"><br>IDE模块包括区域深度的粗略回归，不考虑目标的尺度和特定的2D位置；和一个细化阶段，依赖2D边界框来精确提取目标所占区域编码的深度特征。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1669463337241-a88c710f-bbfa-4940-b8c7-582af6d2c56f.png#averageHue=%23f6f6f5&clientId=ud9dbc665-bd88-4&from=drop&id=uc1c32191&originHeight=265&originWidth=877&originalType=binary&ratio=1&rotation=0&showTitle=false&size=57397&status=done&style=none&taskId=u089368ac-45f2-4c60-97d6-f500c3b0159&title=" alt="截屏2022-11-26 19.48.52.png"><br>粗略回归的特征图小，对于目标的实际位置没有那么敏感，负责回归粗略的深度偏移$Z_{cc}$；对齐的特征回归$\delta_{Z_c}$，用于修正instance-level的深度值。最终的深度预测为<br>$Z_c&#x3D;Z_{cc}+\delta_{Z_c}$</p>
+<p>本文核心是将3D定位问题解耦成几个循序渐进的子问题，这些子问题只需要RGB数据就能解决。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1669429825762-5b5885d3-9077-4cdc-8ec7-6aa1c128aeef.png#averageHue=%23f6f5f3&amp;clientId=ud9dbc665-bd88-4&amp;from=drop&amp;id=u3423a3d6&amp;originHeight=502&amp;originWidth=1299&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=142671&amp;status=done&amp;style=none&amp;taskId=u319f6500-cad7-4fcd-8fe9-90d133c9f1b&amp;title=" alt="截屏2022-11-26 10.30.19.png"></p>
+<h2 id="3D-loc"><a href="#3D-loc" class="headerlink" title="3D loc"></a>3D loc</h2><p>本文将3D 定位任务ABBox-3D 定位$B<em>{3d}$分解成四个渐进式的子任务。<br>首先，检测3D框的2D 投影框$B</em>{2d}$的中心$b$和尺寸$(w,h)$。<br>然后，通过预测深度$Z_c$和3D中心点的2D投影点$c$定位3D中心点$C$<br>最后，基于局部特征回归相对于3D中心点的局部角$O$<br>定位任务可描述为</p>
+<script type="math/tex; mode=display">B_{3d}=(B_{2d},Z_c,c,O)</script><p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1669463677646-2b8bc33c-75eb-4ddc-8dbd-8fcfa91d3766.png#averageHue=%23f7f2ee&amp;clientId=ud9dbc665-bd88-4&amp;from=drop&amp;id=ud2c9cb19&amp;originHeight=329&amp;originWidth=879&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=80114&amp;status=done&amp;style=none&amp;taskId=u9322771f-ce08-41f7-9eaa-778a3e56779&amp;title=" alt="截屏2022-11-26 19.54.32.png"><br>分别回归2D框的中心点$b$和3D框在2D图像上的投影$c$，由于透视变化，两个点通常不会重合。<br>首先回归$c$，然后基于估计的深度$Z_c$反投影到3D空间。</p>
+<script type="math/tex; mode=display">X=(u-p_x)*Z_c/f_x</script><script type="math/tex; mode=display">Y=(v-p_y)*Z_c/f_y</script><p>因此，3D定位问题就能转化为一个2D关键点定位任务进行求解。</p>
+<h2 id="IDE-Instance-level-depth-estimation"><a href="#IDE-Instance-level-depth-estimation" class="headerlink" title="IDE(Instance-level depth estimation)"></a>IDE(Instance-level depth estimation)</h2><p>每个grid预测距离其在一定距离阈值内最近的实例的深度，距离更近的目标解决遮挡的问题。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1669454605948-5a209344-e4bc-4723-8e48-c1108bac7525.png#averageHue=%2399a792&amp;clientId=ud9dbc665-bd88-4&amp;from=drop&amp;id=u6c1c56a3&amp;originHeight=296&amp;originWidth=777&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=135690&amp;status=done&amp;style=none&amp;taskId=ua10202b2-69c0-40e5-a665-e890bfa3da1&amp;title=" alt="截屏2022-11-26 17.23.20.png"><br>IDE模块包括区域深度的粗略回归，不考虑目标的尺度和特定的2D位置；和一个细化阶段，依赖2D边界框来精确提取目标所占区域编码的深度特征。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1669463337241-a88c710f-bbfa-4940-b8c7-582af6d2c56f.png#averageHue=%23f6f6f5&amp;clientId=ud9dbc665-bd88-4&amp;from=drop&amp;id=uc1c32191&amp;originHeight=265&amp;originWidth=877&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=57397&amp;status=done&amp;style=none&amp;taskId=u089368ac-45f2-4c60-97d6-f500c3b0159&amp;title=" alt="截屏2022-11-26 19.48.52.png"><br>粗略回归的特征图小，对于目标的实际位置没有那么敏感，负责回归粗略的深度偏移$Z<em>{cc}$；对齐的特征回归$$\delta</em>{Z<em>c}$，用于修正instance-level的深度值。最终的深度预测为<br>$Z_c=Z</em>{cc}+\delta_{Z_c}$$</p>
 <h2 id="3D-Box-Corner-Regression"><a href="#3D-Box-Corner-Regression" class="headerlink" title="3D Box Corner Regression"></a>3D Box Corner Regression</h2><p>这个子网回归局部坐标系下的八个角点，局部坐标系是参考Deep3DBox构建的</p>
-<h2 id="loss"><a href="#loss" class="headerlink" title="loss"></a>loss</h2><h3 id="2D-detection-loss"><a href="#2D-detection-loss" class="headerlink" title="2D detection loss"></a>2D detection loss</h3><p>目标置信度的训练使用的是softmax cross entropy，2D bounding box回归使用的是masked L1 distance loss<br>$L_{conf}&#x3D;CE_{g\in \mathcal{g}} (s \cdot (Pr_{obj}^{g}), \widetilde{Pr}<em>{obj}^g)$<br>$L</em>{bbox}&#x3D;\sum_g \mathbb{I}<em>g^{obj} \cdot d(B</em>{2d}^g,\widetilde{B}<em>{2d}^g)$<br>$L</em>{2d}&#x3D;L_{conf}+\omega L_{bbox}$</p>
-<h3 id="Instance-Depth-loss"><a href="#Instance-Depth-loss" class="headerlink" title="Instance Depth loss"></a>Instance Depth loss</h3><p>L1 loss<br>$L_{zc}&#x3D;\sum_g \mathbb{I}<em>g^{obj} \cdot d(Z</em>{cc}^g,\widetilde{Z}<em>c^g)$<br>$L</em>{z\delta}&#x3D;\sum_g \mathbb{I}<em>g^{obj} \cdot d(Z</em>{cc}^g+\delta_{Z_c}^g,\widetilde{Z}<em>c^g)$<br>$L</em>{depth}&#x3D;\alpha L_{zc}+L_{z\delta}$</p>
-<h3 id="3D-localization-loss"><a href="#3D-localization-loss" class="headerlink" title="3D localization loss"></a>3D localization loss</h3><p>L1 loss<br>$L_c^{2d}&#x3D;\sum_g \mathbb{I}_g^{obj} \cdot d(g+\delta_C^g,\widetilde{c}^g)$<br>$L_c^{3d}&#x3D;\sum_g \mathbb{I}<em>g^{obj} \cdot d(C_s^g+\delta_C^g,\widetilde{C}^g)$<br>$L</em>{location}&#x3D;\beta L_c^{2d} + L_c^{3d}$</p>
-<h3 id="Local-Corner-Loss"><a href="#Local-Corner-Loss" class="headerlink" title="Local Corner Loss"></a>Local Corner Loss</h3><p>$L_{corners}&#x3D;\sum_g \sum_k \mathbb{I}_g^{obj} \cdot d(O_k,\widetilde{O}_k)$</p>
-<h3 id="Joint-3D-Loss"><a href="#Joint-3D-Loss" class="headerlink" title="Joint 3D Loss"></a>Joint 3D Loss</h3><p>预测应当是一个整体，各个part之间也要建立一定的联系。我们将joint 3D loss表示为相机坐标系的角点坐标的距离之和<br>$L_{joint}&#x3D;\sum_g\sum_k 	\mathbb{I}_{g}^{obj}\cdot d(O_k^{cam},\widetilde{O}_k^{cam})$</p>
-<h1 id="2019–CVPR–CenterNet–Objects-as-Points"><a href="#2019–CVPR–CenterNet–Objects-as-Points" class="headerlink" title="2019–CVPR–CenterNet–Objects as Points"></a>2019–CVPR–CenterNet–Objects as Points</h1><p>[<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1904.07850.pdf">Paper</a>]     [<a target="_blank" rel="noopener" href="https://github.com/xingyizhou/CenterNet">Code</a>]</p>
-<h2 id="2D-Detection"><a href="#2D-Detection" class="headerlink" title="2D Detection"></a>2D Detection</h2><p>CenterNet采用关键点回归的思路，首先先生成一个关键点的heatmap，并使用Gaussian Kernel对其splat<br>$Y_{xyc}&#x3D;exp(- \frac{(x-\widetilde p_x)^2+(y-\widetilde p_y)^2}{2\sigma^2_p})$<br>其中，$\sigma_p$是目标大小自适应的标准偏差。（如果同一个类别的Gaussian重叠了，取每元素的最大值）</p>
-<p>对于heatmap，训练的目标是使用focal loss减少惩罚的像素级别的logistic regression<br>$L_k&#x3D;\frac{-1}{N}\sum_{xyc}<br>\left{<br>\begin{matrix}<br>(1-\hat{Y}<em>{xyc})^\alpha log(\hat{Y}</em>{xyc}) &amp;&amp;if&amp;Y_{xyc}&#x3D;1\<br>(1-Y_{xyc})^\beta(\hat{Y}<em>{xyc})^\alpha<br>log(1-\hat{Y}</em>{xyc}) &amp;&amp; otherwise\<br>\end{matrix}<br>\right.$<br>其中，$\alpha$和$\beta$是focal loss的超参数（论文中设置的都是$\alpha&#x3D;2$和$\beta&#x3D;4$），N是图像的关键点数量。</p>
-<p>为了恢复由输出步幅引起的离散化误差，对每个中心点增加了一个local offset。所有类别共享一个预测的offset，使用L1 loss进行训练（这个监督只对关键点的位置$\widetilde{p}$起作用，其他位置都忽略）<br>$L_{off}&#x3D;\frac{1}{N}\sum_p|\hat{O}_p-(\frac{p}{R}-\widetilde{p})|$</p>
-<p>令$(x_1^{(k)}, y_1^{(k)}, x_2^{(k)}, y_2^{(k)})$是类别$c_k$目标$k$的bounding box，其中心点位于<br>$p_k&#x3D;(\frac{x_1^{(k)}+x_2^{(k)}}{2}, \frac{y_1^{(k)}+y_2^{(k)}}{2})$<br>对每个目标$k$回归其size<br>$s_k&#x3D;(x_2^{(k)}-x_1^{(k)}, y_2^{(k)}-y_1^{(k)})$<br>为了限制计算开销，对每个中心点使用L1 loss进行简单的size预测<br>$L_{size}&#x3D;\frac{1}{N}\sum_{k&#x3D;1}^N|\hat{S}_{p_k}-s_k|$</p>
-<p>总的训练目标<br>$L_{det}&#x3D;L_k+\lambda_{size}L_{size}+\lambda_{off}L_{off}$<br>论文中设置$\lambda_{size}&#x3D;0.1$和$\lambda_{off}&#x3D;1$。</p>
-<p>在推理阶段，将points组合成boxes，令$\hat{P}<em>c$是类别$c$检测出的$n$个中心点$\hat{P}&#x3D;{(\hat{x_i}, \hat{y_i}) }</em>{i&#x3D;1}^n$的set 。每个关键点的位置由一个整数坐标$(x_i, y_i)$给出。用关键点数值$\hat{Y}_{x_iy_ic}$作为检测置信度的衡量，可以得到bounding box的位置<br>$(\hat{x}_i+\delta \hat{x}_i-\frac{\hat{w}_i}{2},\hat{y}_i+\delta \hat{y}_i-\frac{\hat{h}_i}{2},\hat{x}_i+\delta \hat{x}_i+\frac{\hat{w}_i}{2},\hat{y}_i+\delta \hat{y}_i+\frac{\hat{h}_i}{2})$<br>其中，$(\delta\hat{x}_i,\delta\hat{y}<em>i)&#x3D;\hat{O}</em>{\hat{x}_i,\hat{y}_i}$是偏移量的预测，$(\hat{w}_i,\hat{h}<em>i)&#x3D;\hat{S}</em>{\hat{x}_i,\hat{y}_i}$是目标框size的预测。</p>
+<h2 id="loss"><a href="#loss" class="headerlink" title="loss"></a>loss</h2><h3 id="2D-detection-loss"><a href="#2D-detection-loss" class="headerlink" title="2D detection loss"></a>2D detection loss</h3><p>目标置信度的训练使用的是softmax cross entropy，2D bounding box回归使用的是masked L1 distance loss</p>
+<script type="math/tex; mode=display">L_{conf}=CE_{g\in \mathcal{g}} (s \cdot (Pr_{obj}^{g}), \widetilde{Pr}_{obj}^g)</script><script type="math/tex; mode=display">L_{bbox}=\sum_g \mathbb{I}_g^{obj} \cdot d(B_{2d}^g,\widetilde{B}_{2d}^g)</script><script type="math/tex; mode=display">L_{2d}=L_{conf}+\omega L_{bbox}</script><h3 id="Instance-Depth-loss"><a href="#Instance-Depth-loss" class="headerlink" title="Instance Depth loss"></a>Instance Depth loss</h3><p>L1 loss</p>
+<script type="math/tex; mode=display">L_{zc}=\sum_g \mathbb{I}_g^{obj} \cdot d(Z_{cc}^g,\widetilde{Z}_c^g)</script><script type="math/tex; mode=display">L_{z\delta}=\sum_g \mathbb{I}_g^{obj} \cdot d(Z_{cc}^g+\delta_{Z_c}^g,\widetilde{Z}_c^g)</script><script type="math/tex; mode=display">L_{depth}=\alpha L_{zc}+L_{z\delta}</script><h3 id="3D-localization-loss"><a href="#3D-localization-loss" class="headerlink" title="3D localization loss"></a>3D localization loss</h3><p>L1 loss</p>
+<script type="math/tex; mode=display">L_c^{2d}=\sum_g \mathbb{I}_g^{obj} \cdot d(g+\delta_C^g,\widetilde{c}^g)</script><script type="math/tex; mode=display">L_c^{3d}=\sum_g \mathbb{I}_g^{obj} \cdot d(C_s^g+\delta_C^g,\widetilde{C}^g)</script><script type="math/tex; mode=display">L_{location}=\beta L_c^{2d} + L_c^{3d}</script><h3 id="Local-Corner-Loss"><a href="#Local-Corner-Loss" class="headerlink" title="Local Corner Loss"></a>Local Corner Loss</h3><script type="math/tex; mode=display">L_{corners}=\sum_g \sum_k \mathbb{I}_g^{obj} \cdot d(O_k,\widetilde{O}_k)</script><h3 id="Joint-3D-Loss"><a href="#Joint-3D-Loss" class="headerlink" title="Joint 3D Loss"></a>Joint 3D Loss</h3><p>预测应当是一个整体，各个part之间也要建立一定的联系。我们将joint 3D loss表示为相机坐标系的角点坐标的距离之和</p>
+<script type="math/tex; mode=display">L_{joint}=\sum_g\sum_k     \mathbb{I}_{g}^{obj}\cdot d(O_k^{cam},\widetilde{O}_k^{cam})</script><h1 id="2019—CVPR—CenterNet—Objects-as-Points"><a href="#2019—CVPR—CenterNet—Objects-as-Points" class="headerlink" title="2019—CVPR—CenterNet—Objects as Points"></a>2019—CVPR—CenterNet—Objects as Points</h1><p>[<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1904.07850.pdf">Paper</a>]     [<a target="_blank" rel="noopener" href="https://github.com/xingyizhou/CenterNet">Code</a>]</p>
+<h2 id="2D-Detection"><a href="#2D-Detection" class="headerlink" title="2D Detection"></a>2D Detection</h2><p>CenterNet采用关键点回归的思路，首先先生成一个关键点的heatmap，并使用Gaussian Kernel对其splat</p>
+<script type="math/tex; mode=display">Y_{xyc}=exp(- \frac{(x-\widetilde p_x)^2+(y-\widetilde p_y)^2}{2\sigma^2_p})</script><p>其中，$\sigma_p$是目标大小自适应的标准偏差。（如果同一个类别的Gaussian重叠了，取每元素的最大值）</p>
+<p>对于heatmap，训练的目标是使用focal loss减少惩罚的像素级别的logistic regression</p>
+<script type="math/tex; mode=display">L_k=\frac{-1}{N}\sum_{xyc}
+\left\{
+\begin{matrix}
+(1-\hat{Y}_{xyc})^\alpha log(\hat{Y}_{xyc}) &&if&Y_{xyc}=1\\
+(1-Y_{xyc})^\beta(\hat{Y}_{xyc})^\alpha
+log(1-\hat{Y}_{xyc}) && otherwise\\
+\end{matrix}
+\right.</script><p>其中，$\alpha$和$\beta$是focal loss的超参数（论文中设置的都是$\alpha=2$和$\beta=4$），N是图像的关键点数量。</p>
+<p>为了恢复由输出步幅引起的离散化误差，对每个中心点增加了一个local offset。所有类别共享一个预测的offset，使用L1 loss进行训练（这个监督只对关键点的位置$\widetilde{p}$起作用，其他位置都忽略）</p>
+<script type="math/tex; mode=display">L_{off}=\frac{1}{N}\sum_p|\hat{O}_p-(\frac{p}{R}-\widetilde{p})|</script><p>令$(x_1^{(k)}, y_1^{(k)}, x_2^{(k)}, y_2^{(k)})$是类别$c_k$目标$k$的bounding box，其中心点位于</p>
+<script type="math/tex; mode=display">p_k=(\frac{x_1^{(k)}+x_2^{(k)}}{2}, \frac{y_1^{(k)}+y_2^{(k)}}{2})</script><p>对每个目标$k$回归其size </p>
+<script type="math/tex; mode=display">s_k=(x_2^{(k)}-x_1^{(k)}, y_2^{(k)}-y_1^{(k)})</script><p>为了限制计算开销，对每个中心点使用L1 loss进行简单的size预测</p>
+<script type="math/tex; mode=display">L_{size}=\frac{1}{N}\sum_{k=1}^N|\hat{S}_{p_k}-s_k|</script><p>总的训练目标</p>
+<script type="math/tex; mode=display">L_{det}=L_k+\lambda_{size}L_{size}+\lambda_{off}L_{off}</script><p>论文中设置$\lambda<em>{size}=0.1$和$\lambda</em>{off}=1$。</p>
+<p>在推理阶段，将points组合成boxes，令$\hat{P}<em>c$是类别$c$检测出的$n$个中心点$\hat{P}={(\hat{x_i}, \hat{y_i}) }</em>{i=1}^n$的set 。每个关键点的位置由一个整数坐标$(x<em>i, y_i)$给出。用关键点数值$\hat{Y}</em>{x_iy_ic}$作为检测置信度的衡量，可以得到bounding box的位置</p>
+<script type="math/tex; mode=display">(\hat{x}_i+\delta \hat{x}_i-\frac{\hat{w}_i}{2},\hat{y}_i+\delta \hat{y}_i-\frac{\hat{h}_i}{2},\hat{x}_i+\delta \hat{x}_i+\frac{\hat{w}_i}{2},\hat{y}_i+\delta \hat{y}_i+\frac{\hat{h}_i}{2})</script><p>其中，$(\delta\hat{x}<em>i,\delta\hat{y}_i)=\hat{O}</em>{\hat{x}<em>i,\hat{y}_i}$是偏移量的预测，$(\hat{w}_i,\hat{h}_i)=\hat{S}</em>{\hat{x}_i,\hat{y}_i}$是目标框size的预测。</p>
 <p>所有的输出都直接从关键点预测给出，不需要基于IoU的NMS或是其他后处理。</p>
-<h2 id="3D-Detection"><a href="#3D-Detection" class="headerlink" title="3D Detection"></a>3D Detection</h2><h3 id="3D-dimension"><a href="#3D-dimension" class="headerlink" title="3D dimension"></a>3D dimension</h3><p>使用绝对度量的L1 loss训练3D box的size<br>$L_{dim}&#x3D;\frac{1}{N}\sum_{k&#x3D;1}^N | \hat{\gamma}_k - \gamma_k|$</p>
-<h3 id="depth-d"><a href="#depth-d" class="headerlink" title="depth d"></a>depth d</h3><p>depth很难直接回归，因此我们参考的<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1406.2283.pdf">Depth map prediction</a>输出变换，预测<br>$d&#x3D;\frac{1}{\sigma(\hat{d})} - 1$<br>其中，$\sigma$是sigmoid函数。<br>在原始的深度上进行sigmoid变换后，使用L1 loss计算损失<br>$L_{dep}&#x3D;\frac{1}{N}\sum_{k&#x3D;1}^N | \frac{1}{\sigma(\hat{d}_k)}-1-d_k |$</p>
-<h3 id="orientation"><a href="#orientation" class="headerlink" title="orientation"></a>orientation</h3><p>orientation同样很难直接回归，参考<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1612.00496.pdf">Deep3DBox</a>，使用in-bin回归将方向表示为两个bin。方向回归使用8-scalar encoding，每个bin四个标量，其中两个用于softmax分类，剩下两个回归in-bin offset的角度的正弦和余弦值。<br>分类使用softmax进行训练，角度值使用L1 loss进行训练<br>$L_{ori}&#x3D;\frac{1}{N}\sum_{k&#x3D;1}^N \sum_{i&#x3D;1}^2(softmax(\hat{b}_i,c_i)+c_i|\hat{a}_i-a_i|)$<br>其中，$a_i&#x3D;(sin(\theta-m_i), cos(\theta-m_i))$</p>
-<p>预测的方向$\theta$从8-scalar encoding中解码<br>$\hat{\theta}&#x3D;arctan2(\hat{a}<em>{j1},\hat{a}</em>{j2})+m_j$<br>其中，$j$是分类score最大的bin的索引</p>
-<h1 id="2020–CVPR–CenterPoint–Center-based-3D-object-detection-and-tracking"><a href="#2020–CVPR–CenterPoint–Center-based-3D-object-detection-and-tracking" class="headerlink" title="2020–CVPR–CenterPoint–Center-based 3D object detection and tracking"></a>2020–CVPR–CenterPoint–Center-based 3D object detection and tracking</h1><p>[<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2006.11275.pdf">Paper</a>]     [<a target="_blank" rel="noopener" href="https://github.com/tianweiy/CenterPoint">Code</a>]<br>CenterPoint是一个两阶段的架构。第一个阶段预测class-specific的heatmap、目标框的size、亚体素位置细化(sub-voxel location refinement)、旋转和速度，所有的输出都是密集预测。第二个阶段在第一阶段的预测结果之上预测类别不知（class-agnostic）的置信度得分和目标框细化。</p>
-<h2 id="Stage-1"><a href="#Stage-1" class="headerlink" title="Stage 1"></a>Stage 1</h2><h3 id="heatmap"><a href="#heatmap" class="headerlink" title="heatmap"></a>heatmap</h3><p>heatmap使用Gaussian核对真值中心点进行展开，增大真值的比例，使用focal loss进行训练。高斯核半径设置为$\sigma&#x3D;max(f(wl),\tau)$，其中$\tau&#x3D;2$是允许的最小的高斯半径，$f$是CornerNet中定义的半径函数。</p>
+<h2 id="3D-Detection"><a href="#3D-Detection" class="headerlink" title="3D Detection"></a>3D Detection</h2><h3 id="3D-dimension"><a href="#3D-dimension" class="headerlink" title="3D dimension"></a>3D dimension</h3><p>使用绝对度量的L1 loss训练3D box的size</p>
+<script type="math/tex; mode=display">L_{dim}=\frac{1}{N}\sum_{k=1}^N | \hat{\gamma}_k - \gamma_k|</script><h3 id="depth-d"><a href="#depth-d" class="headerlink" title="depth d"></a>depth d</h3><p>depth很难直接回归，因此我们参考的<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1406.2283.pdf">Depth map prediction</a>输出变换，预测</p>
+<script type="math/tex; mode=display">d=\frac{1}{\sigma(\hat{d})} - 1</script><p>其中，$\sigma$是sigmoid函数。<br>在原始的深度上进行sigmoid变换后，使用L1 loss计算损失</p>
+<script type="math/tex; mode=display">L_{dep}=\frac{1}{N}\sum_{k=1}^N | \frac{1}{\sigma(\hat{d}_k)}-1-d_k |</script><h3 id="orientation"><a href="#orientation" class="headerlink" title="orientation"></a>orientation</h3><p>orientation同样很难直接回归，参考<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1612.00496.pdf">Deep3DBox</a>，使用in-bin回归将方向表示为两个bin。方向回归使用8-scalar encoding，每个bin四个标量，其中两个用于softmax分类，剩下两个回归in-bin offset的角度的正弦和余弦值。<br>分类使用softmax进行训练，角度值使用L1 loss进行训练</p>
+<script type="math/tex; mode=display">L_{ori}=\frac{1}{N}\sum_{k=1}^N \sum_{i=1}^2(softmax(\hat{b}_i,c_i)+c_i|\hat{a}_i-a_i|)</script><p>其中，$a_i=(sin(\theta-m_i), cos(\theta-m_i))$</p>
+<p>预测的方向$\theta$从8-scalar encoding中解码</p>
+<script type="math/tex; mode=display">\hat{\theta}=arctan2(\hat{a}_{j1},\hat{a}_{j2})+m_j</script><p>其中，$j$是分类score最大的bin的索引</p>
+<h1 id="2020—CVPR—CenterPoint—Center-based-3D-object-detection-and-tracking"><a href="#2020—CVPR—CenterPoint—Center-based-3D-object-detection-and-tracking" class="headerlink" title="2020—CVPR—CenterPoint—Center-based 3D object detection and tracking"></a>2020—CVPR—CenterPoint—Center-based 3D object detection and tracking</h1><p>[<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2006.11275.pdf">Paper</a>]     [<a target="_blank" rel="noopener" href="https://github.com/tianweiy/CenterPoint">Code</a>]<br>CenterPoint是一个两阶段的架构。第一个阶段预测class-specific的heatmap、目标框的size、亚体素位置细化(sub-voxel location refinement)、旋转和速度，所有的输出都是密集预测。第二个阶段在第一阶段的预测结果之上预测类别不知（class-agnostic）的置信度得分和目标框细化。</p>
+<h2 id="Stage-1"><a href="#Stage-1" class="headerlink" title="Stage 1"></a>Stage 1</h2><h3 id="heatmap"><a href="#heatmap" class="headerlink" title="heatmap"></a>heatmap</h3><p>heatmap使用Gaussian核对真值中心点进行展开，增大真值的比例，使用focal loss进行训练。高斯核半径设置为$\sigma=max(f(wl),\tau)$，其中$\tau=2$是允许的最小的高斯半径，$f$是CornerNet中定义的半径函数。</p>
 <h3 id="loc"><a href="#loc" class="headerlink" title="loc"></a>loc</h3><p>sub-voxel location refinement $o$减少了backbone体素化和striding的量化误差</p>
 <h3 id="height"><a href="#height" class="headerlink" title="height"></a>height</h3><p>地面上高度帮助定位目标的3D位置，并添加地图投影中丢失的海拔信息。</p>
 <h3 id="Orientation-1"><a href="#Orientation-1" class="headerlink" title="Orientation"></a>Orientation</h3><p>使用角度的正弦和余弦进行回归。</p>
-<h2 id="Stage-2"><a href="#Stage-2" class="headerlink" title="Stage 2"></a>Stage 2</h2><h3 id="class-agnostic-confidence-score-prediction"><a href="#class-agnostic-confidence-score-prediction" class="headerlink" title="class-agnostic confidence score prediction"></a>class-agnostic confidence score prediction</h3><p>使用目标框与相应真值框的3D IoU引导的目标分数$I$<br>$I&#x3D;min(1,max(0,2\times IoU_t-0.5))$<br>使用BCE loss进行训练<br>$L_{score}&#x3D;-I_t log(\hat{I}_t)-(1-I_t)log(1-\hat{I}_t)$</p>
-<h1 id="2020–MonoPair"><a href="#2020–MonoPair" class="headerlink" title="2020–MonoPair"></a>2020–MonoPair</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1668651070095-af215080-895e-42d3-8b7c-a649d12e5e3f.png#averageHue=%23cce0bd&clientId=u8cc0cffd-c905-4&from=drop&id=u1138dcb9&originHeight=640&originWidth=2532&originalType=binary&ratio=1&rotation=0&showTitle=false&size=749102&status=done&style=none&taskId=u3ad3e383-df60-43c6-bb12-86e7ba082f6&title=" alt="截屏2022-11-17 10.11.04.png"><br>一共11个分支，分为三个部分，2D检测、3D检测和成对约束。</p>
+<h2 id="Stage-2"><a href="#Stage-2" class="headerlink" title="Stage 2"></a>Stage 2</h2><h3 id="class-agnostic-confidence-score-prediction"><a href="#class-agnostic-confidence-score-prediction" class="headerlink" title="class-agnostic confidence score prediction"></a>class-agnostic confidence score prediction</h3><p>使用目标框与相应真值框的3D IoU引导的目标分数$I$<br>$I=min(1,max(0,2\times IoU_t-0.5))$<br>使用BCE loss进行训练</p>
+<script type="math/tex; mode=display">L_{score}=-I_t log(\hat{I}_t)-(1-I_t)log(1-\hat{I}_t)</script><h1 id="2020—MonoPair"><a href="#2020—MonoPair" class="headerlink" title="2020—MonoPair"></a>2020—MonoPair</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1668651070095-af215080-895e-42d3-8b7c-a649d12e5e3f.png#averageHue=%23cce0bd&amp;clientId=u8cc0cffd-c905-4&amp;from=drop&amp;id=u1138dcb9&amp;originHeight=640&amp;originWidth=2532&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=749102&amp;status=done&amp;style=none&amp;taskId=u3ad3e383-df60-43c6-bb12-86e7ba082f6&amp;title=" alt="截屏2022-11-17 10.11.04.png"><br>一共11个分支，分为三个部分，2D检测、3D检测和成对约束。</p>
 <ul>
 <li>2D检测<ul>
 <li>heatmap用于关键点的定位和分类，参考的是centernet</li>
@@ -487,7 +497,7 @@
 <li>3D检测<ul>
 <li>depth<ul>
 <li>参考Depth Map Prediction from a Single Image using a Multi-Scale Deep Network。</li>
-<li>transforming the absolute depth by inverse sigmoid transformation z &#x3D; 1&#x2F;σ(ˆz) − 1</li>
+<li>transforming the absolute depth by inverse sigmoid transformation z = 1/σ(ˆz) − 1</li>
 <li>L1 loss</li>
 </ul>
 </li>
@@ -519,20 +529,20 @@
 </li>
 </ul>
 <p>在2D检测中得到的keypoints中两两临近的点构成的空间约束，以两个kepoints之间的距离作为直径去画圆，当圆中有包含有其他object点时就直接忽略该约束。<br>本文另一方面的贡献在于uncertainty。</p>
-<h1 id="2021–CVPR–FCOS3D"><a href="#2021–CVPR–FCOS3D" class="headerlink" title="2021–CVPR–FCOS3D"></a>2021–CVPR–FCOS3D</h1><h1 id="2021–MonoFlex"><a href="#2021–MonoFlex" class="headerlink" title="2021–MonoFlex"></a>2021–MonoFlex</h1><p>作者将3D框分为4个子任务进行求解</p>
+<h1 id="2021—CVPR—FCOS3D"><a href="#2021—CVPR—FCOS3D" class="headerlink" title="2021—CVPR—FCOS3D"></a>2021—CVPR—FCOS3D</h1><h1 id="2021—MonoFlex"><a href="#2021—MonoFlex" class="headerlink" title="2021—MonoFlex"></a>2021—MonoFlex</h1><p>作者将3D框分为4个子任务进行求解</p>
 <ol>
 <li>对每一类检测目标，均给出先验信息$[h,w,l]$，通过网络输出偏差得到最终的结果</li>
 </ol>
-<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1668604297904-60334d82-88ee-427f-b246-7551aedaa97f.png#averageHue=%23f2f2f2&clientId=u5249b83e-cebf-4&from=drop&height=110&id=u467074be&originHeight=220&originWidth=986&originalType=binary&ratio=1&rotation=0&showTitle=false&size=33395&status=done&style=none&taskId=uffcec2bf-b248-4244-8985-5ade4640326&title=&width=493" alt="截屏2022-11-16 21.11.31.png"></p>
-<ol start="2">
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1668604297904-60334d82-88ee-427f-b246-7551aedaa97f.png#averageHue=%23f2f2f2&amp;clientId=u5249b83e-cebf-4&amp;from=drop&amp;height=110&amp;id=u467074be&amp;originHeight=220&amp;originWidth=986&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=33395&amp;status=done&amp;style=none&amp;taskId=uffcec2bf-b248-4244-8985-5ade4640326&amp;title=&amp;width=493" alt="截屏2022-11-16 21.11.31.png"></p>
+<ol>
 <li>估计深度信息z</li>
 </ol>
 <p>深度信息z的最终值由两部分组成，一部分是由网络直接预测得到的z,一部分是由相机小孔成像相似三角形得到的z，两者通过各自的概率信息，融合得到最终的z值。</p>
-<ol start="3">
+<ol>
 <li>利用深度信息z与长方体的中心在二维图像上的像素坐标结合相机投影公式得出长方体的中心在相机坐标系下的坐标值</li>
 <li>利用网络直接回归得到角度信息</li>
 </ol>
-<p>通过在 2D 图像上设定 10 个关键点: 3D 框的 8 个角点、顶部中心和底部中心，将 10 个关键点分为 3 组，即中心垂直线和两个对角垂直边界线 (h1-h3 和 h2-h4) 的平均，每组可以独立产生 2D 的高度 h，再结合网络预测得到的物体实际高度 H ，根据上述的关系式独立估计中心深度。最终结合 3 组估计的深度获得更好的深度预测结果。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1668589646762-d980a382-3af7-4200-a000-6dea00da801f.png#averageHue=%23e0ddd5&clientId=uef77c357-290e-4&from=drop&id=u9678ef0d&originHeight=1132&originWidth=2178&originalType=binary&ratio=1&rotation=0&showTitle=false&size=1742968&status=done&style=none&taskId=u49f01383-30c2-4102-ba7b-6be60d4e3ca&title=" alt="截屏2022-11-16 17.07.22.png"></p>
+<p>通过在 2D 图像上设定 10 个关键点: 3D 框的 8 个角点、顶部中心和底部中心，将 10 个关键点分为 3 组，即中心垂直线和两个对角垂直边界线 (h1-h3 和 h2-h4) 的平均，每组可以独立产生 2D 的高度 h，再结合网络预测得到的物体实际高度 H ，根据上述的关系式独立估计中心深度。最终结合 3 组估计的深度获得更好的深度预测结果。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1668589646762-d980a382-3af7-4200-a000-6dea00da801f.png#averageHue=%23e0ddd5&amp;clientId=uef77c357-290e-4&amp;from=drop&amp;id=u9678ef0d&amp;originHeight=1132&amp;originWidth=2178&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=1742968&amp;status=done&amp;style=none&amp;taskId=u49f01383-30c2-4102-ba7b-6be60d4e3ca&amp;title=" alt="截屏2022-11-16 17.07.22.png"></p>
 
                 
             </div>
@@ -862,6 +872,13 @@
 </main>
 
 
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+    });
+</script>
+
 
 
     <footer class="page-footer bg-color">
@@ -881,7 +898,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">22.9k</span>
+                        class="white-color">22.6k</span>
             
             
             

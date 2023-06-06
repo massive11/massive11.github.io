@@ -366,6 +366,10 @@ Deformable DETRDeformable Attention其思路主要来源于可变形卷积DCN，
                     
                     <div class="article-tag">
                         
+                            <a href="/tags/Multi-view-3D/">
+                                <span class="chip bg-color">Multi-view 3D</span>
+                            </a>
+                        
                             <a href="/tags/Attention/">
                                 <span class="chip bg-color">Attention</span>
                             </a>
@@ -431,7 +435,7 @@ Deformable DETRDeformable Attention其思路主要来源于可变形卷积DCN，
             <div id="articleContent">
                 <p>Deformable DETR介绍 与 Deformable Attention原理<br><span id="more"></span></p>
 <h2 id="Deformable-DETR"><a href="#Deformable-DETR" class="headerlink" title="Deformable DETR"></a>Deformable DETR</h2><h2 id="Deformable-Attention"><a href="#Deformable-Attention" class="headerlink" title="Deformable Attention"></a>Deformable Attention</h2><p>其思路主要来源于可变形卷积DCN，其对比如下图所示</p>
-<p><img src="/images/Deformable_attention.png" width="30%" height="30%"/></p>
+<p><img src="/images/Deformable_attention.png" width="60%" height="60%"/></p>
 <p>上图展示了四种网络的特点：</p>
 <ol>
 <li>ViT 中所有 Q 的感受野是一样的，都针对全局所有位置特征</li>
@@ -440,7 +444,7 @@ Deformable DETRDeformable Attention其思路主要来源于可变形卷积DCN，
 <li>DAT 则结合了 ViT 和 DCN，所有的 Q 会共享相同的感受野，但这些感受野会有学出来的位置偏差；为了降低计算复杂度，针对的特征数量也会降采样，因此图中采样点一共 16 个，相比原来缩小了 1/4。</li>
 </ol>
 <p>总体结构就如下图所示，Q 保持不变，K / V 是经过位置偏差后的采样值</p>
-<p><img src="/images/DAT_structure.png" width="30%" height="30%"/></p>
+<p><img src="/images/DAT_structure.png" width="80%" height="80%"/></p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2201.00520.pdf">Deformable Attention Paper</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2010.04159.pdf">Deformable DETR Paper</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/454115736">https://zhuanlan.zhihu.com/p/454115736</a></p>
 
                 
@@ -505,6 +509,10 @@ Deformable DETRDeformable Attention其思路主要来源于可变形卷积DCN，
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
+                            
+                                <a href="/tags/Multi-view-3D/">
+                                    <span class="chip bg-color">Multi-view 3D</span>
+                                </a>
                             
                                 <a href="/tags/Attention/">
                                     <span class="chip bg-color">Attention</span>
@@ -648,6 +656,10 @@ Deformable DETRDeformable Attention其思路主要来源于可变形卷积DCN，
                 
                 <div class="card-action article-tags">
                     
+                    <a href="/tags/Multi-view-3D/">
+                        <span class="chip bg-color">Multi-view 3D</span>
+                    </a>
+                    
                     <a href="/tags/Attention/">
                         <span class="chip bg-color">Attention</span>
                     </a>
@@ -656,8 +668,8 @@ Deformable DETRDeformable Attention其思路主要来源于可变形卷积DCN，
                         <span class="chip bg-color">DETR</span>
                     </a>
                     
-                    <a href="/tags/3D-Vision/">
-                        <span class="chip bg-color">3D Vision</span>
+                    <a href="/tags/BEV-Perception/">
+                        <span class="chip bg-color">BEV Perception</span>
                     </a>
                     
                 </div>
@@ -808,7 +820,7 @@ Deformable DETRDeformable Attention其思路主要来源于可变形卷积DCN，
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">24.7k</span>
+                        class="white-color">25.3k</span>
             
             
             

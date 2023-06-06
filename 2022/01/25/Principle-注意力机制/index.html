@@ -5,9 +5,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="注意力机制与Transformer原理, Untitled.">
-    <meta name="description" content="自注意力机制与Transformer原理
-自注意力机制
-An attention function can be described as mapping a query and a set of key-value pairs to an">
+    <meta name="description" content="注意力机制与Transformer原理
+注意力机制的出现在注意力机制广泛应用之前，CNN和RNN是主流模型，但是他们存在以下缺陷：
+
+计算能力的限制：要记住的信息越多，模型就越复杂，对算力的需求也就越大
+优化算法的限制：LSTM只能在一定程">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -401,14 +403,14 @@ An attention function can be described as mapping a query and a set of key-value
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    237
+                    1.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    5 分
                 </div>
                 
 
@@ -426,14 +428,40 @@ An attention function can be described as mapping a query and a set of key-value
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>自注意力机制与Transformer原理<br><span id="more"></span></p>
-<h2 id="自注意力机制"><a href="#自注意力机制" class="headerlink" title="自注意力机制"></a>自注意力机制</h2><blockquote>
+                <p>注意力机制与Transformer原理<br><span id="more"></span></p>
+<h2 id="注意力机制的出现"><a href="#注意力机制的出现" class="headerlink" title="注意力机制的出现"></a>注意力机制的出现</h2><p>在注意力机制广泛应用之前，CNN和RNN是主流模型，但是他们存在以下缺陷：</p>
+<ol>
+<li>计算能力的限制：要记住的信息越多，模型就越复杂，对算力的需求也就越大</li>
+<li>优化算法的限制：LSTM只能在一定程度上缓解RNN中的长距离依赖问题，且信息“记忆”能力并不高。</li>
+</ol>
+<h2 id="注意力机制"><a href="#注意力机制" class="headerlink" title="注意力机制"></a>注意力机制</h2><p>从本质上来说，注意力是从大量信息中有筛选出少量重要信息，并聚焦到这些重要信息上，忽略大多不重要的信息。权重越大越聚焦于其对应的Value值上，即权重代表信息的重要性，Value是对应的信息。</p>
+<p>注意力机制的计算过程从本质上来讲归纳为两个过程，第一个过程是根据Query和Key计算权重系数，第二个过程根据权重系数对Value进行加权求和。第一个过程可以继续细分为两个阶段：第一阶段根据Query和Key计算两者的相似性；第二阶段对第一阶段的原始分值进行归一化处理。</p>
+<p>在第一个阶段，可以引入不同的函数和计算机制，根据Query和Key，计算两者的相似性或者相关性，最常见的方法包括：求两者的向量点积、求两者的向量Cosine相似性或者通过再引入额外的神经网络来求值。</p>
+<p>在第二阶段引入类似SoftMax的计算方式对第一阶段的得分进行数值转换，一方面可以进行归一化，将原始计算分值整理成所有元素权重之和为1的概率分布；另一方面也可以通过SoftMax的内在机制更加突出重要元素的权重。</p>
+<h2 id="自注意力机制"><a href="#自注意力机制" class="headerlink" title="自注意力机制"></a>自注意力机制</h2><p>自注意力机制是注意力机制的变体，它减少了对外部信息的依赖，更擅长捕捉数据或特征的内部相关性。</p>
+<blockquote>
 <p>An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors. The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility function of the query with the corresponding key. (Attention is all you need, 2017)</p>
 </blockquote>
 <p>根据原论文中的描述，注意力机制可以描述为将query和一系列的key-value对映射到某个输出的过程，而这个输出的向量就是根据query和key计算得到的权重作用于value上的权重和。其结构为</p>
 <p><img src="/images/Attention_scheme.png" width="30%" height="30%"/></p>
 <p>如图所示，自注意力机制的核心过程就是通过Q和K计算得到注意力权重，然后再作用于V得到整个权重和输出。<br>对于输入Q、K和V来说，其输出向量的计算公式为：</p>
-<script type="math/tex; mode=display">{Attention(Q, K, V) = softmax(\frac{QK^T}{\sqrt{d_k}})V}</script><h2 id="多头自注意力"><a href="#多头自注意力" class="headerlink" title="多头自注意力"></a>多头自注意力</h2>
+<script type="math/tex; mode=display">{Attention(Q, K, V) = softmax(\frac{QK^T}{\sqrt{d_k}})V}</script><p>此处${\frac{1}{\sqrt{d_k}}}$就是上图中的scale，这一步是因为作者通过实验发现，较大的${d_k}$在完成${QK^T}$后会得到很大的值，这导致在经过sofrmax操作后产生非常小的梯度，不利于网络的训练。</p>
+<p>Q、K、V由输入X分别乘以3个不同的矩阵计算得到</p>
+<h2 id="多头自注意力"><a href="#多头自注意力" class="headerlink" title="多头自注意力"></a>多头自注意力</h2><p>自注意力机制的缺陷：模型在对当前位置的信息进行编码时，会过度的将注意力集中于自身的位置，而忽略了其他位置。作者提出了通过多头注意力机制来解决这一问题，其结构图如下</p>
+<p><img src="/images/multi_head_attention.png" width="30%" height="30%"/></p>
+<p>多头注意力机制是将原始的输入序列进行多组的自注意力处理过程，然后再将每一组自注意力的结果拼接起来进行一次线性变换得到最终的输出结果，其计算公式为</p>
+<script type="math/tex; mode=display">{MultiHead(Q,K,V)=Concate(head_1, ..., head_h)W^o \   where \   head_i=Attention(QW_i^Q, kW_i^K, VW_i^V)}</script><p>多头注意力机制其实就是将一个大的高维单头拆分成了h个多头，每个头可以关注输入的不同部分。因此能够表示比简单加权平均值更复杂的函数。</p>
+<h2 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h2><p>Transformer 是基于 encoder-decoder 的架构，它使用注意力来编码。<br>Transformer 的编码阶段概括如下：</p>
+<ol>
+<li>为每个单词生成初始表达或 embeddings</li>
+<li>对于每一个词，使用自注意力聚合来自所有其他上下文单词的信息，生成参考了整个上下文的每个单词的新表达</li>
+<li>基于前面生成的表达，连续地构建新的表达对每个单词并行地重复多次这种处理。</li>
+</ol>
+<p>Transformer的整体结构如下图所示</p>
+<p><img src="/images/Transformer.png" width="30%" height="30%"/></p>
+<p>Encoder 的 self-attention 中，所有 Key, Value 和 Query 都来自同一位置，即上一层 encoder 的输出。Decoder的设计类似，所有 Key, Value 和 Query 都来自同一位置，即上一层 decoder 的输出，不过只能看到上一层对应当前 query 位置之前的部分。生成 Query 时，不仅关注前一步的输出，还参考编码器的最后一层输出。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>图片来源：<br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1706.03762.pdf">https://arxiv.org/pdf/1706.03762.pdf</a><br>文字内容：<br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1706.03762.pdf">https://arxiv.org/pdf/1706.03762.pdf</a><br><a target="_blank" rel="noopener" href="https://www.ylkz.life/deeplearning/p10553832/">https://www.ylkz.life/deeplearning/p10553832/</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/265108616">https://zhuanlan.zhihu.com/p/265108616</a><br><a target="_blank" rel="noopener" href="https://congchan.github.io/NLP-attention-03-self-attention/">https://congchan.github.io/NLP-attention-03-self-attention/</a></p>
+
                 
             </div>
             <hr/>
@@ -787,7 +815,7 @@ An attention function can be described as mapping a query and a set of key-value
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">22.8k</span>
+                        class="white-color">23.9k</span>
             
             
             

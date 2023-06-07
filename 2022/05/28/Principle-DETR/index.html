@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="keywords" content="DETR 与 DETR3D, Untitled.">
     <meta name="description" content="DETR原理与DETR3D原理前情提要：之前的文章中，已经对注意力机制和原理Transformer的整体结构进行了介绍。本文将在其基础上介绍DETR原理和DETR3D原理。
-DETRDETR总体思路是把目标检测看成一个set predict">
+DETR (ECCV 2020)DETR总体思路是把目标检测看成一">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -408,14 +408,14 @@ DETRDETR总体思路是把目标检测看成一个set predict">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.1k
+                    1.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    5 分
                 </div>
                 
 
@@ -434,7 +434,7 @@ DETRDETR总体思路是把目标检测看成一个set predict">
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <p>DETR原理与DETR3D原理<br><span id="more"></span><br>前情提要：之前的<a target="_blank" rel="noopener" href="https://massive11.github.io/2022/01/25/Principle-%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6/">文章</a>中，已经对注意力机制和原理Transformer的整体结构进行了介绍。本文将在其基础上介绍DETR原理和DETR3D原理。</p>
-<h2 id="DETR"><a href="#DETR" class="headerlink" title="DETR"></a>DETR</h2><p>DETR总体思路是把目标检测看成一个set prediction的问题，使用Transformer来预测box的set。DETR 利用标准 Transformer 架构来执行传统上特定于目标检测的操作，从而简化了检测 pipeline，可以归结为：Backbone -&gt; Transformer -&gt; detect header。其结构图如下图所示</p>
+<h2 id="DETR-ECCV-2020"><a href="#DETR-ECCV-2020" class="headerlink" title="DETR (ECCV 2020)"></a>DETR (ECCV 2020)</h2><p>DETR总体思路是把目标检测看成一个set prediction的问题，使用Transformer来预测box的set。DETR 利用标准 Transformer 架构来执行传统上特定于目标检测的操作，从而简化了检测 pipeline，可以归结为：Backbone -&gt; Transformer -&gt; detect header。其结构图如下图所示</p>
 <p><img src="/images/DETR.png" width="80%" height="80%"/></p>
 <p>观察上图可以发现，DETR的整体结构与Transformer类似：Backbone得到的特征铺平，加上Position信息之后送到一堆Encoder里，得到一些candidates的特征。Candidates又被Decoder并行解码得到最后的检测框。</p>
 <h3 id="DETR-Encoder"><a href="#DETR-Encoder" class="headerlink" title="DETR Encoder"></a>DETR Encoder</h3><p>网络一开始是使用Backbone（比如ResNet）提取一些feature，然后降维到d×HW。</p>
@@ -447,7 +447,8 @@ pos &#x3D; torch.cat((pos_y, pos_x), dim&#x3D;3).permute(0, 3, 1, 2)<span aria-h
 <h3 id="DETR-Decoder"><a href="#DETR-Decoder" class="headerlink" title="DETR Decoder"></a>DETR Decoder</h3><p>DETR Decoder的结构也与Transformer类似，区别在于Decoder并行解码N个object。每个Decoder有两个输入：一路是Object Query（或者是上一个Decoder的输出），另一路是Encoder的结果。Object Query是一组nn.Embedding的weight（就是一组学到的参数）。</p>
 <p>与Transformer不同，DETR的Decoder也加了Positional Encoding。最后一个Decoder后面接了两个FFN，分别预测检测框及其类别。</p>
 <h3 id="Bipartite-Matching"><a href="#Bipartite-Matching" class="headerlink" title="Bipartite Matching"></a>Bipartite Matching</h3><p>由于输出物体的顺序不一定与ground truth的序列相同，作者使用二元匹配将GT框与预测框进行匹配。这里可以参考之前写的匈牙利匹配的<a target="_blank" rel="noopener" href="https://massive11.github.io/2022/05/27/Principle-%E5%8C%88%E7%89%99%E5%88%A9%E5%8C%B9%E9%85%8D/">文章</a>。</p>
-<h2 id="Loss-Function"><a href="#Loss-Function" class="headerlink" title="Loss Function"></a>Loss Function</h2><h2 id="DETR3D"><a href="#DETR3D" class="headerlink" title="DETR3D"></a>DETR3D</h2><h3 id="BEV-Perception"><a href="#BEV-Perception" class="headerlink" title="BEV Perception"></a>BEV Perception</h3><p>自动驾驶是3D目标检测重要的落地场景之一，通过纯视觉的方法，在2D图像上预测车辆、行人等3维BBox信息天然存在诸多困难，而2D的目标检测方法相对成熟，因此更多的3D目标检测方法更加关注如何从现有的2D检测框架迁移到3D任务中。从Tesla公布新的俯瞰视角(Bird’s-eys-view, BEV)目标检测的方法开始，越来越多的工作从俯视角出发做Detection, Segmentation。在BEV视角下做3D Detection，其好处如下：</p>
+<h2 id="Loss-Function"><a href="#Loss-Function" class="headerlink" title="Loss Function"></a>Loss Function</h2><h2 id="DETR3D-CoRL-2021"><a href="#DETR3D-CoRL-2021" class="headerlink" title="DETR3D (CoRL 2021)"></a>DETR3D (CoRL 2021)</h2><p>DETR3D是DETR范式在多目3D视觉任务上的拓展版本。对于多目3D视觉任务，就不得不提到当前仍占据主流的BEV感知方案。</p>
+<h3 id="BEV-Perception"><a href="#BEV-Perception" class="headerlink" title="BEV Perception"></a>BEV Perception</h3><p>自动驾驶是3D目标检测重要的落地场景之一，通过纯视觉的方法，在2D图像上预测车辆、行人等3维BBox信息天然存在诸多困难，而2D的目标检测方法相对成熟，因此更多的3D目标检测方法更加关注如何从现有的2D检测框架迁移到3D任务中。从Tesla公布新的俯瞰视角(Bird’s-eys-view, BEV)目标检测的方法开始，越来越多的工作从俯视角出发做Detection, Segmentation。在BEV视角下做3D Detection，其好处如下：</p>
 <ol>
 <li>基于视觉的检测属于前向视角，在成像的过程中天然存在近大远小的特点。例如车道线，在成像的图片上是一条相交的直线，而在俯视角下直接预测为直线更接近现实场景；同时在BEV视角做检测能更好避免截断问题</li>
 <li>按照2D检测的pipeline，将2D中检测好的物体反投影回3D空间，需要预测深度、航向角等，引入了更多的误差</li>
@@ -457,15 +458,23 @@ pos &#x3D; torch.cat((pos_y, pos_x), dim&#x3D;3).permute(0, 3, 1, 2)<span aria-h
 <p><img src="/images/DETR3D.png" width="80%" height="80%"/></p>
 <p>整个网络可大致分为四个部分：</p>
 <ol>
-<li>Encoder<br>输入车载环视的6张图片,每张图片通过ResNet等2D骨干网络提取特征；再通过FPN得到4个不同尺度特征图 </li>
-<li><p>Decoder<br> decoder的输入是经过fpn的特征图，在特征层面实现2D到3D的转换，避免深度估计带来的误差，同时可以避免NMS等耗时的后处理操作。</p>
+<li><p>Encoder<br>输入车载环视的6张图片,每张图片通过ResNet等2D骨干网络提取特征；再通过FPN得到4个不同尺度特征图 </p>
 </li>
-<li><p>二分匹配</p>
+<li><p>Decoder<br> Decoder的输入是Encoder输出的特征图，在特征层面实现2D到3D的转换，避免深度估计带来的误差，同时可以避免NMS等耗时的后处理操作。具体实现步骤如下</p>
+<ul>
+<li>object queries的生成类似DETR，先随机生成$M$个bounding box(类似先生成一堆anchor box，只不过这里的box是会被最后的loss梯度回传的)。</li>
+<li>如图中蓝线所示，预测query在三维空间中的一个参考点（通常就是简单的linear）。</li>
+<li>如图中绿线所示，利用相机参数，将这个参考点反投影回图像中，找到其在原始图像中对应的位置。</li>
+<li>如图中红线所示，利用多头注意力机制，将找出的特征映射部分对queries进行refine。这种refine过程是逐层进行的，理论上，更靠后的layer应该会吸纳更多的特征信息。</li>
+<li>如图中黑线所示，得到新的queries之后，再通过两个子网络分别预测bounding box和类别。</li>
+</ul>
+</li>
+<li><p>二分匹配<br>将真值set与预测值set进行匹配，利用匈牙利匹配实现一对一的对应。在匹配过程中，当在两个集合元素数量不相同时，通常使用将数量较少的一个集合补一堆空元素的方法来让集合元素数量相等。<br>在匹配的过程中，一个关键的步骤是衡量两个集合不同元素之间的相似度，论文中使用的是bounding box之间的相似度。</p>
 </li>
 <li><p>损失函数<br> 采用DETR的set-to-set计算方式，对预测出的(回归, 分类)结果和GT的(回归, 分类)结果进行匹配。损失函数部分保持和DETR一致。回归损失采用L1，分类损失使用focal loss</p>
 </li>
 </ol>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2005.12872.pdf">DETR Paper</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2110.06922.pdf">DETR3D Paper</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/146065711">https://zhuanlan.zhihu.com/p/146065711</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/587380480">https://zhuanlan.zhihu.com/p/587380480</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2005.12872.pdf">DETR Paper</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2110.06922.pdf">DETR3D Paper</a><br><a target="_blank" rel="noopener" href="https://github.com/wangyueft/detr3d">DETR3D Code</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/146065711">https://zhuanlan.zhihu.com/p/146065711</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/587380480">https://zhuanlan.zhihu.com/p/587380480</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/430198800">https://zhuanlan.zhihu.com/p/430198800</a></p>
 
                 
             </div>
@@ -844,7 +853,7 @@ pos &#x3D; torch.cat((pos_y, pos_x), dim&#x3D;3).permute(0, 3, 1, 2)<span aria-h
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">25.3k</span>
+                        class="white-color">25.7k</span>
             
             
             

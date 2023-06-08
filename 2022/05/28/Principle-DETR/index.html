@@ -433,7 +433,7 @@ DETR (ECCV 2020)DETR总体思路是把目标检测看成一">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>DETR原理与DETR3D原理<br><span id="more"></span><br>前情提要：之前的<a target="_blank" rel="noopener" href="https://massive11.github.io/2022/01/25/Principle-%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6/">文章</a>中，已经对注意力机制和原理Transformer的整体结构进行了介绍。本文将在其基础上介绍DETR原理和DETR3D原理。</p>
+                <p>DETR原理与DETR3D原理<br><span id="more"></span><br>前情提要：之前的<a href="https://massive11.github.io/2022/01/25/Principle-%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6/">文章</a>中，已经对注意力机制和原理Transformer的整体结构进行了介绍。本文将在其基础上介绍DETR原理和DETR3D原理。</p>
 <h2 id="DETR-ECCV-2020"><a href="#DETR-ECCV-2020" class="headerlink" title="DETR (ECCV 2020)"></a>DETR (ECCV 2020)</h2><p>DETR总体思路是把目标检测看成一个set prediction的问题，使用Transformer来预测box的set。DETR 利用标准 Transformer 架构来执行传统上特定于目标检测的操作，从而简化了检测 pipeline，可以归结为：Backbone -&gt; Transformer -&gt; detect header。其结构图如下图所示</p>
 <p><img src="/images/DETR.png"/></p>
 <p>观察上图可以发现，DETR的整体结构与Transformer类似：Backbone得到的特征铺平，加上Position信息之后送到一堆Encoder里，得到一些candidates的特征。Candidates又被Decoder并行解码得到最后的检测框。</p>
@@ -446,7 +446,7 @@ pos &#x3D; torch.cat((pos_y, pos_x), dim&#x3D;3).permute(0, 3, 1, 2)<span aria-h
 <p>FFN、LN等操作也与Transformer类似。Encoder最后得到的结果是对N个物体编码后的特征。</p>
 <h3 id="DETR-Decoder"><a href="#DETR-Decoder" class="headerlink" title="DETR Decoder"></a>DETR Decoder</h3><p>DETR Decoder的结构也与Transformer类似，区别在于Decoder并行解码N个object。每个Decoder有两个输入：一路是Object Query（或者是上一个Decoder的输出），另一路是Encoder的结果。Object Query是一组nn.Embedding的weight（就是一组学到的参数）。</p>
 <p>与Transformer不同，DETR的Decoder也加了Positional Encoding。最后一个Decoder后面接了两个FFN，分别预测检测框及其类别。</p>
-<h3 id="Bipartite-Matching"><a href="#Bipartite-Matching" class="headerlink" title="Bipartite Matching"></a>Bipartite Matching</h3><p>由于输出物体的顺序不一定与ground truth的序列相同，作者使用二元匹配将GT框与预测框进行匹配。这里可以参考之前写的匈牙利匹配的<a target="_blank" rel="noopener" href="https://massive11.github.io/2022/05/27/Principle-%E5%8C%88%E7%89%99%E5%88%A9%E5%8C%B9%E9%85%8D/">文章</a>。</p>
+<h3 id="Bipartite-Matching"><a href="#Bipartite-Matching" class="headerlink" title="Bipartite Matching"></a>Bipartite Matching</h3><p>由于输出物体的顺序不一定与ground truth的序列相同，作者使用二元匹配将GT框与预测框进行匹配。这里可以参考之前写的匈牙利匹配的<a href="https://massive11.github.io/2022/05/27/Principle-%E5%8C%88%E7%89%99%E5%88%A9%E5%8C%B9%E9%85%8D/">文章</a>。</p>
 <h3 id="Loss-Function"><a href="#Loss-Function" class="headerlink" title="Loss Function"></a>Loss Function</h3><p>目标框的L1 loss和IoU loss。</p>
 <h2 id="DETR3D-CoRL-2021"><a href="#DETR3D-CoRL-2021" class="headerlink" title="DETR3D (CoRL 2021)"></a>DETR3D (CoRL 2021)</h2><p>DETR3D是DETR范式在多目3D视觉任务上的拓展版本。对于多目3D视觉任务，就不得不提到当前仍占据主流的BEV感知方案。</p>
 <h3 id="BEV-Perception"><a href="#BEV-Perception" class="headerlink" title="BEV Perception"></a>BEV Perception</h3><p>自动驾驶是3D目标检测重要的落地场景之一，通过纯视觉的方法，在2D图像上预测车辆、行人等3维BBox信息天然存在诸多困难，而2D的目标检测方法相对成熟，因此更多的3D目标检测方法更加关注如何从现有的2D检测框架迁移到3D任务中。从Tesla公布新的俯瞰视角(Bird’s-eys-view, BEV)目标检测的方法开始，越来越多的工作从俯视角出发做Detection, Segmentation。在BEV视角下做3D Detection，其好处如下：</p>
@@ -509,7 +509,7 @@ pos &#x3D; torch.cat((pos_y, pos_x), dim&#x3D;3).permute(0, 3, 1, 2)<span aria-h
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://yoursite.com/2022/05/28/Principle-DETR/">http://yoursite.com/2022/05/28/Principle-DETR/</a>
+                    <a href="https://massive11.github.io/2022/05/28/Principle-DETR/">https://massive11.github.io/2022/05/28/Principle-DETR/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -861,7 +861,7 @@ pos &#x3D; torch.cat((pos_y, pos_x), dim&#x3D;3).permute(0, 3, 1, 2)<span aria-h
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">26k</span>
+                        class="white-color">26.3k</span>
             
             
             

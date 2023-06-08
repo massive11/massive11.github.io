@@ -448,7 +448,7 @@
 <p>To establish an effective depth propagation mechanism, modeling the uncertainty of depth estimation for each instance is an important preliminary, which can provide useful guidance for weighing the propagation among instances.</p>
 </blockquote>
 <p>为了建立有效的深度传播机制，对每个实例的深度估计不确定度进行建模是一个重要的前期工作，可以为实例间的传播赋权提供有益的指导。</p>
-<p>是<em>probabilistic depth</em>，</p>
+<p>是_probabilistic depth_，</p>
 <p>是每个孤立实例的局部深度估计，它与得到的深度评分一起作为构造深度传播图的基础。</p>
 <h2 id="1-2-Depth-Propagation-from-Perspective-Geometry"><a href="#1-2-Depth-Propagation-from-Perspective-Geometry" class="headerlink" title="1.2 Depth Propagation from Perspective Geometry"></a>1.2 Depth Propagation from Perspective Geometry</h2><p>针对深度估计问题，我们提出了一种几何深度传播机制，考虑了实例之间的相互依赖性。我们将首先推导两个实例之间的透视关系，然后给出带有边缘修剪和门控的基于图的深度传播方案的细节。</p>
 <h3 id="Perspective-Relationship"><a href="#Perspective-Relationship" class="headerlink" title="Perspective Relationship"></a>Perspective Relationship</h3><p>注：本文的方法也是基于平面假设的</p>

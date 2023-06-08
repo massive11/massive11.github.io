@@ -524,9 +524,7 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
             x &#x3D; x.unsqueeze(2).repeat(1, 1, self.D, 1, 1)
         return x<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
-<li><p>投影</p>
-</li>
-</ol>
+<li><p>投影<br>此处</p>
 <pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">def projection_to_birds_eye_view(self, x, geometry):
     &quot;&quot;&quot; Adapted from https:&#x2F;&#x2F;github.com&#x2F;nv-tlabs&#x2F;lift-splat-shoot&#x2F;blob&#x2F;master&#x2F;src&#x2F;models.py#L200&quot;&quot;&quot;
     # batch, n_cameras, depth, height, width, channels
@@ -580,6 +578,8 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
         output[b] &#x3D; bev_feature
 
     return output<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
 <h3 id="时序特征对齐"><a href="#时序特征对齐" class="headerlink" title="时序特征对齐"></a>时序特征对齐</h3><h3 id="时序模块"><a href="#时序模块" class="headerlink" title="时序模块"></a>时序模块</h3><h3 id="概率模块"><a href="#概率模块" class="headerlink" title="概率模块"></a>概率模块</h3><h2 id="FIERY缺点"><a href="#FIERY缺点" class="headerlink" title="FIERY缺点"></a>FIERY缺点</h2><ol>
 <li>时序信息没有增强，head输出的结果经过匈牙利匹配得到的。</li>
 </ol>

@@ -5,8 +5,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="FIERY 与 LSS, Untitled.">
-    <meta name="description" content="FIERY论文与代码解读，LSS原理
-FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高清地图的情况下，仅从摄像头驱动数据中以端到端的方式学习对未来固有的随机性进行建模，并预测未来的多时间轨迹。效果可视化如下">
+    <meta name="description" content="FIERY论文与代码解读，LSS原理与代码解读
+FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高清地图的情况下，仅从摄像头驱动数据中以端到端的方式学习对未来固有的随机性进行建模，并预测未来的多时间轨迹。效果">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -382,6 +382,14 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
                                 <span class="chip bg-color">Temporal</span>
                             </a>
                         
+                            <a href="/tags/ICCV/">
+                                <span class="chip bg-color">ICCV</span>
+                            </a>
+                        
+                            <a href="/tags/ECCV/">
+                                <span class="chip bg-color">ECCV</span>
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -390,8 +398,8 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Principle/" class="post-category">
-                                Principle
+                            <a href="/categories/Paper/" class="post-category">
+                                Paper
                             </a>
                         
                     </div>
@@ -412,14 +420,14 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    424
+                    1.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    7 分
                 </div>
                 
 
@@ -437,23 +445,145 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>FIERY论文与代码解读，LSS原理<br><span id="more"></span></p>
-<h2 id="FIERY-ICCV-2021"><a href="#FIERY-ICCV-2021" class="headerlink" title="FIERY (ICCV 2021)"></a>FIERY (ICCV 2021)</h2><p>FIERY是时序的实例分割和预测网络，在不依赖高清地图的情况下，仅从摄像头驱动数据中以端到端的方式学习对未来固有的随机性进行建模，并预测未来的多时间轨迹。效果可视化如下图所示</p>
-<p><img src="/images/FIERY_visual.png"/></p>
+                <p>FIERY论文与代码解读，LSS原理与代码解读<br><span id="more"></span></p>
+<h2 id="FIERY-ICCV-2021"><a href="#FIERY-ICCV-2021" class="headerlink" title="FIERY (ICCV 2021)"></a>FIERY (ICCV 2021)</h2><p>FIERY是时序的实例分割和预测网络，在不依赖高清地图的情况下，仅从摄像头驱动数据中以端到端的方式学习对未来固有的随机性进行建模，并预测未来的多时间轨迹。效果可视化如下图所示<br><img src="/images/FIERY_visual.png"/></p>
 <h3 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h3><p>FIERY的整体结构如下图所示<br><img src="/images/FIERY.png"/></p>
 <p>FIERY的整体结构可以分为6个部分。</p>
 <ol>
 <li>根据相机的内外参和估计的深度概率分布，将图像特征转为3D特征</li>
 <li>将上述得到的各个视角的3D特征，投影到BEV空间，然后基于惯导提供的运动信息，将过去两帧的BEV特征与当前帧的BEV特征对齐</li>
-<li>使用一个基于3D卷积的时序模块学习时空状态$s_t$</li>
+<li>使用一个基于3D卷积的时序模块学习时空状态${s_t}$</li>
 <li>参数化两个概率分布，分别为当前分布 和 未来分布。当前分布以当前的时空状态$s<em>t$为条件，未来分布则同时以当前的时空状态$s_t$和未来的标签${(y</em>{t+1}, …, y_{t+H})}$为条件</li>
 <li>我们在训练过程中从未来分布中采样潜在编码$\eta<em>t$，而在推理期间从当前分布中采样。当前状态$s_t$和潜在编码$\eta_t$是未来预测模型的输入，它递归地预测未来的状态${(\hat{s}</em>{t+1}, …, \hat{s}_{t+H})}$。</li>
 <li>这些状态被解码为BEV视角的未来实例分割和未来的运动</li>
 </ol>
-<h3 id="LSS"><a href="#LSS" class="headerlink" title="LSS"></a>LSS</h3><h3 id="时序模块"><a href="#时序模块" class="headerlink" title="时序模块"></a>时序模块</h3><h2 id="FIERY缺点"><a href="#FIERY缺点" class="headerlink" title="FIERY缺点"></a>FIERY缺点</h2><ol>
+<p>经过一系列编解码，最终得到的结果如下图所示<br><img src="/images/fiery_out.png"/><br>各模块具体的实现原理将拆解成单独的几部分进行介绍。</p>
+<h3 id="LSS-ECCV-2020"><a href="#LSS-ECCV-2020" class="headerlink" title="LSS (ECCV 2020)"></a>LSS (ECCV 2020)</h3><p>FIERY从2D特征到3D BEV特征的转换过程采用的是LSS的方式（以下代码部分还是以FIERY的设定为例，避免混淆）。LSS是NVIDIA在2020年提出的方案，是自动驾驶多目相机感知领域的非常重要的论文。其最大的贡献在于：提供了一个端到端的训练方法解决多个传感器融合的问题。传统的多个传感器单独检测后再进行后处理的方法无法将此过程损失传进行反向传播而调整相机输入，而LSS则省去了这一阶段的后处理，直接输出融合结果。<br>LSS分别对应Lift, Splat, Shoot三个步骤。原文中对其解释如下</p>
+<blockquote>
+<p>The core idea behind our approach is to “lift” each image individually into a frustum of features for each camera, then “splat” all frustums into a rasterized bird’s-eyeview grid.<br>…<br>The representations inferred by our model enable interpretable end-to-end motion planning by “shooting” template trajectories into a bird’s-eyeview cost map output by our network.</p>
+</blockquote>
+<h4 id="Lift"><a href="#Lift" class="headerlink" title="Lift"></a>Lift</h4><p>该步骤是将每个图像单独“lift”为每个相机的特征截锥体，该过程的可视化如下图所示<br><img src="/images/lift.png"/></p>
+<p>根据相机的成像原理，每个像素实际上是空间中的一条射线经过相机中心在像平面上的投影。因此，对于每个像素，在已知相机的内外参的情况下，我们只能确定这条射线，但不能确定这个像素具体反映的是射线上哪个点的信息，也就是常说的depth。因此，LSS预先设定了相机的视锥，深度方向的范围是${[d<em>{min}, d</em>{max}]}$。在FIERY的实现版本中，深度范围是${[2, 50]}$，每隔1米进行采样，因此可以得到49个离散的深度值。</p>
+<h4 id="Splat"><a href="#Splat" class="headerlink" title="Splat"></a>Splat</h4><h4 id="Shoot"><a href="#Shoot" class="headerlink" title="Shoot"></a>Shoot</h4><h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><ol>
+<li><p>生成投影矩阵<br>该步骤仅依赖相机内外参，代码实现如下</p>
+<pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">def get_geometry(self, intrinsics, extrinsics):
+    &quot;&quot;&quot;
+    Calculate the (x, y, z) 3D position of the features.
+    &quot;&quot;&quot;
+    rotation, translation &#x3D; extrinsics[..., :3, :3], extrinsics[..., :3, 3]
+    B, N, _ &#x3D; translation.shape
+    # Add batch, camera dimension, and a dummy dimension at the end
+    # self.frustum是预定义的三维网格
+    points &#x3D; self.frustum.unsqueeze(0).unsqueeze(0).unsqueeze(-1)
+
+    # Camera to ego reference frame
+    points &#x3D; torch.cat((points[:, :, :, :, :, :2] * points[:, :, :, :, :, 2:3], points[:, :, :, :, :, 2:3]), 5)
+    combined_transformation &#x3D; rotation.matmul(torch.inverse(intrinsics))
+    points &#x3D; combined_transformation.view(B, N, 1, 1, 1, 3, 3).matmul(points).squeeze(-1)
+    points +&#x3D; translation.view(B, N, 1, 1, 1, 3)
+
+    # The 3 dimensions in the ego reference frame are: (forward, sides, height)
+    return points<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其中涉及到的坐标转换部分，可以参考这篇<a href="">坐标转换原理与Nuscenes中的坐标转换实战</a></p>
+</li>
+<li><p>深度估计<br>深度估计部分，实际上就直接使用卷积层实现。softmax之后得到深度估计的概率分布，然后将其与特征做外积。</p>
+<pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">class Encoder(nn.Module):
+    def __init__(self, cfg, D):
+        super().__init__()
+        self.D &#x3D; D
+        self.C &#x3D; cfg.OUT_CHANNELS
+        self.use_depth_distribution &#x3D; cfg.USE_DEPTH_DISTRIBUTION
+        self.downsample &#x3D; cfg.DOWNSAMPLE
+        self.version &#x3D; cfg.NAME.split(&#39;-&#39;)[1]
+
+        if self.downsample &#x3D;&#x3D; 16:
+            if self.version &#x3D;&#x3D; &#39;b0&#39;:
+                upsampling_in_channels &#x3D; 320 + 112
+            elif self.version &#x3D;&#x3D; &#39;b4&#39;:
+                upsampling_in_channels &#x3D; 448 + 160
+            upsampling_out_channels &#x3D; 512
+        elif self.downsample &#x3D;&#x3D; 8:
+            if self.version &#x3D;&#x3D; &#39;b0&#39;:
+                upsampling_in_channels &#x3D; 112 + 40
+            elif self.version &#x3D;&#x3D; &#39;b4&#39;:
+                upsampling_in_channels &#x3D; 160 + 56
+            upsampling_out_channels &#x3D; 128
+        else:
+            raise ValueError(f&#39;Downsample factor &#123;self.downsample&#125; not handled.&#39;)
+        if self.use_depth_distribution:
+            self.depth_layer &#x3D; nn.Conv2d(upsampling_out_channels, self.C + self.D, kernel_size&#x3D;1, padding&#x3D;0)
+        else:
+            self.depth_layer &#x3D; nn.Conv2d(upsampling_out_channels, self.C, kernel_size&#x3D;1, padding&#x3D;0)
+
+    def forward(self, x):
+        x &#x3D; self.depth_layer(x)  # feature and depth head
+        if self.use_depth_distribution:
+            depth &#x3D; x[:, : self.D].softmax(dim&#x3D;1)
+            x &#x3D; depth.unsqueeze(1) * x[:, self.D : (self.D + self.C)].unsqueeze(2)  # outer product depth and features
+        else:
+            x &#x3D; x.unsqueeze(2).repeat(1, 1, self.D, 1, 1)
+        return x<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>投影</p>
+</li>
+</ol>
+<pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">def projection_to_birds_eye_view(self, x, geometry):
+    &quot;&quot;&quot; Adapted from https:&#x2F;&#x2F;github.com&#x2F;nv-tlabs&#x2F;lift-splat-shoot&#x2F;blob&#x2F;master&#x2F;src&#x2F;models.py#L200&quot;&quot;&quot;
+    # batch, n_cameras, depth, height, width, channels
+    batch, n, d, h, w, c &#x3D; x.shape
+    output &#x3D; torch.zeros(
+        (batch, c, self.bev_dimension[0], self.bev_dimension[1]), dtype&#x3D;torch.float, device&#x3D;x.device
+    )
+
+    # Number of 3D points
+    N &#x3D; n * d * h * w
+    for b in range(batch):
+        # flatten x
+        x_b &#x3D; x[b].reshape(N, c)
+
+        # Convert positions to integer indices
+        geometry_b &#x3D; ((geometry[b] - (self.bev_start_position - self.bev_resolution &#x2F; 2.0)) &#x2F; self.bev_resolution)
+        geometry_b &#x3D; geometry_b.view(N, 3).long()
+
+        # Mask out points that are outside the considered spatial extent.
+        mask &#x3D; (
+                (geometry_b[:, 0] &gt;&#x3D; 0)
+                &amp; (geometry_b[:, 0] &lt; self.bev_dimension[0])
+                &amp; (geometry_b[:, 1] &gt;&#x3D; 0)
+                &amp; (geometry_b[:, 1] &lt; self.bev_dimension[1])
+                &amp; (geometry_b[:, 2] &gt;&#x3D; 0)
+                &amp; (geometry_b[:, 2] &lt; self.bev_dimension[2])
+        )
+        x_b &#x3D; x_b[mask]
+        geometry_b &#x3D; geometry_b[mask]
+
+        # Sort tensors so that those within the same voxel are consecutives.
+        ranks &#x3D; (
+                geometry_b[:, 0] * (self.bev_dimension[1] * self.bev_dimension[2])
+                + geometry_b[:, 1] * (self.bev_dimension[2])
+                + geometry_b[:, 2]
+        )
+        ranks_indices &#x3D; ranks.argsort()
+        x_b, geometry_b, ranks &#x3D; x_b[ranks_indices], geometry_b[ranks_indices], ranks[ranks_indices]
+
+        # Project to bird&#39;s-eye view by summing voxels.
+        x_b, geometry_b &#x3D; VoxelsSumming.apply(x_b, geometry_b, ranks)
+
+        bev_feature &#x3D; torch.zeros((self.bev_dimension[2], self.bev_dimension[0], self.bev_dimension[1], c),
+                                    device&#x3D;x_b.device)
+        bev_feature[geometry_b[:, 2], geometry_b[:, 0], geometry_b[:, 1]] &#x3D; x_b
+
+        # Put channel in second position and remove z dimension
+        bev_feature &#x3D; bev_feature.permute((0, 3, 1, 2))
+        bev_feature &#x3D; bev_feature.squeeze(0)
+
+        output[b] &#x3D; bev_feature
+
+    return output<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="时序特征对齐"><a href="#时序特征对齐" class="headerlink" title="时序特征对齐"></a>时序特征对齐</h3><h3 id="时序模块"><a href="#时序模块" class="headerlink" title="时序模块"></a>时序模块</h3><h3 id="概率模块"><a href="#概率模块" class="headerlink" title="概率模块"></a>概率模块</h3><h2 id="FIERY缺点"><a href="#FIERY缺点" class="headerlink" title="FIERY缺点"></a>FIERY缺点</h2><ol>
 <li>时序信息没有增强，head输出的结果经过匈牙利匹配得到的。</li>
 </ol>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2104.10490.pdf">Fiery Paper</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2104.10490.pdf">Fiery Paper</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2008.05711.pdf">LSS Paper</a><br><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/1173815">https://developer.aliyun.com/article/1173815</a></p>
 
                 
             </div>
@@ -538,6 +668,14 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
                                     <span class="chip bg-color">Temporal</span>
                                 </a>
                             
+                                <a href="/tags/ICCV/">
+                                    <span class="chip bg-color">ICCV</span>
+                                </a>
+                            
+                                <a href="/tags/ECCV/">
+                                    <span class="chip bg-color">ECCV</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -608,8 +746,8 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Principle/" class="post-category">
-                                    Principle
+                            <a href="/categories/%E5%8E%9F%E7%90%86/" class="post-category">
+                                    原理
                                 </a>
                             
                             
@@ -642,31 +780,31 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/01/25/Principle-%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6/">
+                <a href="/2022/03/18/Principle-%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2%E5%8E%9F%E7%90%86%E4%B8%8ENuscenes%E4%B8%AD%E7%9A%84%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2%E5%AE%9E%E6%88%98/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="注意力机制与Transformer原理">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="坐标转换原理与Nuscenes中的坐标转换">
                         
-                        <span class="card-title">注意力机制与Transformer原理</span>
+                        <span class="card-title">坐标转换原理与Nuscenes中的坐标转换</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            注意力机制与Transformer原理
+                            FIERY论文与代码解读，LSS原理
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-25
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-18
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Principle/" class="post-category">
-                                    Principle
+                            <a href="/categories/%E5%AE%9E%E6%88%98/" class="post-category">
+                                    实战
                                 </a>
                             
                             
@@ -676,12 +814,32 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Attention/">
-                        <span class="chip bg-color">Attention</span>
+                    <a href="/tags/Multi-view-3D/">
+                        <span class="chip bg-color">Multi-view 3D</span>
                     </a>
                     
-                    <a href="/tags/Transformer/">
-                        <span class="chip bg-color">Transformer</span>
+                    <a href="/tags/BEV-Perception/">
+                        <span class="chip bg-color">BEV Perception</span>
+                    </a>
+                    
+                    <a href="/tags/LSS/">
+                        <span class="chip bg-color">LSS</span>
+                    </a>
+                    
+                    <a href="/tags/Prediction/">
+                        <span class="chip bg-color">Prediction</span>
+                    </a>
+                    
+                    <a href="/tags/Temporal/">
+                        <span class="chip bg-color">Temporal</span>
+                    </a>
+                    
+                    <a href="/tags/ICCV/">
+                        <span class="chip bg-color">ICCV</span>
+                    </a>
+                    
+                    <a href="/tags/ECCV/">
+                        <span class="chip bg-color">ECCV</span>
                     </a>
                     
                 </div>
@@ -832,7 +990,7 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">26.3k</span>
+                        class="white-color">27.6k</span>
             
             
             

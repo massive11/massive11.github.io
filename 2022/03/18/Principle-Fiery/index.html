@@ -427,7 +427,7 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    7 分
+                    8 分
                 </div>
                 
 
@@ -458,12 +458,12 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
 <li>这些状态被解码为BEV视角的未来实例分割和未来的运动</li>
 </ol>
 <p>经过一系列编解码，最终得到的结果如下图所示<br><img src="/images/fiery_out.png"/><br>各模块具体的实现原理将拆解成单独的几部分进行介绍。</p>
-<h3 id="LSS-ECCV-2020"><a href="#LSS-ECCV-2020" class="headerlink" title="LSS (ECCV 2020)"></a>LSS (ECCV 2020)</h3><p>FIERY从2D特征到3D BEV特征的转换过程采用的是LSS的方式（以下代码部分还是以FIERY的设定为例，避免混淆）。LSS是NVIDIA在2020年提出的方案，是自动驾驶多目相机感知领域的非常重要的论文。其最大的贡献在于：提供了一个端到端的训练方法解决多个传感器融合的问题。传统的多个传感器单独检测后再进行后处理的方法无法将此过程损失传进行反向传播而调整相机输入，而LSS则省去了这一阶段的后处理，直接输出融合结果。<br>LSS分别对应Lift, Splat, Shoot三个步骤。原文中对其解释如下</p>
+<h3 id="LSS-ECCV-2020"><a href="#LSS-ECCV-2020" class="headerlink" title="LSS (ECCV 2020)"></a>LSS (ECCV 2020)</h3><p>FIERY从2D特征到3D BEV特征的转换过程采用的是LSS的方式（以下具体部分还是以FIERY的设定为例，避免混淆）。LSS是NVIDIA在2020年提出的方案，是自动驾驶多目相机感知领域的非常重要的论文。其最大的贡献在于：提供了一个端到端的训练方法解决多个传感器融合的问题。传统的多个传感器单独检测后再进行后处理的方法无法将此过程损失传进行反向传播而调整相机输入，而LSS则省去了这一阶段的后处理，直接输出融合结果。<br>LSS分别对应Lift, Splat, Shoot三个步骤。原文中对其解释如下</p>
 <blockquote>
 <p>The core idea behind our approach is to “lift” each image individually into a frustum of features for each camera, then “splat” all frustums into a rasterized bird’s-eyeview grid.<br>…<br>The representations inferred by our model enable interpretable end-to-end motion planning by “shooting” template trajectories into a bird’s-eyeview cost map output by our network.</p>
 </blockquote>
 <h4 id="Lift"><a href="#Lift" class="headerlink" title="Lift"></a>Lift</h4><p>该步骤是将每个图像单独“lift”为每个相机的特征截锥体，该过程的可视化如下图所示<br><img src="/images/lift.png"/></p>
-<p>根据相机的成像原理，每个像素实际上是空间中的一条射线经过相机中心在像平面上的投影。因此，对于每个像素，在已知相机的内外参的情况下，我们只能确定这条射线，但不能确定这个像素具体反映的是射线上哪个点的信息，也就是常说的depth。因此，LSS预先设定了相机的视锥，深度方向的范围是${[d_{min}, d_{max}]}$。在FIERY的实现版本中，深度范围是${[2, 50]}$，每隔1米进行采样，因此可以得到49个离散的深度值。</p>
+<p>根据相机的成像原理，每个像素实际上是空间中的一条射线经过相机中心在像平面上的投影。因此，对于每个像素，在已知相机的内外参的情况下，我们只能确定这条射线，但不能确定这个像素具体反映的是射线上哪个点的信息，也就是常说的depth。因此，LSS预先设定了相机的视锥，深度方向的范围是${[d_{min}, d_{max}]}$。在FIERY的实现版本中，深度范围是${[2, 50)}$，每隔1米进行采样，因此可以得到48个离散的深度值。在这个范围内进行概率估计，然后将深度概率估计与图像特征进行内积，从而能够得到每个相机视锥体。该部分的Tensor变换如下图所示<br><img src="/images/fiery_st1.png"/></p>
 <h4 id="Splat"><a href="#Splat" class="headerlink" title="Splat"></a>Splat</h4><h4 id="Shoot"><a href="#Shoot" class="headerlink" title="Shoot"></a>Shoot</h4><h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><ol>
 <li><p>生成投影矩阵<br>该步骤仅依赖相机内外参，代码实现如下</p>
 <pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">def get_geometry(self, intrinsics, extrinsics):
@@ -990,7 +990,7 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">29.5k</span>
+                        class="white-color">29.6k</span>
             
             
             

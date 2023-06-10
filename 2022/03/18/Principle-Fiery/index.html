@@ -420,14 +420,14 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.7k
+                    3.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    8 分
+                    13 分
                 </div>
                 
 
@@ -463,57 +463,12 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
 <p>The core idea behind our approach is to “lift” each image individually into a frustum of features for each camera, then “splat” all frustums into a rasterized bird’s-eyeview grid.<br>…<br>The representations inferred by our model enable interpretable end-to-end motion planning by “shooting” template trajectories into a bird’s-eyeview cost map output by our network.</p>
 </blockquote>
 <h4 id="Lift"><a href="#Lift" class="headerlink" title="Lift"></a>Lift</h4><p>该步骤是将每个图像单独“lift”为每个相机的特征截锥体，该过程的可视化如下图所示<br><img src="/images/lift.png"/></p>
-<p>根据相机的成像原理，每个像素实际上是空间中的一条射线经过相机中心在像平面上的投影。因此，对于每个像素，在已知相机的内外参的情况下，我们只能确定这条射线，但不能确定这个像素具体反映的是射线上哪个点的信息，也就是常说的depth。因此，LSS预先设定了相机的视锥，深度方向的范围是${[d_{min}, d_{max}]}$。在FIERY的实现版本中，深度范围是${[2, 50)}$，每隔1米进行采样，因此可以得到48个离散的深度值。在这个范围内进行概率估计，然后将深度概率估计与图像特征进行内积，从而能够得到每个相机视锥体。该部分的Tensor变换如下图所示<br><img src="/images/fiery_st1.png"/></p>
-<h4 id="Splat"><a href="#Splat" class="headerlink" title="Splat"></a>Splat</h4><h4 id="Shoot"><a href="#Shoot" class="headerlink" title="Shoot"></a>Shoot</h4><h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><ol>
-<li><p>生成投影矩阵<br>该步骤仅依赖相机内外参，代码实现如下</p>
-<pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">def get_geometry(self, intrinsics, extrinsics):
-    &quot;&quot;&quot;
-    Calculate the (x, y, z) 3D position of the features.
-    &quot;&quot;&quot;
-    rotation, translation &#x3D; extrinsics[..., :3, :3], extrinsics[..., :3, 3]
-    B, N, _ &#x3D; translation.shape
-    # Add batch, camera dimension, and a dummy dimension at the end
-    # self.frustum是预定义的三维网格
-    points &#x3D; self.frustum.unsqueeze(0).unsqueeze(0).unsqueeze(-1)
-
-    # Camera to ego reference frame
-    points &#x3D; torch.cat((points[:, :, :, :, :, :2] * points[:, :, :, :, :, 2:3], points[:, :, :, :, :, 2:3]), 5)
-    combined_transformation &#x3D; rotation.matmul(torch.inverse(intrinsics))
-    points &#x3D; combined_transformation.view(B, N, 1, 1, 1, 3, 3).matmul(points).squeeze(-1)
-    points +&#x3D; translation.view(B, N, 1, 1, 1, 3)
-
-    # The 3 dimensions in the ego reference frame are: (forward, sides, height)
-    return points<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>其中涉及到的坐标转换部分，可以参考这篇<a href="">坐标转换原理与Nuscenes中的坐标转换实战</a></p>
-</li>
-<li><p>深度估计<br>深度估计部分，实际上就直接使用卷积层实现。softmax之后得到深度估计的概率分布，然后将其与特征做外积。</p>
-<pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">class Encoder(nn.Module):
+<p>根据相机的成像原理，每个像素实际上是空间中的一条射线经过相机中心在像平面上的投影。因此，对于每个像素，在已知相机的内外参的情况下，我们只能确定这条射线，但不能确定这个像素具体反映的是射线上哪个点的信息，也就是常说的depth。因此，LSS预先设定了相机的视锥，深度方向的范围是${[d_{min}, d_{max}]}$。在FIERY的实现版本中，深度范围是${[2, 50)}$，每隔1米进行采样，因此可以得到48个离散的深度值。在这个范围内进行概率估计，然后将深度概率估计与图像特征进行内积，从而能够得到每个相机视锥体。该部分的Tensor变换如下图所示<br><img src="/images/fiery_st1.png"/><br>在实现方面，实际上就直接使用卷积层实现。softmax之后得到深度估计的概率分布，然后将其与特征做外积，具体代码如下，<br><pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">class Encoder(nn.Module):
     def __init__(self, cfg, D):
         super().__init__()
         self.D &#x3D; D
         self.C &#x3D; cfg.OUT_CHANNELS
-        self.use_depth_distribution &#x3D; cfg.USE_DEPTH_DISTRIBUTION
-        self.downsample &#x3D; cfg.DOWNSAMPLE
-        self.version &#x3D; cfg.NAME.split(&#39;-&#39;)[1]
-
-        if self.downsample &#x3D;&#x3D; 16:
-            if self.version &#x3D;&#x3D; &#39;b0&#39;:
-                upsampling_in_channels &#x3D; 320 + 112
-            elif self.version &#x3D;&#x3D; &#39;b4&#39;:
-                upsampling_in_channels &#x3D; 448 + 160
-            upsampling_out_channels &#x3D; 512
-        elif self.downsample &#x3D;&#x3D; 8:
-            if self.version &#x3D;&#x3D; &#39;b0&#39;:
-                upsampling_in_channels &#x3D; 112 + 40
-            elif self.version &#x3D;&#x3D; &#39;b4&#39;:
-                upsampling_in_channels &#x3D; 160 + 56
-            upsampling_out_channels &#x3D; 128
-        else:
-            raise ValueError(f&#39;Downsample factor &#123;self.downsample&#125; not handled.&#39;)
-        if self.use_depth_distribution:
-            self.depth_layer &#x3D; nn.Conv2d(upsampling_out_channels, self.C + self.D, kernel_size&#x3D;1, padding&#x3D;0)
-        else:
-            self.depth_layer &#x3D; nn.Conv2d(upsampling_out_channels, self.C, kernel_size&#x3D;1, padding&#x3D;0)
+        # ...
 
     def forward(self, x):
         x &#x3D; self.depth_layer(x)  # feature and depth head
@@ -522,11 +477,27 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
             x &#x3D; depth.unsqueeze(1) * x[:, self.D : (self.D + self.C)].unsqueeze(2)  # outer product depth and features
         else:
             x &#x3D; x.unsqueeze(2).repeat(1, 1, self.D, 1, 1)
-        return x<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p>投影<br>此处</p>
-<pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">def projection_to_birds_eye_view(self, x, geometry):
-    &quot;&quot;&quot; Adapted from https:&#x2F;&#x2F;github.com&#x2F;nv-tlabs&#x2F;lift-splat-shoot&#x2F;blob&#x2F;master&#x2F;src&#x2F;models.py#L200&quot;&quot;&quot;
+        return x<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
+<h4 id="Splat"><a href="#Splat" class="headerlink" title="Splat"></a>Splat</h4><p>Splat步骤是将各个相机的视锥体投影到BEV视角。该部分的Tensor变换如下图所示<br><img src="/images/fiery_st2.png"/><br>要实现这个投影，就要得到相机视锥体到BEV空间的坐标转换关系。此处首先依赖相机的内外参生成一个Geometry，它用于存储每个相机视锥体的各个特征到整体3D空间（后续会降维到BEV空间）的对应关系。首先，初始化一个$D\times W \times H$ 的frustum。按照图像坐标系 -&gt; 归一化相机坐标系 -&gt; 相机坐标系 -&gt; 车身坐标系的坐标转换顺序计算得到对应坐标。该部分代码实现如下（其中涉及到的坐标转换部分，可以参考这篇<a href="https://massive11.github.io/2022/03/18/Principle-%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2%E5%8E%9F%E7%90%86%E4%B8%8ENuscenes%E4%B8%AD%E7%9A%84%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2%E5%AE%9E%E6%88%98/">坐标转换原理与Nuscenes中的坐标转换实战</a>）<br><pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">def get_geometry(self, intrinsics, extrinsics):
+    &quot;&quot;&quot;
+    Calculate the (x, y, z) 3D position of the features.
+    &quot;&quot;&quot;
+    rotation, translation &#x3D; extrinsics[..., :3, :3], extrinsics[..., :3, 3]
+    B, N, _ &#x3D; translation.shape
+    # Add batch, camera dimension, and a dummy dimension at the end
+    # self.frustum是预定义的相机视锥体的三维网格
+    points &#x3D; self.frustum.unsqueeze(0).unsqueeze(0).unsqueeze(-1)
+
+    # Camera to ego reference frame
+    # 反归一化
+    points &#x3D; torch.cat((points[:, :, :, :, :, :2] * points[:, :, :, :, :, 2:3], points[:, :, :, :, :, 2:3]), 5)
+    combined_transformation &#x3D; rotation.matmul(torch.inverse(intrinsics))
+    points &#x3D; combined_transformation.view(B, N, 1, 1, 1, 3, 3).matmul(points).squeeze(-1)
+    points +&#x3D; translation.view(B, N, 1, 1, 1, 3)
+
+    # The 3 dimensions in the ego reference frame are: (forward, sides, height)
+    return points<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
+<p>得到Geometry之后，就可以利用Voxel Pooling构建BEV特征。具体来说，将相机点云投影到预先划定范围的3D空间中。此时，可能会有多个视觉特征对应同一个BEV网格，直接将能投影到同一个BEV网格的特征累加起来，就可以得到降维后的BEV特征。该部分代码实现如下<br><pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">def projection_to_birds_eye_view(self, x, geometry):
     # batch, n_cameras, depth, height, width, channels
     batch, n, d, h, w, c &#x3D; x.shape
     output &#x3D; torch.zeros(
@@ -536,11 +507,12 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
     # Number of 3D points
     N &#x3D; n * d * h * w
     for b in range(batch):
-        # flatten x
+        # 展平视觉点云
         x_b &#x3D; x[b].reshape(N, c)
 
-        # Convert positions to integer indices
+        # 计算栅格坐标并取整
         geometry_b &#x3D; ((geometry[b] - (self.bev_start_position - self.bev_resolution &#x2F; 2.0)) &#x2F; self.bev_resolution)
+        # 展平体素坐标
         geometry_b &#x3D; geometry_b.view(N, 3).long()
 
         # Mask out points that are outside the considered spatial extent.
@@ -577,13 +549,110 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
 
         output[b] &#x3D; bev_feature
 
-    return output<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ol>
-<h3 id="时序特征对齐"><a href="#时序特征对齐" class="headerlink" title="时序特征对齐"></a>时序特征对齐</h3><h3 id="时序模块"><a href="#时序模块" class="headerlink" title="时序模块"></a>时序模块</h3><h3 id="概率模块"><a href="#概率模块" class="headerlink" title="概率模块"></a>概率模块</h3><h2 id="FIERY缺点"><a href="#FIERY缺点" class="headerlink" title="FIERY缺点"></a>FIERY缺点</h2><ol>
+    return output<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
+<h3 id="时序特征对齐"><a href="#时序特征对齐" class="headerlink" title="时序特征对齐"></a>时序特征对齐</h3><p>经过上一步，我们已经得到多帧的BEV特征。由于车辆的运动，每一帧的BEV特征可能都处于不同的位置，因此需要将过去时刻的BEV特征warp到当前时刻以统一坐标系，也就是所谓的特征对齐（feature alignment）。这个步骤基本就是简单的坐标系转换，借助惯导信息来完成。该部分的Tensor变换如下<br><img src="/images/fiery_st3.png" width="70%" height="70%"/><br>惯导提供的信息通常是相对于起始位置的三轴平移量和三轴旋转量。根据两帧的惯导数据，可以很容易的计算出两帧之间的相对平移量和旋转量，即$[tx, ty, tz, rx, ry, rz]$。然后，基于这个运动信息，实现feature warp（由于涉及到连续多帧的变换，会先将这个6 DoF转成坐标转换矩阵的形式，然后再转回转换矩阵的形式）。先进行Z轴上的旋转，然后进行X轴、Y轴的平移，最后使用仿射变换实现X轴、Y轴的旋转。</p>
+<pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">def warp_features(x, flow, mode&#x3D;&#39;nearest&#39;, spatial_extent&#x3D;None):
+    &quot;&quot;&quot; Applies a rotation and translation to feature map x.
+        Args:
+            x: (b, c, h, w) feature map
+            flow: (b, 6) 6DoF vector (only uses the xy poriton)
+            mode: use &#39;nearest&#39; when dealing with categorical inputs
+        Returns:
+            in plane transformed feature map
+        &quot;&quot;&quot;
+    if flow is None:
+        return x
+    b, c, h, w &#x3D; x.shape
+    # z-rotation
+    angle &#x3D; flow[:, 5].clone()  # torch.atan2(flow[:, 1, 0], flow[:, 0, 0])
+    # x-y translation
+    translation &#x3D; flow[:, :2].clone()  # flow[:, :2, 3]
+
+    # Normalise translation. Need to divide by how many meters is half of the image.
+    # because translation of 1.0 correspond to translation of half of the image.
+    translation[:, 0] &#x2F;&#x3D; spatial_extent[0]
+    translation[:, 1] &#x2F;&#x3D; spatial_extent[1]
+    # forward axis is inverted
+    translation[:, 0] *&#x3D; -1
+
+    cos_theta &#x3D; torch.cos(angle)
+    sin_theta &#x3D; torch.sin(angle)
+
+    # output &#x3D; Rot.input + translation
+    # tx and ty are inverted as is the case when going from real coordinates to numpy coordinates
+    # translation_pos_0 -&gt; positive value makes the image move to the left
+    # translation_pos_1 -&gt; positive value makes the image move to the top
+    # Angle -&gt; positive value in rad makes the image move in the trigonometric way
+    transformation &#x3D; torch.stack([cos_theta, -sin_theta, translation[:, 1],
+                                  sin_theta, cos_theta, translation[:, 0]], dim&#x3D;-1).view(b, 2, 3)
+
+    # Note that a rotation will preserve distances only if height &#x3D; width. Otherwise there&#39;s
+    # resizing going on. e.g. rotation of pi&#x2F;2 of a 100x200 image will make what&#39;s in the center of the image
+    grid &#x3D; torch.nn.functional.affine_grid(transformation, size&#x3D;x.shape, align_corners&#x3D;False)
+    warped_x &#x3D; torch.nn.functional.grid_sample(x, grid.float(), mode&#x3D;mode, padding_mode&#x3D;&#39;zeros&#39;, align_corners&#x3D;False)
+
+    return warped_x
+
+def cumulative_warp_features(x, flow, mode&#x3D;&#39;nearest&#39;, spatial_extent&#x3D;None):
+    &quot;&quot;&quot; Warps a sequence of feature maps by accumulating incremental 2d flow.
+    x[:, -1] remains unchanged
+    x[:, -2] is warped using flow[:, -2]
+    x[:, -3] is warped using flow[:, -3] @ flow[:, -2]
+    ...
+    x[:, 0] is warped using flow[:, 0] @ ... @ flow[:, -3] @ flow[:, -2]
+    Args:
+        x: (b, t, c, h, w) sequence of feature maps
+        flow: (b, t, 6) sequence of 6 DoF pose
+            from t to t+1 (only uses the xy poriton)
+
+    &quot;&quot;&quot;
+    sequence_length &#x3D; x.shape[1]
+    if sequence_length &#x3D;&#x3D; 1:
+        return x
+
+    # Convert 6DoF parameters to transformation matrix.
+    flow &#x3D; pose_vec2mat(flow)
+
+    out &#x3D; [x[:, -1]]
+    cum_flow &#x3D; flow[:, -2]
+    for t in reversed(range(sequence_length - 1)):
+        out.append(warp_features(x[:, t], mat2pose_vec(cum_flow), mode&#x3D;mode, spatial_extent&#x3D;spatial_extent))
+        # @ is the equivalent of torch.bmm
+        cum_flow &#x3D; flow[:, t - 1] @ cum_flow
+
+    return torch.stack(out[::-1], 1)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="时序模块"><a href="#时序模块" class="headerlink" title="时序模块"></a>时序模块</h3><p>在送入时序模块之前，FIERY将过去时刻的运动信息拓展维度之后与上一步中得到的对齐之后的BEV特征concate起来，作为时序模块的输入。时序模块实际上是一个带有局部时空卷积和全局3D池化的3D卷积网络。该模块的Tensor变换如下图所示<br><img src="/images/fiery_st4.png" width="60%" height="60%"/></p>
+<p>这部分的代码就不做展开了，主要就是时序block和bottleneck3D block的叠加。</p>
+<h3 id="当前-未来分布估计模块"><a href="#当前-未来分布估计模块" class="headerlink" title="当前/未来分布估计模块"></a>当前/未来分布估计模块</h3><p>这歌步骤是采用条件变分方法对未来预测的固有随机性进行建模。当前分布和未来分布都被参数化为对角高斯（diagonal Gaussians）。然后使用一个KL散度的loss来监督分布的学习。这一部分的Tensor变换如下图所示<br><img src="/images/fiery_st5.png"/></p>
+<p>具体的代码实现如下<br><pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">if self.n_future &gt; 0:
+    present_state &#x3D; states[:, :1].contiguous()
+    if self.cfg.PROBABILISTIC.ENABLED:
+        # Do probabilistic computation
+        sample, output_distribution &#x3D; self.distribution_forward(
+            present_state, future_distribution_inputs, noise
+        )
+        output &#x3D; &#123;**output, **output_distribution&#125;
+
+    # Prepare future prediction input
+    b, _, _, h, w &#x3D; present_state.shape
+    hidden_state &#x3D; present_state[:, 0]
+
+    if self.cfg.PROBABILISTIC.ENABLED:
+        future_prediction_input &#x3D; sample.expand(-1, self.n_future, -1, -1, -1)
+    else:
+        future_prediction_input &#x3D; hidden_state.new_zeros(b, self.n_future, self.latent_dim, h, w)
+
+    # Recursively predict future states
+    future_states &#x3D; self.future_prediction(future_prediction_input, hidden_state)
+
+    # Concatenate present state
+    future_states &#x3D; torch.cat([present_state, future_states], dim&#x3D;1)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
+<h3 id="实例分割和运动预测"><a href="#实例分割和运动预测" class="headerlink" title="实例分割和运动预测"></a>实例分割和运动预测</h3><p>这部分是模型的Decoder部分，包括语义分割、实例中心点、实例偏移和未来实例流在内的多个head。该部分的Tensor变换如下图<br><img src="/images/fiery_st6.png" width="60%" height="60%"/></p>
+<p>这些head都是由两层卷积得到结果，具体代码也不做展开。多个输出结果融合得到最后的轨迹可视化，这些部分都在后处理中进行。本博客在<a href="">FIERY 后处理全知全会</a> 中对FIERY的后处理部分进行了详细的讲解，并开源了Fiery后处理的代码（C++版），有兴趣的读者可以参考<a href="">GitHub仓库</a>。</p>
+<h2 id="FIERY缺点"><a href="#FIERY缺点" class="headerlink" title="FIERY缺点"></a>FIERY缺点</h2><ol>
 <li>时序信息没有增强，head输出的结果经过匈牙利匹配得到的。</li>
 </ol>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2104.10490.pdf">Fiery Paper</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2008.05711.pdf">LSS Paper</a><br><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/1173815">https://developer.aliyun.com/article/1173815</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2104.10490.pdf">Fiery Paper</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2008.05711.pdf">LSS Paper</a><br><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/1173815">https://developer.aliyun.com/article/1173815</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/589146284">https://zhuanlan.zhihu.com/p/589146284</a></p>
 
                 
             </div>
@@ -792,7 +861,7 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            FIERY论文与代码解读，LSS原理
+                            坐标转换原理与Nuscenes中的坐标转换
                         
                     </div>
                     <div class="publish-info">
@@ -990,7 +1059,7 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">29.6k</span>
+                        class="white-color">30.9k</span>
             
             
             

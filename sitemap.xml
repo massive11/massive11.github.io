@@ -1,357 +1,509 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://massive11.github.io/2022/03/18/principle-zuo-biao-zhuan-huan-yuan-li-yu-nuscenes-zhong-de-zuo-biao-zhuan-huan-shi-zhan/</loc>
+    
+    <lastmod>2023-06-12</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2022/09/12/principle-xiang-ji-cheng-xiang-ji-bian-mo-xing/</loc>
+    
+    <lastmod>2023-06-12</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2022/03/18/principle-fiery-yuan-li/</loc>
+    
+    <lastmod>2023-06-10</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2022/03/18/code-fiery-hou-chu-li-quan-zhi-quan-hui/</loc>
+    
+    <lastmod>2023-06-10</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2023/06/02/tech-git-ji-chu-shi-yong/</loc>
+    
+    <lastmod>2023-06-09</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2023/06/08/code-pai-xu-suan-fa-chong-wen/</loc>
+    
+    <lastmod>2023-06-09</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2022/11/10/principle-opencv-yu-yan-biao-ding-mo-xing/</loc>
+    
+    <lastmod>2023-06-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2022/11/08/principle-matlab-yu-yan-xiang-ji-biao-ding-xiang-guan-gong-ju-shi-yong/</loc>
+    
+    <lastmod>2023-06-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2022/05/28/principle-detr-yuan-li/</loc>
+    
+    <lastmod>2023-06-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2022/06/03/principle-deformable-attention/</loc>
+    
+    <lastmod>2023-06-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2022/01/25/principle-zhu-yi-li-ji-zhi/</loc>
+    
+    <lastmod>2023-06-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2022/05/27/principle-xiong-ya-li-pi-pei/</loc>
+    
+    <lastmod>2023-06-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2020/03/05/pat-1152-google-recruitment-20-fen/</loc>
+    
+    <lastmod>2023-06-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2020/03/11/pat-1148-werewolf-simple-version-20-fen/</loc>
+    
+    <lastmod>2023-06-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2020/04/07/pat-1147-heaps-30-fen/</loc>
+    
+    <lastmod>2023-06-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2020/03/25/pat-1145-hashing-average-search-time-25-fen/</loc>
+    
+    <lastmod>2023-06-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2023/01/05/paper-online-hdmap-construction-zheng-li/</loc>
+    
+    <lastmod>2023-06-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2022/08/12/paper-mono3d-paper-lu-xian-shu-li/</loc>
+    
+    <lastmod>2023-06-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2022/12/10/paper-maptr-lun-wen-yu-dai-ma-jie-du/</loc>
+    
+    <lastmod>2023-06-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2022/07/26/paper-bev-mo-xing-shen-du-gu-ji-mo-kuai-overview/</loc>
+    
+    <lastmod>2023-06-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2022/07/18/paper-3d-mu-biao-kuang-jie-ou-fang-an-shu-li/</loc>
+    
+    <lastmod>2023-06-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2020/03/22/leetcode-181-chang-zhou-sai/</loc>
+    
+    <lastmod>2023-06-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2022/10/20/code-ji-yu-bevdet-pou-xi-mmdet3d-jia-gou/</loc>
+    
+    <lastmod>2023-06-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2022/08/22/paper-pgd-probabilistic-and-geometric-depth-detecting-objects-in-perspective/</loc>
+    
+    <lastmod>2023-06-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/friends/index.html</loc>
+    
+    <lastmod>2023-06-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/contact/index.html</loc>
+    
+    <lastmod>2023-06-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/404/index.html</loc>
+    
+    <lastmod>2023-06-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/about/index.html</loc>
+    
+    <lastmod>2023-06-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/categories/index.html</loc>
+    
+    <lastmod>2023-06-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/index.html</loc>
+    
+    <lastmod>2023-06-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
 
+  <url>
+    <loc>https://massive11.github.io/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
 
-<url>
-  <loc>https://massive11.github.io/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>1.00</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/categories/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/archives/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/about/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/contact/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/friends/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2023/01/05/Paper-Online%20HDMap%20Construction%E6%95%B4%E7%90%86/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/categories/%E7%B3%BB%E7%BB%9F%E6%A2%B3%E7%90%86/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/Multi-view-3D/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/HD-Map/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2022/12/10/Paper-MapTR%E8%AE%BA%E6%96%87%E4%B8%8E%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/categories/Paper/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2022/11/10/Principle-OpenCV%20%E9%B1%BC%E7%9C%BC%E6%A0%87%E5%AE%9A%E6%A8%A1%E5%9E%8B/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/categories/%E5%8E%9F%E7%90%86/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/Calibration/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/Fisheye/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2022/11/08/Principle-Matlab%20%E9%B1%BC%E7%9C%BC%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E7%9B%B8%E5%85%B3%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2022/10/20/Code-%E5%9F%BA%E4%BA%8EBEVDET%E5%89%96%E6%9E%90MMDet3D%E6%9E%B6%E6%9E%84/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/categories/%E5%AE%9E%E6%88%98/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2022/08/22/Paper-PGD-Probabilistic%20and%20Geometric%20Depth_%20Detecting%20Objects%20in%20Perspective/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2022/08/12/Paper-Mono3D%20paper%E8%B7%AF%E7%BA%BF%E6%A2%B3%E7%90%86/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/Mono3D/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2022/07/26/Paper-BEV%E6%A8%A1%E5%9E%8B%E6%B7%B1%E5%BA%A6%E4%BC%B0%E8%AE%A1%E6%A8%A1%E5%9D%97Overview/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2022/07/18/Paper-3D%E7%9B%AE%E6%A0%87%E6%A1%86%E8%A7%A3%E8%80%A6%E6%96%B9%E6%A1%88%E6%A2%B3%E7%90%86/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2022/06/03/Principle-Deformable%20Attention/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/Attention/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/DETR/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2022/05/28/Principle-DETR/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/BEV-Perception/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2022/05/27/Principle-%E5%8C%88%E7%89%99%E5%88%A9%E5%8C%B9%E9%85%8D/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/Match/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/Graph-Theory/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/page/2/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/DFS/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/PAT/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/hash/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/Transformer/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/LSS/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/Prediction/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/Temporal/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/ICCV/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/tags/ECCV/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/categories/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/archives/2023/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/archives/2023/01/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/archives/2022/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/archives/2022/12/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/archives/2022/11/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/archives/2022/10/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/archives/2022/08/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/archives/2022/07/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/archives/2022/06/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/archives/page/2/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2022/03/18/Principle-%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2%E5%8E%9F%E7%90%86%E4%B8%8ENuscenes%E4%B8%AD%E7%9A%84%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2%E5%AE%9E%E6%88%98/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2022/03/18/Principle-Fiery/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2022/01/25/Principle-%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2020/04/07/PAT%20-%20%5B1147%5D%20%20Heaps%20(30%E5%88%86)/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2020/03/25/PAT%20-%20%5B1145%5D%20Hashing%20-%20Average%20Search%20Time%20(25%E5%88%86)/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2020/03/22/LeetCode-181%E5%9C%BA%E5%91%A8%E8%B5%9B/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2020/03/11/PAT%20-%20%5B1148%5D%20Werewolf%20-%20Simple%20Version%20(20%E5%88%86)/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/2020/03/05/PAT%20-%20%5B1152%5D%20Google%20Recruitment%20(20%E5%88%86)/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/archives/2022/05/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.51</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/archives/2022/page/2/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.51</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/archives/2022/03/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.51</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/archives/2022/01/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.51</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/archives/2020/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.51</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/archives/2020/04/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.51</priority>
-</url>
-<url>
-  <loc>https://massive11.github.io/archives/2020/03/</loc>
-  <lastmod>2023-06-08T05:15:52+00:00</lastmod>
-  <priority>0.51</priority>
-</url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/DFS/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/PAT/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/hash/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/Multi-view-3D/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/HD-Map/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/Mono3D/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/Attention/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/DETR/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/BEV-Perception/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/Calibration/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/Fisheye/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/LSS/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/Prediction/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/Temporal/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/ICCV/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/ECCV/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/Match/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/Algorithm/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/Graph-Theory/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/Transformer/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/Tech/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/Post-Processing/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/Coordinate-system/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/Camera-imaging/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/nuScenes/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/Distortion/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
-
+  
+  <url>
+    <loc>https://massive11.github.io/categories/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/categories/%E5%AE%9E%E6%88%98/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/categories/Paper/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/categories/%E7%B3%BB%E7%BB%9F%E6%A2%B3%E7%90%86/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/categories/%E5%8E%9F%E7%90%86/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/categories/Code/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 </urlset>

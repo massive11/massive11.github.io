@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="FIERY 与 LSS, Untitled.">
+    <meta name="keywords" content="FIERY论文与代码解读、LSS原理, Untitled.">
     <meta name="description" content="FIERY论文与代码解读，LSS原理与代码解读
 FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高清地图的情况下，仅从摄像头驱动数据中以端到端的方式学习对未来固有的随机性进行建模，并预测未来的多时间轨迹。效果">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,7 +18,7 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>FIERY 与 LSS | Untitled.</title>
+    <title>FIERY论文与代码解读、LSS原理 | Untitled.</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -333,12 +333,12 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">FIERY 与 LSS</h1>
+                    <h1 class="description center-align post-title">FIERY论文与代码解读、LSS原理</h1>
                 </div>
             </div>
         </div>
@@ -427,7 +427,7 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    13 分
+                    14 分
                 </div>
                 
 
@@ -458,7 +458,7 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
 <li>这些状态被解码为BEV视角的未来实例分割和未来的运动</li>
 </ol>
 <p>经过一系列编解码，最终得到的结果如下图所示<br><img src="/images/fiery_out.png"/><br>各模块具体的实现原理将拆解成单独的几部分进行介绍。</p>
-<h3 id="LSS-ECCV-2020"><a href="#LSS-ECCV-2020" class="headerlink" title="LSS (ECCV 2020)"></a>LSS (ECCV 2020)</h3><p>FIERY从2D特征到3D BEV特征的转换过程采用的是LSS的方式（以下具体部分还是以FIERY的设定为例，避免混淆）。LSS是NVIDIA在2020年提出的方案，是自动驾驶多目相机感知领域的非常重要的论文。其最大的贡献在于：提供了一个端到端的训练方法解决多个传感器融合的问题。传统的多个传感器单独检测后再进行后处理的方法无法将此过程损失传进行反向传播而调整相机输入，而LSS则省去了这一阶段的后处理，直接输出融合结果。<br>LSS分别对应Lift, Splat, Shoot三个步骤。原文中对其解释如下</p>
+<h3 id="LSS-ECCV-2020"><a href="#LSS-ECCV-2020" class="headerlink" title="LSS (ECCV 2020)"></a>LSS (ECCV 2020)</h3><p>FIERY从2D特征到3D BEV特征的转换过程采用的是LSS的方式（以下具体介绍部分还是以FIERY的设定为例，避免混淆）。LSS是NVIDIA在2020年提出的方案，是自动驾驶多目相机感知领域的非常重要的论文。其最大的贡献在于：提供了一个端到端的训练方法解决多个传感器融合的问题。传统的多个传感器单独检测后再进行后处理的方法无法将此过程损失传进行反向传播而调整相机输入，而LSS则省去了这一阶段的后处理，直接输出融合结果。<br>LSS分别对应Lift, Splat, Shoot三个步骤。原文中对其解释如下</p>
 <blockquote>
 <p>The core idea behind our approach is to “lift” each image individually into a frustum of features for each camera, then “splat” all frustums into a rasterized bird’s-eyeview grid.<br>…<br>The representations inferred by our model enable interpretable end-to-end motion planning by “shooting” template trajectories into a bird’s-eyeview cost map output by our network.</p>
 </blockquote>
@@ -478,7 +478,7 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
         else:
             x &#x3D; x.unsqueeze(2).repeat(1, 1, self.D, 1, 1)
         return x<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
-<h4 id="Splat"><a href="#Splat" class="headerlink" title="Splat"></a>Splat</h4><p>Splat步骤是将各个相机的视锥体投影到BEV视角。该部分的Tensor变换如下图所示<br><img src="/images/fiery_st2.png"/><br>要实现这个投影，就要得到相机视锥体到BEV空间的坐标转换关系。此处首先依赖相机的内外参生成一个Geometry，它用于存储每个相机视锥体的各个特征到整体3D空间（后续会降维到BEV空间）的对应关系。首先，初始化一个$D\times W \times H$ 的frustum。按照图像坐标系 -&gt; 归一化相机坐标系 -&gt; 相机坐标系 -&gt; 车身坐标系的坐标转换顺序计算得到对应坐标。该部分代码实现如下（其中涉及到的坐标转换部分，可以参考这篇<a href="https://massive11.github.io/2022/03/18/Principle-%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2%E5%8E%9F%E7%90%86%E4%B8%8ENuscenes%E4%B8%AD%E7%9A%84%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2%E5%AE%9E%E6%88%98/">坐标转换原理与Nuscenes中的坐标转换实战</a>）<br><pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">def get_geometry(self, intrinsics, extrinsics):
+<h4 id="Splat"><a href="#Splat" class="headerlink" title="Splat"></a>Splat</h4><p>Splat步骤是将各个相机的视锥体投影到BEV视角。该部分的Tensor变换如下图所示<br><img src="/images/fiery_st2.png"/><br>要实现这个投影，就要得到相机视锥体到BEV空间的坐标转换关系。此处首先依赖相机的内外参生成一个Geometry，它用于存储每个相机视锥体的各个特征到整体3D空间（后续会降维到BEV空间）的对应关系。首先，初始化一个$D\times W \times H$ 的frustum。按照图像坐标系 -&gt; 归一化相机坐标系 -&gt; 相机坐标系 -&gt; 车身坐标系的坐标转换顺序计算得到对应坐标。该部分代码实现如下（其中涉及到的坐标转换部分，可以参考这篇<a href="https://massive11.github.io/2022/03/18/principle-zuo-biao-zhuan-huan-yuan-li-yu-nuscenes-zhong-de-zuo-biao-zhuan-huan-shi-zhan/">自动驾驶中的常见坐标转换与Nuscenes中的坐标转换实战</a>）<br><pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">def get_geometry(self, intrinsics, extrinsics):
     &quot;&quot;&quot;
     Calculate the (x, y, z) 3D position of the features.
     &quot;&quot;&quot;
@@ -550,7 +550,7 @@ FIERY (ICCV 2021)FIERY是时序的实例分割和预测网络，在不依赖高�
         output[b] &#x3D; bev_feature
 
     return output<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
-<h3 id="时序特征对齐"><a href="#时序特征对齐" class="headerlink" title="时序特征对齐"></a>时序特征对齐</h3><p>经过上一步，我们已经得到多帧的BEV特征。由于车辆的运动，每一帧的BEV特征可能都处于不同的位置，因此需要将过去时刻的BEV特征warp到当前时刻以统一坐标系，也就是所谓的特征对齐（feature alignment）。这个步骤基本就是简单的坐标系转换，借助惯导信息来完成。该部分的Tensor变换如下<br><img src="/images/fiery_st3.png" width="70%" height="70%"/><br>惯导提供的信息通常是相对于起始位置的三轴平移量和三轴旋转量。根据两帧的惯导数据，可以很容易的计算出两帧之间的相对平移量和旋转量，即$[tx, ty, tz, rx, ry, rz]$。然后，基于这个运动信息，实现feature warp（由于涉及到连续多帧的变换，会先将这个6 DoF转成坐标转换矩阵的形式，然后再转回转换矩阵的形式）。先进行Z轴上的旋转，然后进行X轴、Y轴的平移，最后使用仿射变换实现X轴、Y轴的旋转。</p>
+<h3 id="时序特征对齐"><a href="#时序特征对齐" class="headerlink" title="时序特征对齐"></a>时序特征对齐</h3><p>经过上一步，我们已经得到多帧的BEV特征。由于车辆的运动，每一帧的BEV特征可能都处于不同的位置，因此需要将过去时刻的BEV特征warp到当前时刻以统一坐标系，也就是所谓的特征对齐（feature alignment）。这个步骤基本就是简单的坐标系转换，借助惯导信息来完成。该部分的Tensor变换如下<br><img src="/images/fiery_st3.png" width="70%" height="70%"/><br>惯导提供的信息通常是相对于起始位置的三轴平移量和三轴旋转量。根据两帧的惯导数据，可以很容易的计算出两帧之间的相对平移量和旋转量，即$[tx, ty, tz, rx, ry, rz]$。然后，基于这个运动信息，实现feature warp（由于涉及到连续多帧的变换，会先将这个6 DoF转成坐标转换矩阵的形式，然后再转回6 DoF的形式）。先进行Z轴上的旋转，然后进行X轴、Y轴的平移，最后使用仿射变换实现X轴、Y轴的旋转。</p>
 <pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">def warp_features(x, flow, mode&#x3D;&#39;nearest&#39;, spatial_extent&#x3D;None):
     &quot;&quot;&quot; Applies a rotation and translation to feature map x.
         Args:
@@ -648,9 +648,11 @@ def cumulative_warp_features(x, flow, mode&#x3D;&#39;nearest&#39;, spatial_exten
     # Concatenate present state
     future_states &#x3D; torch.cat([present_state, future_states], dim&#x3D;1)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
 <h3 id="实例分割和运动预测"><a href="#实例分割和运动预测" class="headerlink" title="实例分割和运动预测"></a>实例分割和运动预测</h3><p>这部分是模型的Decoder部分，包括语义分割、实例中心点、实例偏移和未来实例流在内的多个head。该部分的Tensor变换如下图<br><img src="/images/fiery_st6.png" width="60%" height="60%"/></p>
-<p>这些head都是由两层卷积得到结果，具体代码也不做展开。多个输出结果融合得到最后的轨迹可视化，这些部分都在后处理中进行。本博客在<a href="">FIERY 后处理全知全会</a> 中对FIERY的后处理部分进行了详细的讲解，并开源了Fiery后处理的代码（C++版），有兴趣的读者可以参考<a href="">GitHub仓库</a>。</p>
+<p>这些head都是由两层卷积得到结果，具体代码也不做展开。多个输出结果融合得到最后的轨迹可视化，这些部分都在后处理中进行。本博客在<a href="https://massive11.github.io/2022/03/18/code-fiery-hou-chu-li-quan-zhi-quan-hui/">FIERY后处理原理与代码解读</a> 中对FIERY的后处理部分进行了详细的讲解，并开源了Fiery后处理的代码（C++版），有兴趣的读者可以参考<a href="">GitHub仓库</a>。</p>
 <h2 id="FIERY缺点"><a href="#FIERY缺点" class="headerlink" title="FIERY缺点"></a>FIERY缺点</h2><ol>
-<li>时序信息没有增强，head输出的结果经过匈牙利匹配得到的。</li>
+<li>在网络架构中，没有进行帧间的跟踪，是在后处理过程中经过匈牙利匹配得到的；</li>
+<li>非常耗时，3帧处理，加速后在orin平台部署也只能达到11hz；</li>
+<li>强依赖精准内外参，行车过程中的参数变化会对结果产生比较大的影响。</li>
 </ol>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2104.10490.pdf">Fiery Paper</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2008.05711.pdf">LSS Paper</a><br><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/1173815">https://developer.aliyun.com/article/1173815</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/589146284">https://zhuanlan.zhihu.com/p/589146284</a></p>
 
@@ -796,9 +798,9 @@ def cumulative_warp_features(x, flow, mode&#x3D;&#39;nearest&#39;, spatial_exten
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="FIERY 后处理全知全会">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="FIERY 后处理原理与代码解读">
                         
-                        <span class="card-title">FIERY 后处理全知全会</span>
+                        <span class="card-title">FIERY 后处理原理与代码解读</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1051,7 +1053,7 @@ def cumulative_warp_features(x, flow, mode&#x3D;&#39;nearest&#39;, spatial_exten
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">33.4k</span>
+                        class="white-color">36k</span>
             
             
             

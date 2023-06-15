@@ -4,10 +4,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="MATLAB鱼眼相机标定相关工具使用, Untitled.">
-    <meta name="description" content="本文对MATLAB鱼眼相机标定相关工具使用进行了介绍
+    <meta name="keywords" content="MATLAB鱼眼相机标定模型Scaramuzza与相关工具使用, Untitled.">
+    <meta name="description" content="本文对MATLAB鱼眼相机标定模型-Scaramuzza以及相关工具使用进行了介绍
 
-The Computer Vision Toolbox contains calibration algorithms for the pinhole camera model and">
+The Computer Vision Toolbox contains calibration algorithms for the pinhole c">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +19,7 @@ The Computer Vision Toolbox contains calibration algorithms for the pinhole came
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>MATLAB鱼眼相机标定相关工具使用 | Untitled.</title>
+    <title>MATLAB鱼眼相机标定模型Scaramuzza与相关工具使用 | Untitled.</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -334,12 +334,12 @@ The Computer Vision Toolbox contains calibration algorithms for the pinhole came
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">MATLAB鱼眼相机标定相关工具使用</h1>
+                    <h1 class="description center-align post-title">MATLAB鱼眼相机标定模型Scaramuzza与相关工具使用</h1>
                 </div>
             </div>
         </div>
@@ -401,14 +401,14 @@ The Computer Vision Toolbox contains calibration algorithms for the pinhole came
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    818
+                    936
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    4 分
                 </div>
                 
 
@@ -426,16 +426,31 @@ The Computer Vision Toolbox contains calibration algorithms for the pinhole came
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>本文对MATLAB鱼眼相机标定相关工具使用进行了介绍<br><span id="more"></span></p>
+                <p>本文对MATLAB鱼眼相机标定模型-Scaramuzza以及相关工具使用进行了介绍<br><span id="more"></span></p>
 <blockquote>
 <p>The Computer Vision Toolbox contains calibration algorithms for the pinhole camera model and the fisheye camera model. You can use the fisheye model with cameras up to a field of view (FOV) of 195 degrees.</p>
 </blockquote>
-<h1 id="1-Matlab鱼眼相机模型-Scaramuzza"><a href="#1-Matlab鱼眼相机模型-Scaramuzza" class="headerlink" title="1.Matlab鱼眼相机模型-Scaramuzza"></a>1.Matlab鱼眼相机模型-Scaramuzza</h1><p>官方文档：<a target="_blank" rel="noopener" href="https://ww2.mathworks.cn/help/vision/ug/fisheye-calibration-basics.html">Mathworks Fisheye Calibration Basics Document</a><br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1666232665636-597bb5ee-9cd3-4cc7-ac30-626bdd53b1c9.png#clientId=u693fa3a9-f283-4&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=289&amp;id=QTKp4&amp;originHeight=434&amp;originWidth=1151&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=49976&amp;status=error&amp;style=none&amp;taskId=uc00d749f-73c5-4d81-bb5d-66fc5a1664f&amp;title=&amp;width=767.3333333333334" alt="image.png"><br>小孔成像模型与鱼眼相机模型对比</p>
-<h2 id="1-1-世界坐标3D——图像坐标2D的转换"><a href="#1-1-世界坐标3D——图像坐标2D的转换" class="headerlink" title="1.1 世界坐标3D——图像坐标2D的转换"></a>1.1 世界坐标3D——图像坐标2D的转换</h2><h3 id="1-1-1-世界坐标3D——相机坐标3D"><a href="#1-1-1-世界坐标3D——相机坐标3D" class="headerlink" title="1.1.1 世界坐标3D——相机坐标3D"></a>1.1.1 世界坐标3D——相机坐标3D</h3><p>为相机坐标系坐标，R为外参旋转矩阵，为世界坐标系坐标，T为外参平移向量</p>
-<h3 id="1-1-2-相机坐标3D——校正图像坐标2D"><a href="#1-1-2-相机坐标3D——校正图像坐标2D" class="headerlink" title="1.1.2 相机坐标3D——校正图像坐标2D"></a>1.1.2 相机坐标3D——校正图像坐标2D</h3><p>鱼眼相机模型的内参包括投影函数的多项式映射系数。对齐系数与传感器对齐以及从传感器平面到相机图像平面中的像素位置的转换有关。是矫正后的图像坐标2D点，是Scaramuzza模型[1]中描述的多项式系数，是scalar factor。，是相关的函数，仅与像素点与图像中心的距离有关</p>
-<h3 id="1-1-3-校正图像坐标2D——原始图像的像素坐标2D"><a href="#1-1-3-校正图像坐标2D——原始图像的像素坐标2D" class="headerlink" title="1.1.3 校正图像坐标2D——原始图像的像素坐标2D"></a>1.1.3 校正图像坐标2D——原始图像的像素坐标2D</h3><p>内参也包括了拉伸和变形（仿射变换）。 拉伸矩阵补偿传感器到镜头的失准，失真向量调整图像平面的 (0,0) 位置。为Stretch Matrix，为原始图像的像素坐标，为Distortion Center</p>
-<h2 id="1-2-Matlab鱼眼相机标定参数使用Pipeline"><a href="#1-2-Matlab鱼眼相机标定参数使用Pipeline" class="headerlink" title="1.2 Matlab鱼眼相机标定参数使用Pipeline"></a>1.2 Matlab鱼眼相机标定参数使用Pipeline</h2><p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1666253197535-721350c7-79c4-4739-95b0-858158975ec2.png#clientId=u654a0bfa-568e-4&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=358&amp;id=uvJr4&amp;originHeight=715&amp;originWidth=931&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=42621&amp;status=error&amp;style=none&amp;taskId=uc8644ffb-0ff3-4e32-8696-68956c7097a&amp;title=&amp;width=466" alt="image.png"></p>
-<h3 id="1-2-1-Fisheye-Model，根据鱼眼相机内参校正图像（数据预处理）"><a href="#1-2-1-Fisheye-Model，根据鱼眼相机内参校正图像（数据预处理）" class="headerlink" title="1.2.1 Fisheye Model，根据鱼眼相机内参校正图像（数据预处理）"></a>1.2.1 Fisheye Model，根据鱼眼相机内参校正图像（数据预处理）</h3><pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">params <span class="token operator">=</span> <span class="token function">struct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<h2 id="1-Matlab鱼眼相机模型-Scaramuzza"><a href="#1-Matlab鱼眼相机模型-Scaramuzza" class="headerlink" title="1.Matlab鱼眼相机模型-Scaramuzza"></a>1.Matlab鱼眼相机模型-Scaramuzza</h2><p>官方文档：<a target="_blank" rel="noopener" href="https://ww2.mathworks.cn/help/vision/ug/fisheye-calibration-basics.html">Mathworks Fisheye Calibration Basics Document</a><br><img src="/images/pinhole_fisheye.png"/></p>
+<center>小孔成像模型与鱼眼相机模型对比</center>
+
+<h3 id="1-1-世界坐标3D—-gt-—相机坐标3D"><a href="#1-1-世界坐标3D—-gt-—相机坐标3D" class="headerlink" title="1.1 世界坐标3D—&gt;—相机坐标3D"></a>1.1 世界坐标3D—&gt;—相机坐标3D</h3><p>$\begin{pmatrix} X_c\\ Y_c \\ Z_c \end{pmatrix}$为相机坐标系坐标，$R$为外参旋转矩阵，$\begin{pmatrix} X_w\\ Y_w \\ Z_w \end{pmatrix}$为世界坐标系坐标，$T$为外参平移向量</p>
+<script type="math/tex; mode=display">\begin{equation}
+\begin{pmatrix} X_c\\ Y_c \\ Z_c \end{pmatrix}= R\begin{pmatrix} X_w\\ Y_w \\ Z_w \end{pmatrix}
++T 
+\end{equation}</script><h3 id="1-2-相机坐标3D—-gt-—校正图像坐标2D"><a href="#1-2-相机坐标3D—-gt-—校正图像坐标2D" class="headerlink" title="1.2 相机坐标3D—&gt;—校正图像坐标2D"></a>1.2 相机坐标3D—&gt;—校正图像坐标2D</h3><p>鱼眼相机模型的内参包括投影函数的多项式映射系数。对齐系数与传感器对齐以及从传感器平面到相机图像平面中的像素位置的转换有关。$u, v$是矫正后的图像坐标2D点，$a_0,a_2,a_3,a_4$是Scaramuzza模型[1]中描述的多项式系数，$\lambda$是scalar factor。$\rho=\sqrt{u^2+v^2}$，是$u, v$相关的函数，仅与像素点与图像中心的距离有关</p>
+<script type="math/tex; mode=display">\begin{equation}
+\begin{pmatrix} X_c\\ Y_c \\ Z_c \end{pmatrix}
+=\lambda\begin{pmatrix} u\\ v \\ a_0 + a_2\rho^2+a_3\rho^3+a_4\rho^4 \end{pmatrix}
+\end{equation}</script><h3 id="1-3-校正图像坐标2D—-gt-—原始图像的像素坐标2D"><a href="#1-3-校正图像坐标2D—-gt-—原始图像的像素坐标2D" class="headerlink" title="1.3 校正图像坐标2D—&gt;—原始图像的像素坐标2D"></a>1.3 校正图像坐标2D—&gt;—原始图像的像素坐标2D</h3><p>内参也包括了拉伸和变形（仿射变换）。 拉伸矩阵补偿传感器到镜头的失准，失真向量调整图像平面的 (0,0) 位置。$\begin{pmatrix} c &amp;d\\ e&amp;1  \end{pmatrix}$为Stretch Matrix，$\begin{pmatrix} u’\\ v’  \end{pmatrix}$为原始图像的像素坐标，$\begin{pmatrix} c_x\\ c_y  \end{pmatrix}$为Distortion Center</p>
+<script type="math/tex; mode=display">\begin{equation}
+\begin{pmatrix} u'\\ v'  \end{pmatrix}
+=
+\begin{pmatrix} c &d\\ e&1  \end{pmatrix}
+\begin{pmatrix} u\\ v  \end{pmatrix}
++ 
+\begin{pmatrix} c_x\\ c_y  \end{pmatrix}
+\end{equation}</script><h2 id="2-Matlab鱼眼相机标定参数使用Pipeline"><a href="#2-Matlab鱼眼相机标定参数使用Pipeline" class="headerlink" title="2 Matlab鱼眼相机标定参数使用Pipeline"></a>2 Matlab鱼眼相机标定参数使用Pipeline</h2><p><img src="/images/scaramuzza_pipeline.png" width="70%" height="70%"/></p>
+<h3 id="2-1-Fisheye-Model，根据鱼眼相机内参校正图像（数据预处理）"><a href="#2-1-Fisheye-Model，根据鱼眼相机内参校正图像（数据预处理）" class="headerlink" title="2.1 Fisheye Model，根据鱼眼相机内参校正图像（数据预处理）"></a>2.1 Fisheye Model，根据鱼眼相机内参校正图像（数据预处理）</h3><pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">params <span class="token operator">=</span> <span class="token function">struct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 params<span class="token punctuation">.</span>pattern_origin_height <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token comment">% Pattern is on ground</span>
 <span class="token comment">% 1.加载预先标定好的鱼眼相机内参</span>
 camera_intrinsics <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -449,7 +464,12 @@ img <span class="token operator">=</span> <span class="token function">imread</s
 <span class="token punctuation">[</span>J<span class="token punctuation">,</span> cam_intrinsics<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">undistortFisheyeImage</span><span class="token punctuation">(</span>img<span class="token punctuation">,</span> front_intrinsics<span class="token punctuation">,</span> <span class="token string">'Output'</span><span class="token punctuation">,</span> <span class="token string">'full'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token function">subplot</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token function">imshow</span><span class="token punctuation">(</span>img<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token function">title</span><span class="token punctuation">(</span><span class="token string">'原始图像'</span><span class="token punctuation">)</span>
 <span class="token function">subplot</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token function">imshow</span><span class="token punctuation">(</span>J<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token function">title</span><span class="token punctuation">(</span><span class="token string">'校正图像'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1666250346268-f77af30d-c5db-4344-9b5b-dbcd5fd4a9b6.png#clientId=uf53b3c9d-69b2-4&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=366&amp;id=iSx3i&amp;originHeight=549&amp;originWidth=2006&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=1021201&amp;status=error&amp;style=none&amp;taskId=u51ed1323-c9cd-4c11-84f6-79da6375e1b&amp;title=&amp;width=1337.3333333333333" alt="image.png"><br>Matlab工具箱 校正效果展示<br>校正图像放大后的效果对比<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1666250498775-76fecb34-9c31-4d9c-951a-6e2c0a27d6b3.png#clientId=uf53b3c9d-69b2-4&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=355&amp;id=CcSCO&amp;originHeight=533&amp;originWidth=2001&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=1197037&amp;status=error&amp;style=none&amp;taskId=u3bdf80ea-946d-4af4-b1d1-a868b98fcb7&amp;title=&amp;width=1334" alt="image.png"><br>Matlab工具箱 校正效果展示（放大版）</p>
+<p><img src="/images/scaramuzza_comparison.png"/></p>
+<center>Matlab工具箱 校正效果展示</center>
+
+<p>校正图像放大后的效果对比<br><img src="/images/scaramuzza_compare_v2.png"/></p>
+<center>Matlab工具箱 校正效果展示（放大版）</center>
+
 <h3 id="1-2-2-Pinhole-Model，校正图像的坐标转换（模型中）"><a href="#1-2-2-Pinhole-Model，校正图像的坐标转换（模型中）" class="headerlink" title="1.2.2 Pinhole Model，校正图像的坐标转换（模型中）"></a>1.2.2 Pinhole Model，校正图像的坐标转换（模型中）</h3><p>在数据预处理过程中，原始图像已经经过鱼眼模型校正，校正后的图像可以近似为小孔成像模型。因此，可以利用校正图像的虚拟相机的内参去标定外参，由此得到转换过程中需要的全部坐标转换矩阵。<br><pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab"><span class="token comment">% 3.加载预先标定的2D-3D匹配点 img_points和world_points</span>
 <span class="token function">load</span><span class="token punctuation">(</span><span class="token string">'./img_points.mat'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token function">load</span><span class="token punctuation">(</span><span class="token string">'./world_points.mat'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -807,6 +827,13 @@ new_img_points<span class="token operator">=</span><span class="token punctuatio
 </main>
 
 
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+    });
+</script>
+
 
 
     <footer class="page-footer bg-color">
@@ -826,7 +853,7 @@ new_img_points<span class="token operator">=</span><span class="token punctuatio
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">33.4k</span>
+                        class="white-color">36k</span>
             
             
             

@@ -6,12 +6,9 @@
     <meta charset="utf-8">
     <meta name="keywords" content="OpenCV鱼眼相机标定模型, Untitled.">
     <meta name="description" content="本文对OpenCV鱼眼相机标定模型进行了整理
-原理X是世界坐标系中一点P的坐标，R是旋转矩阵，T是平移向量，点P在相机坐标系下的坐标可表示为
-x，y，z是的三个坐标，可表示为
-P点小孔投影的坐标为，其中
-鱼眼畸变模型
-畸变点的坐标
-最终的像">
+鱼眼相机模型$X$是世界坐标系中一点$P$的坐标，$R$是旋转矩阵，$T$是平移向量，点$P$在相机坐标系下的坐标可表示为
+X_c=RX+T$x，y，z$是$X_c$的三个坐标，可表示为
+x=X">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -405,14 +402,14 @@ P点小孔投影的坐标为，其中
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    402
+                    485
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    2 分
                 </div>
                 
 
@@ -431,25 +428,28 @@ P点小孔投影的坐标为，其中
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <p>本文对OpenCV鱼眼相机标定模型进行了整理<br><span id="more"></span></p>
-<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>X是世界坐标系中一点P的坐标，R是旋转矩阵，T是平移向量，点P在相机坐标系下的坐标可表示为</p>
-<p>x，y，z是的三个坐标，可表示为</p>
-<p>P点小孔投影的坐标为，其中</p>
-<p>鱼眼畸变模型</p>
-<p>畸变点的坐标</p>
-<p>最终的像素坐标系坐标</p>
-<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1666851400935-0c52ce5b-864c-4d5e-9cd7-936cd71587b1.png#clientId=u2530e7df-30b1-4&amp;from=paste&amp;height=191&amp;id=u2df9f0b9&amp;originHeight=636&amp;originWidth=1504&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=32824&amp;status=done&amp;style=none&amp;taskId=u8820566f-b600-4b9e-a0f5-c24f4bb9bcf&amp;title=&amp;width=452" alt="image.png"></p>
-<h2 id="1-cv-fisheye-calibrate"><a href="#1-cv-fisheye-calibrate" class="headerlink" title="1.cv::fisheye::calibrate()"></a>1.cv::fisheye::calibrate()</h2><p>首先使用标定板标定相机。该函数输入角点，返回鱼眼相机内参K、D和外参R、T。<br>其中，K是33的相机内参矩阵<br>D是畸变系数<br>R是旋转向量<br>T是平移向量<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1666792469897-56f13227-7745-497b-809d-a51c0e5502c6.png#clientId=u4d203810-b609-4&amp;from=paste&amp;height=379&amp;id=u3ac436bc&amp;originHeight=568&amp;originWidth=1479&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=129384&amp;status=done&amp;style=none&amp;taskId=ud749b2c6-819d-4d34-ae99-d7300fccffe&amp;title=&amp;width=986" alt="image.png"></p>
-<h2 id="2-cv-getOptimalNewCameraMatrix"><a href="#2-cv-getOptimalNewCameraMatrix" class="headerlink" title="2.cv::getOptimalNewCameraMatrix"></a>2.cv::getOptimalNewCameraMatrix</h2><p>根据比例因子返回新的相机内参矩阵<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1666851321370-3fedf064-3060-4fa4-b459-5d69e52fdb04.png#clientId=u86beb428-ab51-4&amp;from=drop&amp;id=u25272227&amp;originHeight=656&amp;originWidth=1966&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=415026&amp;status=done&amp;style=none&amp;taskId=uf49a338d-63df-4f71-a224-81994c3d30a&amp;title=" alt="截屏2022-10-27 14.15.17.png"></p>
+<h2 id="鱼眼相机模型"><a href="#鱼眼相机模型" class="headerlink" title="鱼眼相机模型"></a>鱼眼相机模型</h2><p>$X$是世界坐标系中一点$P$的坐标，$R$是旋转矩阵，$T$是平移向量，点$P$在相机坐标系下的坐标可表示为</p>
+<script type="math/tex; mode=display">X_c=RX+T</script><p>$x，y，z$是$X_c$的三个坐标，可表示为</p>
+<script type="math/tex; mode=display">x=Xc_1</script><script type="math/tex; mode=display">y=Xc_2</script><script type="math/tex; mode=display">z=Xc_3</script><p>P点小孔投影的坐标为$[a;b]$，其中</p>
+<script type="math/tex; mode=display">a = \frac{x}{z}</script><script type="math/tex; mode=display">b = \frac{y}{z}</script><script type="math/tex; mode=display">r^2=a^2+b^2</script><script type="math/tex; mode=display">\theta=atan(r)</script><p>鱼眼畸变模型</p>
+<script type="math/tex; mode=display">\theta_d=\theta(1+k_1\theta^2+k_2\theta^4+k_3\theta^6+k_4\theta^8)</script><p>畸变点的坐标$[x’;y’]$</p>
+<script type="math/tex; mode=display">x'=(\frac{\theta_d}{r})a</script><script type="math/tex; mode=display">y'=(\frac{\theta_d}{r})b</script><p>最终的像素坐标系坐标$[u;v]$</p>
+<script type="math/tex; mode=display">u=f_x(x'+\alpha y')+c_x</script><script type="math/tex; mode=display">v=f_xy'+c_y</script><h2 id="鱼眼图像标定、校正代码"><a href="#鱼眼图像标定、校正代码" class="headerlink" title="鱼眼图像标定、校正代码"></a>鱼眼图像标定、校正代码</h2><p><img src="/images/opencv_distortion.png" width="70%" height="70%"/></p>
+<h2 id="1-cv-fisheye-calibrate"><a href="#1-cv-fisheye-calibrate" class="headerlink" title="1.cv::fisheye::calibrate()"></a>1.cv::fisheye::calibrate()</h2><p>首先使用标定板标定相机。该函数输入角点，返回鱼眼相机内参K、D和外参R、T。<br>其中，K是33的相机内参矩阵，D是畸变系数，R是旋转向量，T是平移向量<br><img src="/images/opencv_calibrate.png"/></p>
+<h2 id="2-cv-getOptimalNewCameraMatrix"><a href="#2-cv-getOptimalNewCameraMatrix" class="headerlink" title="2.cv::getOptimalNewCameraMatrix"></a>2.cv::getOptimalNewCameraMatrix</h2><blockquote>
+<p>Returns the new camera intrinsic matrix based on the free scaling parameter.</p>
+</blockquote>
+<p>根据比例因子返回新的相机内参矩阵<br><img src="/images/opencv_get_new.png"/></p>
 <h2 id="3-cv-fishheye-initUndistortRectifyMap"><a href="#3-cv-fishheye-initUndistortRectifyMap" class="headerlink" title="3.cv::fishheye::initUndistortRectifyMap"></a>3.cv::fishheye::initUndistortRectifyMap</h2><blockquote>
 <p>Computes undistortion and rectification maps for image transform by cv::remap(). If D is empty zero distortion is used, if R or P is empty identity matrixes are used.</p>
 </blockquote>
-<p>该函数计算原始图像和矫正图像之间的转换关系，输入是鱼眼相机内参，输出是两者间的映射关系map1和map2。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1666837089400-15675ff4-5022-4ecc-869e-89f33f338c98.png#clientId=u86beb428-ab51-4&amp;from=drop&amp;id=u6b7eca60&amp;originHeight=706&amp;originWidth=1974&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=381747&amp;status=done&amp;style=none&amp;taskId=u2aa4ac72-67c0-4f60-ae75-08c4e17990e&amp;title=" alt="截屏2022-10-27 10.18.05.png"></p>
+<p>该函数计算原始图像和矫正图像之间的转换关系，输入是鱼眼相机内参，输出是两者间的映射关系map1和map2。<br><img src="/images/opencv_init_undis.png"/></p>
 <h2 id="4-cv-remap"><a href="#4-cv-remap" class="headerlink" title="4.cv::remap"></a>4.cv::remap</h2><blockquote>
 <p>The function remap transforms the source image using the specified map:</p>
-<p>where values of pixels with non-integer coordinates are computed using one of available interpolation methods. mapx and mapy can be encoded as separate floating-point maps in map1 and map2 respectively, or interleaved floating-point maps of (x,y) in map1, or fixed-point maps created by using convertMaps. The reason you might want to convert from floating to fixed-point representations of a map is that they can yield much faster (2x) remapping operations. In the converted case, map1 contains pairs (cvFloor(x), cvFloor(y)) and map2 contains indices in a table of interpolation coefficients.</p>
+<script type="math/tex; mode=display">dst(x,y)=src(map_x(x,y),map_y(x,y))</script><p>where values of pixels with non-integer coordinates are computed using one of available interpolation methods. mapx and mapy can be encoded as separate floating-point maps in map1 and map2 respectively, or interleaved floating-point maps of (x,y) in map1, or fixed-point maps created by using convertMaps. The reason you might want to convert from floating to fixed-point representations of a map is that they can yield much faster (2x) remapping operations. In the converted case, map1 contains pairs (cvFloor(x), cvFloor(y)) and map2 contains indices in a table of interpolation coefficients.</p>
 </blockquote>
-<p>使用map1和map2进行矫正<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1666837346784-39468276-4eae-4a8d-8668-6a7d5cb2e763.png#clientId=u86beb428-ab51-4&amp;from=drop&amp;id=uac6e461a&amp;originHeight=652&amp;originWidth=1968&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=345482&amp;status=done&amp;style=none&amp;taskId=u91754d45-248e-418b-ba9f-18eebc55db4&amp;title=" alt="截屏2022-10-27 10.22.20.png"></p>
-<h2 id="5-CUDA加速"><a href="#5-CUDA加速" class="headerlink" title="5.CUDA加速"></a>5.CUDA加速</h2><h1 id="基于OpenCV双目模型的虚拟相机方案"><a href="#基于OpenCV双目模型的虚拟相机方案" class="headerlink" title="基于OpenCV双目模型的虚拟相机方案"></a>基于OpenCV双目模型的虚拟相机方案</h1>
+<p>使用map1和map2进行矫正<br><img src="/images/opencv_remap.png"/></p>
+
                 
             </div>
             <hr/>
@@ -621,15 +621,15 @@ P点小孔投影的坐标为，其中
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="MATLAB鱼眼相机标定相关工具使用">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="MATLAB鱼眼相机标定模型Scaramuzza与相关工具使用">
                         
-                        <span class="card-title">MATLAB鱼眼相机标定相关工具使用</span>
+                        <span class="card-title">MATLAB鱼眼相机标定模型Scaramuzza与相关工具使用</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            本文对MATLAB鱼眼相机标定相关工具使用进行了介绍
+                            本文对MATLAB鱼眼相机标定模型-Scaramuzza以及相关工具使用进行了介绍
                         
                     </div>
                     <div class="publish-info">
@@ -781,6 +781,13 @@ P点小孔投影的坐标为，其中
 </main>
 
 
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+    });
+</script>
+
 
 
     <footer class="page-footer bg-color">
@@ -800,7 +807,7 @@ P点小孔投影的坐标为，其中
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">33.4k</span>
+                        class="white-color">36k</span>
             
             
             

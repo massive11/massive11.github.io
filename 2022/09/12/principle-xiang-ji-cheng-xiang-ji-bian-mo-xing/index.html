@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="keywords" content="相机成像畸变模型, Untitled.">
     <meta name="description" content="相机成像畸变模型介绍
-畸变产生的原因为了好的成像效果，通常会在相机的前方增加透镜。透镜的加入会对成像过程中光线的传播产生新的影响：一是透镜自身的形状对光线传播的影响；二是在机械组装过程中，透镜不可能和成像平面完全平行，会导致光线穿过透镜投影">
+畸变的产生和公式化描述为了好的成像效果，通常会在相机的前方增加透镜。透镜的加入会对成像过程中光线的传播产生新的影响：一是透镜自身的形状对光线传播的影响；二是在机械组装过程中，透镜不可能和成像平面完全平行，会导致光线穿过">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -404,14 +404,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    188
+                    951
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    3 分
                 </div>
                 
 
@@ -430,9 +430,23 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <p>相机成像畸变模型介绍<br><span id="more"></span></p>
-<h2 id="畸变产生的原因"><a href="#畸变产生的原因" class="headerlink" title="畸变产生的原因"></a>畸变产生的原因</h2><p>为了好的成像效果，通常会在相机的前方增加透镜。透镜的加入会对成像过程中光线的传播产生新的影响：一是透镜自身的形状对光线传播的影响；二是在机械组装过程中，透镜不可能和成像平面完全平行，会导致光线穿过透镜投影到成像面时的位置发生变化。<br>由透镜形状引起的畸变称为径向畸变。主要分为桶形畸变和枕形畸变。</p>
-<p>透镜和成像平面不能完全平行引起的畸变称为切向畸变。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>《视觉SLAM十四讲》—高翔</p>
+<h2 id="畸变的产生和公式化描述"><a href="#畸变的产生和公式化描述" class="headerlink" title="畸变的产生和公式化描述"></a>畸变的产生和公式化描述</h2><p>为了好的成像效果，通常会在相机的前方增加透镜。透镜的加入会对成像过程中光线的传播产生新的影响：一是透镜自身的形状对光线传播的影响；二是在机械组装过程中，透镜不可能和成像平面完全平行，会导致光线穿过透镜投影到成像面时的位置发生变化。</p>
+<h3 id="径向畸变"><a href="#径向畸变" class="headerlink" title="径向畸变"></a>径向畸变</h3><p>由透镜形状引起的畸变称为径向畸变。在针孔模型中，一条直线投影到像素平面上还是一条直线。实际环境中，相机的透镜往往使得一条直线在图片中变成了曲线。越靠近图像的边缘效果越明显。</p>
+<p>径向畸变主要分为桶形畸变和枕形畸变，如图所示。桶形畸变图像放大率随着与光轴之间的距离增加而减小，枕形畸变则相反。这两种畸变中，穿过图像中心和光轴有交点的直线还能保持形状不变。</p>
+<p><img src="/images/distortion.jpeg" width="70%" height="70%"/></p>
+<p>使用数学公式来描述径向畸变。考虑归一化平面上的任意一点$p$，其坐标为$[x,y]^T$，也可写成极坐标的形式$[r, \theta]^T$，其中$r$表示点$p$与坐标系原点之间的距离，$p$表示与水平轴的夹角。径向畸变可以看成坐标点沿着长度方向发生了变化，也即其距离远点的长度发生了变化。通常假设畸变呈多项式关系，假设$[x_{distorted}, y_{distorted}]^T$是畸变后点的归一化坐标，即</p>
+<script type="math/tex; mode=display">x_{distorted} = x(1 + k_1 r^2 + k_2 r^4 + k_3 r^6)</script><script type="math/tex; mode=display">y_{distorted} = y(1 + k_1 r^2 + k_2 r^4 + k_3 r^6)</script><h3 id="切向畸变"><a href="#切向畸变" class="headerlink" title="切向畸变"></a>切向畸变</h3><p>透镜和成像平面不能完全平行引起的畸变称为切向畸变。<br>参考上述的公式描述，切向畸变可以看成坐标点沿着切线方向发生了变化，也即水平夹角发生了变化。使用参数$p_1, p_2$进行纠正，畸变描述如下</p>
+<script type="math/tex; mode=display">x_{distorted} = x + 2p_1 xy + p_2 (r^2 + 2x^2)</script><script type="math/tex; mode=display">y_{distorted} = y + p_1 (r^2 + 2y^2) + 2p_2xy</script><h3 id="联合畸变模型"><a href="#联合畸变模型" class="headerlink" title="联合畸变模型"></a>联合畸变模型</h3><p>联合上述两种畸变，对于相机坐标系中的一点$P$，可以通过5个畸变系数找到这个点在像素平面上的正确位置：</p>
+<ol>
+<li>将三维空间点投影到归一化图像平面，使其归一化坐标为$[x,y]^T$</li>
+<li><p>对归一化平面上的点计算径向畸变和切向畸变</p>
+<script type="math/tex; mode=display">x_{distorted} = x(1 + k_1 r^2 + k_2 r^4 + k_3 r^6) + 2p_1 xy + p_2 (r^2 + 2x^2)</script><script type="math/tex; mode=display">y_{distorted} = y(1 + k_1 r^2 + k_2 r^4 + k_3 r^6) + p_1 (r^2 + 2y^2) + 2p_2xy</script></li>
+<li><p>将畸变后的点通过内参数矩阵投影到像素平面，得到该点在图像上的正确位置</p>
+<script type="math/tex; mode=display">u = f_x x_{distorted} + c_x</script><script type="math/tex; mode=display">v = f_y y_{distorted} + c_y</script></li>
+</ol>
+<h2 id="去畸变处理"><a href="#去畸变处理" class="headerlink" title="去畸变处理"></a>去畸变处理</h2><p>去畸变处理有两种做法。可以选择先对整张图像进行去畸变，得到去畸变厚的图像，然后讨论此图像上的点的空间位置。也可以 从畸变图像上的某个点出发，按照畸变方程，讨论其畸变前的空间位置。去畸变之后，就可以直接用针孔模型建立投影关系。（通常前者更为常用）</p>
+<p>此外，鱼眼相机正是通过引入径向畸变以在有限的图像平面内表达本应落在无穷远处的空间点投影，从而达到广角成像。关于鱼眼相机模型，可以参考<a href="https://massive11.github.io/2022/11/08/principle-matlab-yu-yan-xiang-ji-biao-ding-xiang-guan-gong-ju-shi-yong/">Scaramuzza畸变模型</a>和<a href="https://massive11.github.io/2022/11/10/principle-opencv-yu-yan-biao-ding-mo-xing/">OpenCV畸变模型</a>。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>《视觉SLAM十四讲》—高翔<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/511284263">https://zhuanlan.zhihu.com/p/511284263</a></p>
 
                 
             </div>
@@ -791,7 +805,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">33.4k</span>
+                        class="white-color">36k</span>
             
             
             

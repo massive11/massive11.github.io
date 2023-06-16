@@ -401,7 +401,7 @@ The Computer Vision Toolbox contains calibration algorithms for the pinhole c">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    936
+                    953
                 </div>
                 
 
@@ -437,11 +437,11 @@ The Computer Vision Toolbox contains calibration algorithms for the pinhole c">
 <script type="math/tex; mode=display">\begin{equation}
 \begin{pmatrix} X_c\\ Y_c \\ Z_c \end{pmatrix}= R\begin{pmatrix} X_w\\ Y_w \\ Z_w \end{pmatrix}
 +T 
-\end{equation}</script><h3 id="1-2-相机坐标3D—-gt-—校正图像坐标2D"><a href="#1-2-相机坐标3D—-gt-—校正图像坐标2D" class="headerlink" title="1.2 相机坐标3D—&gt;—校正图像坐标2D"></a>1.2 相机坐标3D—&gt;—校正图像坐标2D</h3><p>鱼眼相机模型的内参包括投影函数的多项式映射系数。对齐系数与传感器对齐以及从传感器平面到相机图像平面中的像素位置的转换有关。$u, v$是矫正后的图像坐标2D点，$a_0,a_2,a_3,a_4$是Scaramuzza模型[1]中描述的多项式系数，$\lambda$是scalar factor。$\rho=\sqrt{u^2+v^2}$，是$u, v$相关的函数，仅与像素点与图像中心的距离有关</p>
+\end{equation}</script><h3 id="1-2-相机坐标3D—-gt-—校正图像坐标2D"><a href="#1-2-相机坐标3D—-gt-—校正图像坐标2D" class="headerlink" title="1.2 相机坐标3D—&gt;—校正图像坐标2D"></a>1.2 相机坐标3D—&gt;—校正图像坐标2D</h3><p>鱼眼相机模型的内参包括投影函数的多项式映射系数。对齐系数与传感器对齐以及从传感器平面到相机图像平面中的像素位置的转换有关。$u, v$是矫正后的图像坐标2D点，$a_0,a_2,a_3,a_4$是Scaramuzza模型[1]中描述的多项式系数（$a_1$为0），$\lambda$是scalar factor。$\rho=\sqrt{u^2+v^2}$，是$u, v$相关的函数，仅与像素点与图像中心的距离有关</p>
 <script type="math/tex; mode=display">\begin{equation}
 \begin{pmatrix} X_c\\ Y_c \\ Z_c \end{pmatrix}
 =\lambda\begin{pmatrix} u\\ v \\ a_0 + a_2\rho^2+a_3\rho^3+a_4\rho^4 \end{pmatrix}
-\end{equation}</script><h3 id="1-3-校正图像坐标2D—-gt-—原始图像的像素坐标2D"><a href="#1-3-校正图像坐标2D—-gt-—原始图像的像素坐标2D" class="headerlink" title="1.3 校正图像坐标2D—&gt;—原始图像的像素坐标2D"></a>1.3 校正图像坐标2D—&gt;—原始图像的像素坐标2D</h3><p>内参也包括了拉伸和变形（仿射变换）。 拉伸矩阵补偿传感器到镜头的失准，失真向量调整图像平面的 (0,0) 位置。$\begin{pmatrix} c &amp;d\\ e&amp;1  \end{pmatrix}$为Stretch Matrix，$\begin{pmatrix} u’\\ v’  \end{pmatrix}$为原始图像的像素坐标，$\begin{pmatrix} c_x\\ c_y  \end{pmatrix}$为Distortion Center</p>
+\end{equation}</script><h3 id="1-3-校正图像坐标2D—-gt-—原始图像的像素坐标2D"><a href="#1-3-校正图像坐标2D—-gt-—原始图像的像素坐标2D" class="headerlink" title="1.3 校正图像坐标2D—&gt;—原始图像的像素坐标2D"></a>1.3 校正图像坐标2D—&gt;—原始图像的像素坐标2D</h3><p>内参也包括了拉伸和变形（仿射变换）。 拉伸矩阵补偿传感器到镜头的失准，失真向量调整图像平面的 (0,0) 位置。$\begin{pmatrix} c &amp;d\\ e&amp;1  \end{pmatrix}$为Stretch Matrix，$\begin{pmatrix} u’\\ v’  \end{pmatrix}$为原始图像的像素坐标，$\begin{pmatrix} u\\ v  \end{pmatrix}$是理想的失真坐标，$\begin{pmatrix} c_x\\ c_y  \end{pmatrix}$为Distortion Center</p>
 <script type="math/tex; mode=display">\begin{equation}
 \begin{pmatrix} u'\\ v'  \end{pmatrix}
 =
@@ -853,7 +853,7 @@ new_img_points<span class="token operator">=</span><span class="token punctuatio
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">36k</span>
+                        class="white-color">40k</span>
             
             
             

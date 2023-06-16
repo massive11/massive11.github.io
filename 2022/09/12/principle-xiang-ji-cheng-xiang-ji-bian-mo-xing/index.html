@@ -4,9 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="相机成像畸变模型, Untitled.">
-    <meta name="description" content="相机成像畸变模型介绍
-畸变的产生和公式化描述为了好的成像效果，通常会在相机的前方增加透镜。透镜的加入会对成像过程中光线的传播产生新的影响：一是透镜自身的形状对光线传播的影响；二是在机械组装过程中，透镜不可能和成像平面完全平行，会导致光线穿过">
+    <meta name="keywords" content="相机成像畸变模型与鱼眼相机模型, Untitled.">
+    <meta name="description" content="相机成像畸变模型与鱼眼相机模型介绍
+相机成像畸变畸变的产生和公式化描述为了好的成像效果，通常会在相机的前方增加透镜。透镜的加入会对成像过程中光线的传播产生新的影响：一是透镜自身的形状对光线传播的影响；二是在机械组装过程中，透镜不可能和成像平">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>相机成像畸变模型 | Untitled.</title>
+    <title>相机成像畸变模型与鱼眼相机模型 | Untitled.</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -333,12 +333,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">相机成像畸变模型</h1>
+                    <h1 class="description center-align post-title">相机成像畸变模型与鱼眼相机模型</h1>
                 </div>
             </div>
         </div>
@@ -404,14 +404,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    951
+                    2k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    7 分
                 </div>
                 
 
@@ -429,14 +429,14 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>相机成像畸变模型介绍<br><span id="more"></span></p>
-<h2 id="畸变的产生和公式化描述"><a href="#畸变的产生和公式化描述" class="headerlink" title="畸变的产生和公式化描述"></a>畸变的产生和公式化描述</h2><p>为了好的成像效果，通常会在相机的前方增加透镜。透镜的加入会对成像过程中光线的传播产生新的影响：一是透镜自身的形状对光线传播的影响；二是在机械组装过程中，透镜不可能和成像平面完全平行，会导致光线穿过透镜投影到成像面时的位置发生变化。</p>
-<h3 id="径向畸变"><a href="#径向畸变" class="headerlink" title="径向畸变"></a>径向畸变</h3><p>由透镜形状引起的畸变称为径向畸变。在针孔模型中，一条直线投影到像素平面上还是一条直线。实际环境中，相机的透镜往往使得一条直线在图片中变成了曲线。越靠近图像的边缘效果越明显。</p>
+                <p>相机成像畸变模型与鱼眼相机模型介绍<br><span id="more"></span></p>
+<h2 id="相机成像畸变"><a href="#相机成像畸变" class="headerlink" title="相机成像畸变"></a>相机成像畸变</h2><h3 id="畸变的产生和公式化描述"><a href="#畸变的产生和公式化描述" class="headerlink" title="畸变的产生和公式化描述"></a>畸变的产生和公式化描述</h3><p>为了好的成像效果，通常会在相机的前方增加透镜。透镜的加入会对成像过程中光线的传播产生新的影响：一是透镜自身的形状对光线传播的影响；二是在机械组装过程中，透镜不可能和成像平面完全平行，会导致光线穿过透镜投影到成像面时的位置发生变化。</p>
+<h4 id="径向畸变"><a href="#径向畸变" class="headerlink" title="径向畸变"></a>径向畸变</h4><p>由透镜形状引起的畸变称为径向畸变。在针孔模型中，一条直线投影到像素平面上还是一条直线。实际环境中，相机的透镜往往使得一条直线在图片中变成了曲线。越靠近图像的边缘效果越明显。</p>
 <p>径向畸变主要分为桶形畸变和枕形畸变，如图所示。桶形畸变图像放大率随着与光轴之间的距离增加而减小，枕形畸变则相反。这两种畸变中，穿过图像中心和光轴有交点的直线还能保持形状不变。</p>
 <p><img src="/images/distortion.jpeg" width="70%" height="70%"/></p>
 <p>使用数学公式来描述径向畸变。考虑归一化平面上的任意一点$p$，其坐标为$[x,y]^T$，也可写成极坐标的形式$[r, \theta]^T$，其中$r$表示点$p$与坐标系原点之间的距离，$p$表示与水平轴的夹角。径向畸变可以看成坐标点沿着长度方向发生了变化，也即其距离远点的长度发生了变化。通常假设畸变呈多项式关系，假设$[x_{distorted}, y_{distorted}]^T$是畸变后点的归一化坐标，即</p>
-<script type="math/tex; mode=display">x_{distorted} = x(1 + k_1 r^2 + k_2 r^4 + k_3 r^6)</script><script type="math/tex; mode=display">y_{distorted} = y(1 + k_1 r^2 + k_2 r^4 + k_3 r^6)</script><h3 id="切向畸变"><a href="#切向畸变" class="headerlink" title="切向畸变"></a>切向畸变</h3><p>透镜和成像平面不能完全平行引起的畸变称为切向畸变。<br>参考上述的公式描述，切向畸变可以看成坐标点沿着切线方向发生了变化，也即水平夹角发生了变化。使用参数$p_1, p_2$进行纠正，畸变描述如下</p>
-<script type="math/tex; mode=display">x_{distorted} = x + 2p_1 xy + p_2 (r^2 + 2x^2)</script><script type="math/tex; mode=display">y_{distorted} = y + p_1 (r^2 + 2y^2) + 2p_2xy</script><h3 id="联合畸变模型"><a href="#联合畸变模型" class="headerlink" title="联合畸变模型"></a>联合畸变模型</h3><p>联合上述两种畸变，对于相机坐标系中的一点$P$，可以通过5个畸变系数找到这个点在像素平面上的正确位置：</p>
+<script type="math/tex; mode=display">x_{distorted} = x(1 + k_1 r^2 + k_2 r^4 + k_3 r^6)</script><script type="math/tex; mode=display">y_{distorted} = y(1 + k_1 r^2 + k_2 r^4 + k_3 r^6)</script><h4 id="切向畸变"><a href="#切向畸变" class="headerlink" title="切向畸变"></a>切向畸变</h4><p>透镜和成像平面不能完全平行引起的畸变称为切向畸变。<br>参考上述的公式描述，切向畸变可以看成坐标点沿着切线方向发生了变化，也即水平夹角发生了变化。使用参数$p_1, p_2$进行纠正，畸变描述如下</p>
+<script type="math/tex; mode=display">x_{distorted} = x + 2p_1 xy + p_2 (r^2 + 2x^2)</script><script type="math/tex; mode=display">y_{distorted} = y + p_1 (r^2 + 2y^2) + 2p_2xy</script><h4 id="联合畸变模型"><a href="#联合畸变模型" class="headerlink" title="联合畸变模型"></a>联合畸变模型</h4><p>联合上述两种畸变，对于相机坐标系中的一点$P$，可以通过5个畸变系数找到这个点在像素平面上的正确位置：</p>
 <ol>
 <li>将三维空间点投影到归一化图像平面，使其归一化坐标为$[x,y]^T$</li>
 <li><p>对归一化平面上的点计算径向畸变和切向畸变</p>
@@ -444,9 +444,19 @@
 <li><p>将畸变后的点通过内参数矩阵投影到像素平面，得到该点在图像上的正确位置</p>
 <script type="math/tex; mode=display">u = f_x x_{distorted} + c_x</script><script type="math/tex; mode=display">v = f_y y_{distorted} + c_y</script></li>
 </ol>
-<h2 id="去畸变处理"><a href="#去畸变处理" class="headerlink" title="去畸变处理"></a>去畸变处理</h2><p>去畸变处理有两种做法。可以选择先对整张图像进行去畸变，得到去畸变厚的图像，然后讨论此图像上的点的空间位置。也可以 从畸变图像上的某个点出发，按照畸变方程，讨论其畸变前的空间位置。去畸变之后，就可以直接用针孔模型建立投影关系。（通常前者更为常用）</p>
-<p>此外，鱼眼相机正是通过引入径向畸变以在有限的图像平面内表达本应落在无穷远处的空间点投影，从而达到广角成像。关于鱼眼相机模型，可以参考<a href="https://massive11.github.io/2022/11/08/principle-matlab-yu-yan-xiang-ji-biao-ding-xiang-guan-gong-ju-shi-yong/">Scaramuzza畸变模型</a>和<a href="https://massive11.github.io/2022/11/10/principle-opencv-yu-yan-biao-ding-mo-xing/">OpenCV畸变模型</a>。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>《视觉SLAM十四讲》—高翔<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/511284263">https://zhuanlan.zhihu.com/p/511284263</a></p>
+<h3 id="去畸变处理"><a href="#去畸变处理" class="headerlink" title="去畸变处理"></a>去畸变处理</h3><p>去畸变处理有两种做法。可以选择先对整张图像进行去畸变，得到去畸变厚的图像，然后讨论此图像上的点的空间位置。也可以 从畸变图像上的某个点出发，按照畸变方程，讨论其畸变前的空间位置。去畸变之后，就可以直接用针孔模型建立投影关系。（通常前者更为常用）</p>
+<h2 id="鱼眼相机"><a href="#鱼眼相机" class="headerlink" title="鱼眼相机"></a>鱼眼相机</h2><p>鱼眼镜头设计的目的是要拍摄大的视野，其视场角可达到180-270度。为了将尽可能大的场景投影到有限的图像平面内，鱼眼相机将相机畸变列为其成像特征用以在有限的图像平面内表达本应落在无穷远处的空间点投影。鱼眼镜头采用非相似成像，在成像过程中引入畸变，通过对直径空间的压缩，突破成像视角的局限，从而达到广角成像。因此经入射光线经过镜头之后射向成像面，其出射角一定是要小于入射角的。鱼眼镜头是由十几个不同的透镜组合而成的，在成像过程中，入射光线经过不同程度的折射，投影到尺寸有限的成像平面上，使得鱼眼镜头与普通镜头相比拥有更大的视野。</p>
+<p><img src="/images/fisheye_model.png" width="70%" height="70%"/></p>
+<h3 id="鱼眼相机成像模型"><a href="#鱼眼相机成像模型" class="headerlink" title="鱼眼相机成像模型"></a>鱼眼相机成像模型</h3><p>鱼眼相机成像模型近似为单位球面投影模型。一般将鱼眼相机成像过程分解成两步：先将三维空间点线性的投影到虚拟单位球面上；随后将单位球面上的点投影到图像平面上，这个过程是非线性的。由于鱼眼相机所成影像存在畸变，其中径向畸变非常严重，因此其畸变模型主要考虑径向畸变。</p>
+<p>鱼眼相机的投影函数是为了尽可能将庞大的场景投影到有限的图像平面所设计的。根据投影函数的不同将鱼眼相机的设计模型大致分为等距投影模型、等立体角投影模型、正交投影模型和体视投影模型四种。相机的成像模型实际上表征的是成像的像高与入射角之间的映射关系。</p>
+<p>以针孔模型为例，其理想成像公式为</p>
+<script type="math/tex; mode=display">r_d = f tan \theta</script><p>f为鱼眼相机的焦距，即成像平面的半径，θ是入射光线与鱼眼相机光轴的夹角，即入射角。$r_d$为鱼眼图像的点到畸变中心的距离，即成像高度。$r_d$随着设计模型的变化而发生变化，四种模型投射距离的大小关系如下（反映空间中的一点P投影到球面再到图像平面的成像过程）</p>
+<h4 id="等距投影"><a href="#等距投影" class="headerlink" title="等距投影"></a>等距投影</h4><p>等距投影模型的投影关系在入射光线之间的角度相同时，保持其对应各投影点之间的间距相同。其投影模型为：</p>
+<script type="math/tex; mode=display">r_d = f \theta</script><h4 id="正交投影"><a href="#正交投影" class="headerlink" title="正交投影"></a>正交投影</h4><p>正交投影模型的畸变很大，近180度处的图像信息几乎全部丢失，且180度之外的场景区域将无法进行描述。采用这种模型的镜头拍出的图片即使在视角较小的区域也会比其他模型镜头的畸变更明显。因此，针对艺术摄影类的广角镜头，该模型的校正效果更好。其模型如下：</p>
+<script type="math/tex; mode=display">r_d = f sin\theta</script><h4 id="等立体角投影（等积投影）"><a href="#等立体角投影（等积投影）" class="headerlink" title="等立体角投影（等积投影）"></a>等立体角投影（等积投影）</h4><p>等立体角的特点是相等立体角的入射面会产生相等面积的像，其畸变程度介于等距模型与正交模型之间。这种投影方式的特征在于，能保持变换前后，物体所占的立体角大小不变。或者说，在半球形空间中，半球面上两个「面积」相同的图案，成像后，在成像平面上的两个图案的面积仍然相同（虽然两者形状不一定相似）。其模型如下：</p>
+<script type="math/tex; mode=display">r_d = 2f sin \frac{\theta}{2}</script><h4 id="体视投影"><a href="#体视投影" class="headerlink" title="体视投影"></a>体视投影</h4><p>体视模型相比之下畸变最小，球形物面上的微小面元经过体视投影后，其像仍然是一个小圆。所以体视投影对微小物体成像有相似性。但正是这种成像的相似性，使得该投影方式不能提供足够的桶形畸变，影响成像视场。</p>
+<script type="math/tex; mode=display">r_d = 2f tan \frac{\theta}{2}</script><p>一些常用的鱼眼相机模型，可以参考<a href="https://massive11.github.io/2022/11/08/principle-matlab-yu-yan-xiang-ji-biao-ding-xiang-guan-gong-ju-shi-yong/">Scaramuzza畸变模型</a>、<a href="https://massive11.github.io/2022/11/10/principle-opencv-yu-yan-biao-ding-mo-xing/">OpenCV畸变模型</a>和<a href="">MEI模型</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>《视觉SLAM十四讲》—高翔<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/511284263">https://zhuanlan.zhihu.com/p/511284263</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/340751380">https://zhuanlan.zhihu.com/p/340751380</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/29273352">https://zhuanlan.zhihu.com/p/29273352</a></p>
 
                 
             </div>
@@ -805,7 +815,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">36k</span>
+                        class="white-color">40k</span>
             
             
             

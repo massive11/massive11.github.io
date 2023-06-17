@@ -1,11 +1,13 @@
+https://massive11.github.io/2023/04/12/principle-bev-mo-xing-chang-yong-zhi-biao-zong-jie/
+https://massive11.github.io/2023/04/08/principle-bev-mo-xing-chang-yong-loss-zong-jie/
+https://massive11.github.io/2022/03/18/principle-fiery-yuan-li/
+https://massive11.github.io/2022/03/18/principle-zuo-biao-zhuan-huan-yuan-li-yu-nuscenes-zhong-de-zuo-biao-zhuan-huan-shi-zhan/
 https://massive11.github.io/2022/09/12/principle-xiang-ji-cheng-xiang-ji-bian-mo-xing/
 https://massive11.github.io/2022/11/22/principle-mei-mo-xing-yu-yan-xiang-ji-biao-ding/
 https://massive11.github.io/2022/11/08/principle-matlab-yu-yan-xiang-ji-biao-ding-xiang-guan-gong-ju-shi-yong/
 https://massive11.github.io/2022/01/25/principle-zhu-yi-li-ji-zhi/
 https://massive11.github.io/2022/11/10/principle-opencv-yu-yan-biao-ding-mo-xing/
 https://massive11.github.io/2022/03/18/code-fiery-hou-chu-li-quan-zhi-quan-hui/
-https://massive11.github.io/2022/03/18/principle-fiery-yuan-li/
-https://massive11.github.io/2022/03/18/principle-zuo-biao-zhuan-huan-yuan-li-yu-nuscenes-zhong-de-zuo-biao-zhuan-huan-shi-zhan/
 https://massive11.github.io/2023/06/02/tech-git-ji-chu-shi-yong/
 https://massive11.github.io/2023/06/08/code-pai-xu-suan-fa-chong-wen/
 https://massive11.github.io/2022/05/28/principle-detr-yuan-li/
@@ -57,6 +59,9 @@ https://massive11.github.io/tags/Camera-imaging/
 https://massive11.github.io/tags/nuScenes/
 https://massive11.github.io/tags/Distortion/
 https://massive11.github.io/tags/NeurIPS/
+https://massive11.github.io/tags/Pytorch/
+https://massive11.github.io/tags/Loss/
+https://massive11.github.io/tags/Metrics/
 https://massive11.github.io/categories/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/
 https://massive11.github.io/categories/%E5%AE%9E%E6%88%98/
 https://massive11.github.io/categories/Paper/

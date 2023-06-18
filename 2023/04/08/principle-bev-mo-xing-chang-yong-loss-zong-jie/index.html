@@ -405,14 +405,14 @@ torch.nn.CrossEntropyLoss(weight=None, size_average=None, ignore_i">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    200
+                    968
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    4 分
                 </div>
                 
 
@@ -434,8 +434,9 @@ torch.nn.CrossEntropyLoss(weight=None, size_average=None, ignore_i">
 <h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><h3 id="CrossEntropyLoss-交叉熵"><a href="#CrossEntropyLoss-交叉熵" class="headerlink" title="CrossEntropyLoss 交叉熵"></a>CrossEntropyLoss 交叉熵</h3><blockquote>
 <p>torch.nn.CrossEntropyLoss(weight=None, size_average=None, ignore_index=- 100, reduce=None, reduction=’mean’, label_smoothing=0.0)</p>
 </blockquote>
+<p><img src="/images/cross_entropy_loss.png"/></p>
 <p>交叉熵主要用于处理分类任务。当类别不均衡的时候，可以通过给不同的类别添加不同的权重进行平衡。</p>
-<p>使用示例<br><pre class="line-numbers language-PYTHON" data-language="PYTHON"><code class="language-PYTHON"># Example of target with class indices
+<pre class="line-numbers language-PYTHON" data-language="PYTHON"><code class="language-PYTHON"># Example of target with class indices
 loss &#x3D; nn.CrossEntropyLoss()
 input &#x3D; torch.randn(3, 5, requires_grad&#x3D;True)
 target &#x3D; torch.empty(3, dtype&#x3D;torch.long).random_(5)
@@ -445,11 +446,72 @@ output.backward()
 input &#x3D; torch.randn(3, 5, requires_grad&#x3D;True)
 target &#x3D; torch.randn(3, 5).softmax(dim&#x3D;1)
 output &#x3D; loss(input, target)
-output.backward()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
+output.backward()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="Focal-loss"><a href="#Focal-loss" class="headerlink" title="Focal loss"></a>Focal loss</h3><p>Focal Loss 就是一个解决分类问题中类别不平衡、分类难度差异的一个 loss，它实际上一个基于交叉熵的改进版本。以二分类为例，公式定义如下</p>
+<script type="math/tex; mode=display">FL(p_t) = -\alpha_t(1- p_t)^{\gamma}log(p_t)</script><p><img src="/images/focal_loss.png" width="70%" height="70%"/></p>
+<p>Pytorch实现<br><pre class="line-numbers language-PYTHON" data-language="PYTHON"><code class="language-PYTHON">import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader, Dataset
+import torchvision
+import torchvision.transforms as F
+from IPython.display import display
+
+
+class FocalLoss(nn.Module):
+    def __init__(self, weight&#x3D;None, reduction&#x3D;&#39;mean&#39;, gamma&#x3D;0, eps&#x3D;1e-7):
+        super(FocalLoss, self).__init__()
+        self.gamma &#x3D; gamma
+        self.eps &#x3D; eps
+        self.ce &#x3D; torch.nn.CrossEntropyLoss(weight&#x3D;weight, reduction&#x3D;reduction)
+
+    def forward(self, input, target):
+        logp &#x3D; self.ce(input, target)
+        p &#x3D; torch.exp(-logp)
+        loss &#x3D; (1 - p) ** self.gamma * logp
+        return loss.mean()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
 <h3 id="KLDivLoss-KL散度"><a href="#KLDivLoss-KL散度" class="headerlink" title="KLDivLoss KL散度"></a>KLDivLoss KL散度</h3><blockquote>
 <p>torch.nn.KLDivLoss(size_average=None, reduce=None, reduction=’mean’, log_target=False)</p>
 </blockquote>
-<h2 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h2><h3 id="L1-loss"><a href="#L1-loss" class="headerlink" title="L1 loss"></a>L1 loss</h3><h3 id="L2-loss"><a href="#L2-loss" class="headerlink" title="L2 loss"></a>L2 loss</h3><h3 id="曼哈顿距离"><a href="#曼哈顿距离" class="headerlink" title="曼哈顿距离"></a>曼哈顿距离</h3><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html">https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html</a><br><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.nn.KLDivLoss.html">https://pytorch.org/docs/stable/generated/torch.nn.KLDivLoss.html</a></p>
+<p><img src="/images/kl_loss.png"/></p>
+<p>KL散度的取值范围是$[0, +\infty)$，当两个分布接近相同的时候KL散度取值为0。KL散度和交叉熵之间相差一个常数，这个常数是信息熵。<br>不对称性。尽管KL散度从直观上是个度量或距离函数，但它并不是一个真正的度量或者距离，因为它不具有对称性，即$D_{KL}(p||q) \ne D_{KL}(q||p)$</p>
+<pre class="line-numbers language-PYTHON" data-language="PYTHON"><code class="language-PYTHON">&gt;&gt;&gt; import torch.nn.functional as F
+&gt;&gt;&gt; kl_loss &#x3D; nn.KLDivLoss(reduction&#x3D;&quot;batchmean&quot;)
+&gt;&gt;&gt; # input should be a distribution in the log space
+&gt;&gt;&gt; input &#x3D; F.log_softmax(torch.randn(3, 5, requires_grad&#x3D;True), dim&#x3D;1)
+&gt;&gt;&gt; # Sample a batch of distributions. Usually this would come from the dataset
+&gt;&gt;&gt; target &#x3D; F.softmax(torch.rand(3, 5), dim&#x3D;1)
+&gt;&gt;&gt; output &#x3D; kl_loss(input, target)
+
+&gt;&gt;&gt; kl_loss &#x3D; nn.KLDivLoss(reduction&#x3D;&quot;batchmean&quot;, log_target&#x3D;True)
+&gt;&gt;&gt; log_target &#x3D; F.log_softmax(torch.rand(3, 5), dim&#x3D;1)
+&gt;&gt;&gt; output &#x3D; kl_loss(input, log_target)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h2><h3 id="L1-loss-MAE-loss"><a href="#L1-loss-MAE-loss" class="headerlink" title="L1 loss (MAE loss)"></a>L1 loss (MAE loss)</h3><blockquote>
+<p>torch.nn.L1Loss(size_average=None, reduce=None, reduction=’mean’)</p>
+</blockquote>
+<p><img src="/images/l1_loss.png" width="70%" height="70%"/></p>
+<pre class="line-numbers language-PYTHON" data-language="PYTHON"><code class="language-PYTHON">&gt;&gt;&gt; loss &#x3D; nn.L1Loss()
+&gt;&gt;&gt; input &#x3D; torch.randn(3, 5, requires_grad&#x3D;True)
+&gt;&gt;&gt; target &#x3D; torch.randn(3, 5)
+&gt;&gt;&gt; output &#x3D; loss(input, target)
+&gt;&gt;&gt; output.backward()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="L2-loss-MSE-loss"><a href="#L2-loss-MSE-loss" class="headerlink" title="L2 loss (MSE loss)"></a>L2 loss (MSE loss)</h3><blockquote>
+<p>torch.nn.MSELoss(size_average=None, reduce=None, reduction=’mean’)</p>
+</blockquote>
+<p><img src="/images/MSE_loss.png"/></p>
+<pre class="line-numbers language-PYTHON" data-language="PYTHON"><code class="language-PYTHON">&gt;&gt;&gt; loss &#x3D; nn.MSELoss()
+&gt;&gt;&gt; input &#x3D; torch.randn(3, 5, requires_grad&#x3D;True)
+&gt;&gt;&gt; target &#x3D; torch.randn(3, 5)
+&gt;&gt;&gt; output &#x3D; loss(input, target)
+&gt;&gt;&gt; output.backward()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="Smooth-L1-loss"><a href="#Smooth-L1-loss" class="headerlink" title="Smooth L1 loss"></a>Smooth L1 loss</h3><blockquote>
+<p>torch.nn.SmoothL1Loss(size_average=None, reduce=None, reduction=’mean’, beta=1.0)</p>
+</blockquote>
+<p><img src="/images/smooth_l1.png" width="70%" height="70%"/></p>
+<p>优点：Smooth L1 loss主要是在预测结果和ground-truth相差大时起到限制梯度的作用。在$x$较小时，对$x$的梯度也会变小，而在$x$很大时，对$x$的梯度的绝对值达到上限 1，也不会太大以至于破坏网络参数。完美地避开了$L_1$和$L_2$损失的缺陷，不会导致梯度爆炸。其函数图像如下<br><img src="/images/smooth_l1_visual.png"/></p>
+<h3 id="曼哈顿距离"><a href="#曼哈顿距离" class="headerlink" title="曼哈顿距离"></a>曼哈顿距离</h3><p>曼哈顿距离实际上就是两个点在标准坐标系上的绝对轴距总和。</p>
+<h3 id="GIoU-loss-Generalized-Intersection-over-Union"><a href="#GIoU-loss-Generalized-Intersection-over-Union" class="headerlink" title="GIoU loss (Generalized Intersection over Union)"></a>GIoU loss (Generalized Intersection over Union)</h3><p>GIoU loss即泛化的IoU损失。当预测框与真实框之间没有任何重叠时，两个边框的交集（分子）为0，此时IoU损失为0，因此IoU无法算出两者之间的距离（重叠度）。另一方面，由于IoU损失为零，意味着梯度无法有效地反向传播和更新，即出现梯度消失的现象，致使网络无法给出一个优化的方向。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/">https://pytorch.org/docs/</a><br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/58200555/answer/621174180">https://www.zhihu.com/question/58200555/answer/621174180</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/552132010">https://zhuanlan.zhihu.com/p/552132010</a></p>
 
                 
             </div>
@@ -820,7 +882,7 @@ output.backward()<span aria-hidden="true" class="line-numbers-rows"><span></span
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">42.3k</span>
+                        class="white-color">45.8k</span>
             
             
             

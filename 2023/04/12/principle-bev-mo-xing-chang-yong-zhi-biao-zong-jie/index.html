@@ -404,14 +404,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.7k
+                    2.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    6 分
+                    11 分
                 </div>
                 
 
@@ -436,7 +436,19 @@
 <script type="math/tex; mode=display">Recall = \frac{TP}{TP + FN}</script><h3 id="F1-score"><a href="#F1-score" class="headerlink" title="F1-score"></a>F1-score</h3><p>表示precision和recall的调和平均数，具体公式如下：</p>
 <script type="math/tex; mode=display">F_1 = \frac{2 * Precision * Recall}{Precision + Recall}</script><h2 id="语义分割"><a href="#语义分割" class="headerlink" title="语义分割"></a>语义分割</h2><p>语义分割的本质任务是分类任务，常规分类任务的对象是图像中的物体，而语义分割的对象是图像中像素点。</p>
 <h3 id="IoU"><a href="#IoU" class="headerlink" title="IoU"></a>IoU</h3><p><img src="/images/iou_visual.png" width="60%" height="60%"/></p>
-<script type="math/tex; mode=display">IoU = \frac{X\cap Y}{X\cup Y} = \frac{TP}{TP+FN+FP}</script><p>IoU计算实现</p>
+<script type="math/tex; mode=display">IoU = \frac{X\cap Y}{X\cup Y} = \frac{TP}{TP+FN+FP}</script><p>IoU计算实现<br><pre class="line-numbers language-PYTHON" data-language="PYTHON"><code class="language-PYTHON">def iou(input, target, classes&#x3D;1):
+    &quot;&quot;&quot;  compute the value of iou
+    :param input:  2d array, int, prediction
+    :param target: 2d array, int, ground truth
+    :param classes: int, the number of class
+    :return:
+        iou: float, the value of iou
+    &quot;&quot;&quot;
+    intersection &#x3D; np.logical_and(target &#x3D;&#x3D; classes, input &#x3D;&#x3D; classes)
+    # print(intersection.any())
+    union &#x3D; np.logical_or(target &#x3D;&#x3D; classes, input &#x3D;&#x3D; classes)
+    iou &#x3D; np.sum(intersection) &#x2F; np.sum(union)
+    return iou<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
 <h2 id="2D目标检测"><a href="#2D目标检测" class="headerlink" title="2D目标检测"></a>2D目标检测</h2><h3 id="IoU-1"><a href="#IoU-1" class="headerlink" title="IoU"></a>IoU</h3><p>2D检测框的IoU实现<br><pre class="line-numbers language-PYTHON" data-language="PYTHON"><code class="language-PYTHON">x1,y1,x2,y2 &#x3D; box1 #box1的左上角坐标、右下角坐标
 x3,y3,x4,y4 &#x3D; box2 #box1的左上角坐标、右下角坐标
 
@@ -456,7 +468,37 @@ area_box2 &#x3D; (x4-x3+1)*(y4-y3+1)
 
 #计算IOU，交集比并集，并集面积&#x3D;两个矩形框面积和-交集面积
 iou &#x3D; interArea&#x2F;(area_box1+area_box2-interArea)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
-<h3 id="mAP"><a href="#mAP" class="headerlink" title="mAP"></a>mAP</h3><p>在混淆矩阵的部分，我们已经介绍过TP、FP等定义。在计算AP的过程中，我们首先需要确定如何判断推理结果属于哪个类别。<br>以单张图像为例，首先遍历图片中ground truth对象，然后提取我们要计算的某类别的gt objects，之后读取我们通过检测器检测出的这种类别的检测框（其他类别的先不管），接着过滤掉置信度分数低于置信度阈值的框（也有的未设置信度阈值），将剩下的检测框按置信度分数从高到低排序，最先判断置信度分数最高的检测框与gt bbox的iou是否大于iou阈值，若iou大于设定的iou阈值即判断为TP，将此gt_bbox标记为已检测（后续的同一个GT的多余检测框都视为FP,这就是为什么先要按照置信度分数从高到低排序，置信度分数最高的检测框最先去与iou阈值比较，若大于iou阈值，视为TP，后续的同一个gt对象的检测框都视为FP），iou小于阈值的，直接规划到FP中去。代码实现如下<br><pre class="line-numbers language-PYTHON" data-language="PYTHON"><code class="language-PYTHON">if ovmax &gt; ovthresh:             # 若iou大于阈值
+<h3 id="GIoU-Generalized-Intersection-over-Union"><a href="#GIoU-Generalized-Intersection-over-Union" class="headerlink" title="GIoU (Generalized Intersection over Union)"></a>GIoU (Generalized Intersection over Union)</h3><p>GIoU相较于IoU多了一个‘Generalized’，这也意味着它能在更广义的层面上计算IoU，并解决两个图像没有相交时，无法比较两个图像的距离远近的问题，公式定义如下</p>
+<script type="math/tex; mode=display">GIoU = IoU - \frac{|C-(A\cup B)|}{|C|}</script><p>其中C代表两个图像的最小包庇面积，也可以理解为这两个图像的最小外接矩形的面积。<br>原有IoU取值区间为[0,1]，而GIoU的取值区间为[-1,1]；在两个图像完全重叠时，IoU=GIoU=1，在两个图像距离无限远时，IoU=0而GIoU=-1<br><pre class="line-numbers language-PYTHON" data-language="PYTHON"><code class="language-PYTHON"># 分别是第一个矩形左右上下的坐标
+x1,y1,x2,y2 &#x3D; box1 #box1的左上角坐标、右下角坐标
+x3,y3,x4,y4 &#x3D; box2 #box1的左上角坐标、右下角坐标
+iou &#x3D; Iou(box1,box2)
+area_C &#x3D; (max(x1,x2,x3,x4)-min(x1,x2,x3,x4))*(max(y1,y2,y3,y4)-min(y1,y2,y3,y4))
+area_1 &#x3D; (x2-x1)*(y1-y2)
+area_2 &#x3D; (x4-x3)*(y3-y4)
+sum_area &#x3D; area_1 + area_2
+
+# 第一个矩形的宽
+w1 &#x3D; x2 - x1
+
+# 第二个矩形的宽
+w2 &#x3D; x4 - x3   
+h1 &#x3D; y1 - y2
+h2 &#x3D; y3 - y4
+# 交叉部分的宽
+W &#x3D; min(x1,x2,x3,x4)+w1+w2-max(x1,x2,x3,x4) 
+# 交叉部分的高  
+H &#x3D; min(y1,y2,y3,y4)+h1+h2-max(y1,y2,y3,y4)  
+# 交叉的面积  
+Area &#x3D; W*H    
+# 两矩形并集的面积
+add_area &#x3D; sum_area - Area  
+
+# 闭包区域中不属于两个框的区域占闭包区域的比重
+end_area &#x3D; (area_C - add_area)&#x2F;area_C    
+giou &#x3D; iou - end_area<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
+<h3 id="AP-amp-mAP"><a href="#AP-amp-mAP" class="headerlink" title="AP &amp; mAP"></a>AP &amp; mAP</h3><p>PR曲线: Precision-Recall曲线<br>AP: PR曲线下面积解<br>mAP: mean Average Precision, 即各类别AP的平均值</p>
+<p>在混淆矩阵的部分，我们已经介绍过TP、FP等定义。在计算AP的过程中，我们首先需要确定如何判断推理结果属于哪个类别。<br>以单张图像为例，首先遍历图片中ground truth对象，然后提取我们要计算的某类别的gt objects，之后读取我们通过检测器检测出的这种类别的检测框（其他类别的先不管），接着过滤掉置信度分数低于置信度阈值的框（也有的未设置信度阈值），将剩下的检测框按置信度分数从高到低排序，最先判断置信度分数最高的检测框与gt bbox的iou是否大于iou阈值，若iou大于设定的iou阈值即判断为TP，将此gt_bbox标记为已检测（后续的同一个GT的多余检测框都视为FP,这就是为什么先要按照置信度分数从高到低排序，置信度分数最高的检测框最先去与iou阈值比较，若大于iou阈值，视为TP，后续的同一个gt对象的检测框都视为FP），iou小于阈值的，直接规划到FP中去。代码实现如下<br><pre class="line-numbers language-PYTHON" data-language="PYTHON"><code class="language-PYTHON">if ovmax &gt; ovthresh:             # 若iou大于阈值
   if not R[&#39;difficult&#39;][jmax]:   # 且要检测的gt对象非difficult类型
     if not R[&#39;det&#39;][jmax]:       # 且gt对象暂未被检测
       tp[d] &#x3D; 1.                 # 此检测框记为TP
@@ -464,9 +506,31 @@ iou &#x3D; interArea&#x2F;(area_box1+area_box2-interArea)<span aria-hidden="true
     else:                        # 若gt对象已被检测，那么此检测框为FP
       fp[d] &#x3D; 1.
 else:                            # iou&lt;&#x3D;阈值，此检测框为FP
-  fp[d] &#x3D; 1.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><br>关于图片中FN的统计就比较简单了，图片中某类别一共有多少个gt我们是知道的，减去TP的个数，剩下的就是FN的个数了.</p>
-<p>mAP: mean Average Precision, 即各类别AP的平均值<br>AP: PR曲线下面积，后文会详细讲解<br>PR曲线: Precision-Recall曲线</p>
-<h2 id="3D目标检测"><a href="#3D目标检测" class="headerlink" title="3D目标检测"></a>3D目标检测</h2><h3 id="NDS"><a href="#NDS" class="headerlink" title="NDS"></a>NDS</h3><h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><h3 id="NMS实现"><a href="#NMS实现" class="headerlink" title="NMS实现"></a>NMS实现</h3><p>对于一张图片中的每一个预测框来说，模型为其每一个类别都预测了一个置信度分数（一般多分类，模型输出后接softmax，每一个类别都得到了一个置信度分数，包括背景类）我们取置信度最高的那一个类别作为预测框中对象所属的类别。</p>
+  fp[d] &#x3D; 1.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><br>关于图片中FN的统计就比较简单了，图片中某类别一共有多少个gt我们是知道的，减去TP的个数，剩下的就是FN的个数了。</p>
+<p>现在我们已经能够计算得到某一类别的percision和recall。PR曲线与x轴所围成的面积，即为当前类别的AP值。AP值计算有3种方式：</p>
+<ol>
+<li>在VOC2010以前，只需要选取当Recall &gt;= 0, 0.1, 0.2, …, 1共11个点时的Precision最大值，然后AP就是这11个Precision的平均值。</li>
+<li>在VOC2010及以后，需要针对每一个不同的Recall值（包括0和1），选取其大于等于这些Recall值时的Precision最大值，然后计算PR曲线下面积作为AP值。</li>
+<li>设定多个IOU阈值（0.5-0.95,0.05为步长），在每一个IOU阈值下都有某一类别的AP值，然后求不同IOU阈值下的AP平均，就是所求的最终的某类别的AP值。</li>
+</ol>
+<h2 id="3D目标检测（以nuScenes为例）"><a href="#3D目标检测（以nuScenes为例）" class="headerlink" title="3D目标检测（以nuScenes为例）"></a>3D目标检测（以nuScenes为例）</h2><h3 id="NDS"><a href="#NDS" class="headerlink" title="NDS"></a>NDS</h3><blockquote>
+<p>Our final score is a weighted sum of mean Average Precision (mAP) and several True Positive (TP) metrics.<br>nuScenes detection score (NDS): We consolidate the above metrics by computing a weighted sum: mAP, mATE, mASE, mAOE, mAVE and mAAE. As a first step we convert the TP errors to TP scores as TP_score = max(1 - TP_error, 0.0). We then assign a weight of 5 to mAP and 1 to each of the 5 TP scores and calculate the normalized sum.</p>
+</blockquote>
+<h3 id="mAP"><a href="#mAP" class="headerlink" title="mAP"></a>mAP</h3><blockquote>
+<p>We use the well-known Average Precision metric, but define a match by considering the 2D center distance on the ground plane rather than intersection over union based affinities. Specifically, we match predictions with the ground truth objects that have the smallest center-distance up to a certain threshold. For a given match threshold we calculate average precision (AP) by integrating the recall vs precision curve for recalls and precisions &gt; 0.1. We finally average over match thresholds of {0.5, 1, 2, 4} meters and compute the mean across classes.</p>
+</blockquote>
+<p>AP的阈值匹配不使用IoU来计算，而使用在地平面上的2D中心距离d来计算。解耦了物体的尺寸和方向对AP计算的影响。nuScenes的mAP计算设置的阈值为$\{0.5, 1, 2, 4\}$米。</p>
+<h3 id="several-True-Positive-TP-metrics"><a href="#several-True-Positive-TP-metrics" class="headerlink" title="several True Positive (TP) metrics"></a>several True Positive (TP) metrics</h3><blockquote>
+<p>Here we define metrics for a set of true positives (TP) that measure translation / scale / orientation / velocity and attribute errors. All TP metrics are calculated using a threshold of 2m center distance during matching, and they are all designed to be positive scalars.</p>
+</blockquote>
+<ol>
+<li>Average Translation Error (ATE): Euclidean center distance in 2D in meters.</li>
+<li>Average Scale Error (ASE): Calculated as 1 - IOU after aligning centers and orientation.</li>
+<li>Average Orientation Error (AOE): Smallest yaw angle difference between prediction and ground-truth in radians. Orientation error is evaluated at 360 degree for all classes except barriers where it is only evaluated at 180 degrees. Orientation errors for cones are ignored.</li>
+<li>Average Velocity Error (AVE): Absolute velocity error in m/s. Velocity error for barriers and cones are ignored.</li>
+<li>Average Attribute Error (AAE): Calculated as 1 - acc, where acc is the attribute classification accuracy. Attribute error for barriers and cones are ignored.</li>
+</ol>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><h3 id="NMS实现"><a href="#NMS实现" class="headerlink" title="NMS实现"></a>NMS实现</h3><p>对于一张图片中的每一个预测框来说，模型为其每一个类别都预测了一个置信度分数（一般多分类，模型输出后接softmax，每一个类别都得到了一个置信度分数，包括背景类）我们取置信度最高的那一个类别作为预测框中对象所属的类别。</p>
 <ol>
 <li>首先我们将置信度分数低于置信度阈值a的所有预测框去掉 。</li>
 <li>然后在同一张图片上，我们按照类别（除开背景类，因为背景类不需要进行NMS），将所有预测框按照置信度从高到低排序，将置信度最高的框作为我们要保留的此类别的第1个预测框，</li>
@@ -499,7 +563,7 @@ def nms(dets, thresh):
         inds &#x3D; np.where(ovr &lt;&#x3D; thresh)[0]  # 记录下第1个与其Iou&lt;阈值的预测框，也就是与其Iou&lt;阈值的预测框中置信度最高的
         order &#x3D; order[inds + 1]     # 将与保留下来的第1个预测框Iou&lt;阈值的预测框中置信度分数最高的预测框作为第2个要保留的
     return keep  # 所有经过NMS后保留下来的框<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Fish0403/p/17117778.html">https://www.cnblogs.com/Fish0403/p/17117778.html</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/75348108">https://zhuanlan.zhihu.com/p/75348108</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Fish0403/p/17117778.html">https://www.cnblogs.com/Fish0403/p/17117778.html</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/75348108">https://zhuanlan.zhihu.com/p/75348108</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/70306015">https://zhuanlan.zhihu.com/p/70306015</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/64423753">https://zhuanlan.zhihu.com/p/64423753</a></p>
 
                 
             </div>
@@ -866,7 +930,7 @@ def nms(dets, thresh):
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">42.3k</span>
+                        class="white-color">45.8k</span>
             
             
             

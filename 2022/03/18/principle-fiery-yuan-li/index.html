@@ -420,7 +420,7 @@ FIERY整体结构FIERY是时序的实例分割和预测网络，在不依赖高�
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.6k
+                    3.7k
                 </div>
                 
 
@@ -653,14 +653,16 @@ def cumulative_warp_features(x, flow, mode&#x3D;&#39;nearest&#39;, spatial_exten
 <p>During training, we use samples $\eta_t \sim N(\mu_{t, future}, \sigma^2_{t, future})$ from the future distribution to enforce predictions consistent with the observed future, and a mode covering Kullback-Leibler divergence loss to encourage the present distribution to cover the observed futures:</p>
 <script type="math/tex; mode=display">L_{probabilistic} = D_{KL}(F(\cdot|s_t, y_{t+1}, ..., y_{t+H})||P(\cdot|s_t))</script></blockquote>
 <p>对于分布估计，使用的是KL散度进行监督。KL散度可以用来衡量两个概率分布之间的相似性，两个概率分布越相近，KL散度越小。论文中将present distribution和future distribution都参数化为均值为$\mu$，方差为$\sigma^2$的对角高斯。在loss中，KL散度的定义具体表示为</p>
-<script type="math/tex; mode=display">var\_future = e^{2*future\_log\_sigma}</script><script type="math/tex; mode=display">var\_present = e^{2*present\_log\_sigma}</script><script type="math/tex; mode=display">kl\_div = \frac{present\_log\_sigma-future\_log\_sigma-0.5+(var\_future+(future\_mu-present\_mu)^2)}{2 * var\_present}</script><p>KL散度损失的具体定义可以参考<a href="">BEV模型常用LOSS总结</a></p>
+<script type="math/tex; mode=display">var\_future = e^{2*future\_log\_sigma}</script><script type="math/tex; mode=display">var\_present = e^{2*present\_log\_sigma}</script><script type="math/tex; mode=display">kl\_div = \frac{present\_log\_sigma-future\_log\_sigma-0.5+(var\_future+(future\_mu-present\_mu)^2)}{2 * var\_present}</script><p>KL散度损失的具体定义可以参考<a href="https://massive11.github.io/2023/04/08/principle-bev-mo-xing-chang-yong-loss-zong-jie/">BEV模型常用LOSS总结</a></p>
 <h3 id="segmentation"><a href="#segmentation" class="headerlink" title="segmentation"></a>segmentation</h3><blockquote>
 <p>For semantic segmentation, we use a top-k cross-entropy loss. As the bird’s-eye view image is largely dominated by the background, we only backpropagate the top-k hardest pixels.</p>
 </blockquote>
-<p>对于语义分割的结果，使用的是<strong>cross-entropy</strong>进行监督。交叉熵主要刻画的是实际输出（概率）与期望输出（概率）的距离，也就是交叉熵的值越小，两个概率分布就越接近。此外，原文提到只对top-k个像素进行，因为针对整个BEV Tensor进行的分类监督，背景占绝大多数，loss较小可认为学会了，既然学会了就没有必要再学，也就不需要bp了。top-k 定义的比例是25%。交叉熵损失的具体定义可以参考<a href="">BEV模型常用LOSS总结</a></p>
+<p>对于语义分割的结果，使用的是<strong>cross-entropy</strong>进行监督。交叉熵主要刻画的是实际输出（概率）与期望输出（概率）的距离，也就是交叉熵的值越小，两个概率分布就越接近。此外，原文提到只对top-k个像素进行，因为针对整个BEV Tensor进行的分类监督，背景占绝大多数，loss较小可认为学会了，既然学会了就没有必要再学，也就不需要bp了。top-k 定义的比例是25%。交叉熵损失的具体定义可以参考<a href="https://massive11.github.io/2023/04/08/principle-bev-mo-xing-chang-yong-loss-zong-jie/">BEV模型常用LOSS总结</a></p>
 <h3 id="centerness"><a href="#centerness" class="headerlink" title="centerness"></a>centerness</h3><p>对于中心点回归，使用的是 l2 loss</p>
 <h3 id="offset-amp-flow"><a href="#offset-amp-flow" class="headerlink" title="offset &amp; flow"></a>offset &amp; flow</h3><p>offset和flow的回归都使用的l1 loss</p>
-<h2 id="FIERY-指标"><a href="#FIERY-指标" class="headerlink" title="FIERY 指标"></a>FIERY 指标</h2><p>指标使用的是针对语义分割结果的IoU。<br><img src="/images/fiery_iou.png" width="60%" height="60%"/></p>
+<h2 id="FIERY-指标"><a href="#FIERY-指标" class="headerlink" title="FIERY 指标"></a>FIERY 指标</h2><p>针对语义分割结果的指标使用的是IoU（阈值为0.5）。<br><img src="/images/fiery_iou.png" width="60%" height="60%"/></p>
+<p>针对时序分割的指标使用的是FIERY自己定义的VPQ(Video Panoptic Quality)，具体来说这个指标希望能够衡量识别质量RQ和分割质量SQ方面的性能，其中<br>RQ：衡量随着时间的推移，实例被检测到的一致性<br>SQ：实例分割的准确性<br>VPQ的定义如下</p>
+<script type="math/tex; mode=display">VPQ = \sum_{t=0}^{H}\frac{\sum_{(p_t, q_t)\in Tp_t}IoU(p_t, q_t)}{|TP_t|+\frac{1}{2}|FP_t|+\frac{1}{2}|FN_t|}</script><p>此处对于真正例的定义是1.IoU超过0.5；2.实例id在不同时刻保持一致</p>
 <h2 id="FIERY缺点"><a href="#FIERY缺点" class="headerlink" title="FIERY缺点"></a>FIERY缺点</h2><ol>
 <li>在网络架构中，没有进行帧间的跟踪，是在后处理过程中经过匈牙利匹配得到的；</li>
 <li>非常耗时，3帧处理，加速后在orin平台部署也只能达到11hz；</li>
@@ -1069,7 +1071,7 @@ def cumulative_warp_features(x, flow, mode&#x3D;&#39;nearest&#39;, spatial_exten
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">42.3k</span>
+                        class="white-color">45.8k</span>
             
             
             

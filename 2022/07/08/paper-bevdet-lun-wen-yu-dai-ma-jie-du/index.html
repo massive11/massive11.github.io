@@ -4,9 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="BEVDet论文与代码解读, Untitled.">
-    <meta name="description" content="BEVDet论文与代码解读
-BEVDet整体结构BEVDet是一个比较经典的在BEV视角下进行3D目标检测的范式，这种表示方式能够给下游的路径规划等任务带来极大的便利。BEVDet主要是重用现有的模块来构建其框架，但通过构建独占数据增强策略">
+    <meta name="keywords" content="BEVDet论文解读, Untitled.">
+    <meta name="description" content="BEVDet论文解读
+BEVDet整体结构BEVDet是一个比较经典的在BEV视角下进行3D目标检测的范式，这种表示方式能够给下游的路径规划等任务带来极大的便利。BEVDet主要是重用现有的模块来构建其框架，但通过构建独占数据增强策略和升级">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +18,7 @@ BEVDet整体结构BEVDet是一个比较经典的在BEV视角下进行3D目标检
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>BEVDet论文与代码解读 | Untitled.</title>
+    <title>BEVDet论文解读 | Untitled.</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -333,12 +333,12 @@ BEVDet整体结构BEVDet是一个比较经典的在BEV视角下进行3D目标检
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">BEVDet论文与代码解读</h1>
+                    <h1 class="description center-align post-title">BEVDet论文解读</h1>
                 </div>
             </div>
         </div>
@@ -404,14 +404,14 @@ BEVDet整体结构BEVDet是一个比较经典的在BEV视角下进行3D目标检
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    663
+                    1.2k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    4 分
                 </div>
                 
 
@@ -429,7 +429,7 @@ BEVDet整体结构BEVDet是一个比较经典的在BEV视角下进行3D目标检
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>BEVDet论文与代码解读<br><span id="more"></span></p>
+                <p>BEVDet论文解读<br><span id="more"></span></p>
 <h2 id="BEVDet整体结构"><a href="#BEVDet整体结构" class="headerlink" title="BEVDet整体结构"></a>BEVDet整体结构</h2><p>BEVDet是一个比较经典的在BEV视角下进行3D目标检测的范式，这种表示方式能够给下游的路径规划等任务带来极大的便利。BEVDet主要是重用现有的模块来构建其框架，但通过构建独占数据增强策略和升级非最大抑制策略，大大提高了其性能。此外，BEVDet的官方仓库跟进了很多包括深度估计、occupancy prediction在内的拓展版本，是初学者比较好的参考。<br>BEVDet的整体结构如图1所示<br><img src="/images/bevdet.png"/></p>
 <center>图1 BEVDet网络结构</center>
 
@@ -446,18 +446,38 @@ BEVDet整体结构BEVDet是一个比较经典的在BEV视角下进行3D目标检
 </blockquote>
 <p>它解耦了3D目标框的不同属性，具体来说，主要包括以下几个sub head：</p>
 <ol>
-<li>Center heatmap head</li>
+<li>Center heatmap head<ul>
+<li>由于中心点真值通常比较稀疏，真值的制作实际上对每个中心点渲染了高斯峰值以扩大面积</li>
+</ul>
+</li>
 <li>Regression heads<ul>
 <li>a sub-voxel location refinement</li>
 <li>height-above-ground</li>
 <li>3D size</li>
-<li>yaw rotation angle</li>
+<li>yaw rotation angle<ul>
+<li>使用的是sin和cos值</li>
+</ul>
+</li>
 </ul>
 </li>
 </ol>
-<h2 id="BEVDet的数据增强策略"><a href="#BEVDet的数据增强策略" class="headerlink" title="BEVDet的数据增强策略"></a>BEVDet的数据增强策略</h2><p>BEVDet认为，训练阶段出现的过拟合问题可能是限制性能的主要因素。因此，BEVDet提出了数据增强策略来应对过拟合的问题。<br>应用于图像视图空间的增强策略不会改变 BEV 空间中特征的空间分布。</p>
-<h2 id="BEVDet的改进NMS策略"><a href="#BEVDet的改进NMS策略" class="headerlink" title="BEVDet的改进NMS策略"></a>BEVDet的改进NMS策略</h2><p>Scale-NMS。对不同类别的目标进行不同尺度的缩放，来做更符合客观场景的目标框过滤<br><img src="/images/Scale-NMS.png"/></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2112.11790.pdf">BEVDet Paper</a><br><a target="_blank" rel="noopener" href="https://github.com/HuangJunJie2017/BEVDet">BEVDet Code</a></p>
+<p>在nusenes数据集中，目标的类别一共被分为了6个大类<br><pre class="line-numbers language-PYTHON" data-language="PYTHON"><code class="language-PYTHON">tasks&#x3D;[
+    dict(num_class&#x3D;1, class_names&#x3D;[&#39;car&#39;]),
+    dict(num_class&#x3D;2, class_names&#x3D;[&#39;truck&#39;, &#39;construction_vehicle&#39;]),
+    dict(num_class&#x3D;2, class_names&#x3D;[&#39;bus&#39;, &#39;trailer&#39;]),
+    dict(num_class&#x3D;1, class_names&#x3D;[&#39;barrier&#39;]),
+    dict(num_class&#x3D;2, class_names&#x3D;[&#39;motorcycle&#39;, &#39;bicycle&#39;]),
+    dict(num_class&#x3D;2, class_names&#x3D;[&#39;pedestrian&#39;, &#39;traffic_cone&#39;]),
+]<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
+<p>网络给每一个大类都分配了一个head，装在headlist中，而每个head内部都为预测的参数，包括（center_x,y,z、dim、rot、vel ）分配了一个MLP，从而完成检测头的设计。所有的输出都使用L1 loss进行监督。（回归到对数大小了）</p>
+<h2 id="BEVDet的数据增强策略"><a href="#BEVDet的数据增强策略" class="headerlink" title="BEVDet的数据增强策略"></a>BEVDet的数据增强策略</h2><p>BEVDet认为，训练阶段出现的过拟合问题可能是限制性能的主要因素。因此，BEVDet提出了数据增强策略来应对过拟合的问题。<br>应用于图像视图空间的增强策略不会改变 BEV 空间中特征的空间分布。但是过拟合的问题主要出现在BEV特征的学习方面。可以通过对BEV特征进行缩放、翻转、旋转等操作，这些操作在视图转换器的输出特征和3D对象检测目标上都需要进行，以保持它们的空间一致性。</p>
+<h2 id="BEVDet的改进NMS策略"><a href="#BEVDet的改进NMS策略" class="headerlink" title="BEVDet的改进NMS策略"></a>BEVDet的改进NMS策略</h2><blockquote>
+<p>. Scale-NMS scales the size of each object according to its category before performing the classical NMS algorithm.</p>
+</blockquote>
+<p>这个部分提出了Scale-NMS。主要是针对3D目标检测中，不同类别的目标本身的尺寸不一致。比如行人，预测得到的TP可能和真值框的IoU为0。因此，BEVDet对不同类别的目标进行不同尺度的缩放，来做更符合客观场景的目标框过滤。<br><img src="/images/Scale-NMS.png"/></p>
+<h2 id="BEVPoolv2"><a href="#BEVPoolv2" class="headerlink" title="BEVPoolv2"></a>BEVPoolv2</h2><p>基于LSS的方案在实际部署上还存在着很多问题，如推理速度慢和显存占用多。虽然BEVFusion已经提出过该方案的加速思路，但是收益仍然十分有限。BEVDet在其v2版本中提出了BEVPoolv2的思路，如下图所示<br><img src="/images/bevpoolv2.png"/></p>
+<p>BEVDet的作者指出Lift的步骤需要计算、存储和预处理多个超大的视锥特征，因此针对这一点进行了优化。采用的方法就是offline的方式预计算depth_score和frustum的index，然后只在线进行多线程的相乘和累积，从而显著提高了FPS。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2112.11790.pdf">BEVDet Paper</a><br><a target="_blank" rel="noopener" href="https://github.com/HuangJunJie2017/BEVDet">BEVDet Code</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2006.11275.pdf">CenterPoint Paper</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2211.17111.pdf">BEVPoolv2 Paper</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/586637783">https://zhuanlan.zhihu.com/p/586637783</a></p>
 
                 
             </div>
@@ -585,15 +605,15 @@ BEVDet整体结构BEVDet是一个比较经典的在BEV视角下进行3D目标检
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="BEVDepth论文与代码解读">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="BEVDepth论文解读">
                         
-                        <span class="card-title">BEVDepth论文与代码解读</span>
+                        <span class="card-title">BEVDepth论文解读</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            BEVDepth论文与代码解读
+                            BEVDepth论文解读
                         
                     </div>
                     <div class="publish-info">
@@ -836,7 +856,7 @@ BEVDet整体结构BEVDet是一个比较经典的在BEV视角下进行3D目标检
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">45.8k</span>
+                        class="white-color">48.8k</span>
             
             
             

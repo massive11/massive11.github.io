@@ -4,9 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="BEVDepth论文与代码解读, Untitled.">
-    <meta name="description" content="BEVDepth论文与代码解读
-BEVDepth整体结构BEVDepth认为深度估计对于基于相机的3D目标检测来说至关重要，因此尝试利用显式深度监督来解决这个问题。BEVDepth实际上是在LSS的投影方法的基础上增加准确的深度估计模块和显">
+    <meta name="keywords" content="BEVDepth论文解读, Untitled.">
+    <meta name="description" content="BEVDepth论文解读
+BEVDepth整体结构BEVDepth认为深度估计对于基于相机的3D目标检测来说至关重要，因此尝试利用显式深度监督来解决这个问题。BEVDepth实际上是在LSS的投影方法的基础上增加准确的深度估计模块和显式的深">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +18,7 @@ BEVDepth整体结构BEVDepth认为深度估计对于基于相机的3D目标检�
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>BEVDepth论文与代码解读 | Untitled.</title>
+    <title>BEVDepth论文解读 | Untitled.</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -333,12 +333,12 @@ BEVDepth整体结构BEVDepth认为深度估计对于基于相机的3D目标检�
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">BEVDepth论文与代码解读</h1>
+                    <h1 class="description center-align post-title">BEVDepth论文解读</h1>
                 </div>
             </div>
         </div>
@@ -408,7 +408,7 @@ BEVDepth整体结构BEVDepth认为深度估计对于基于相机的3D目标检�
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    676
+                    831
                 </div>
                 
 
@@ -433,7 +433,7 @@ BEVDepth整体结构BEVDepth认为深度估计对于基于相机的3D目标检�
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>BEVDepth论文与代码解读<br><span id="more"></span></p>
+                <p>BEVDepth论文解读<br><span id="more"></span></p>
 <h2 id="BEVDepth整体结构"><a href="#BEVDepth整体结构" class="headerlink" title="BEVDepth整体结构"></a>BEVDepth整体结构</h2><p>BEVDepth认为深度估计对于基于相机的3D目标检测来说至关重要，因此尝试利用显式深度监督来解决这个问题。<br>BEVDepth实际上是在LSS的投影方法的基础上增加准确的深度估计模块和显式的深度监督。它指出了LSS的方案存在的3个问题：</p>
 <ol>
 <li>不准确的深度</li>
@@ -452,7 +452,11 @@ BEVDepth整体结构BEVDepth认为深度估计对于基于相机的3D目标检�
 <li>结合图像上的裁剪操作，将点云数据从相机坐标系转到像素坐标系</li>
 </ol>
 <p>由此，过滤到多余的点之后，就可以得到大致的像素对应的深度。由于nuScenes的LiDar是128线，实际上投影得到的监督比较稀疏，因此降采样之后实际上是针对的$16\times 44$特征图进行监督的。</p>
-<h3 id="Camera-aware-深度估计"><a href="#Camera-aware-深度估计" class="headerlink" title="Camera-aware 深度估计"></a>Camera-aware 深度估计</h3><h3 id="深度细化模块"><a href="#深度细化模块" class="headerlink" title="深度细化模块"></a>深度细化模块</h3><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2206.10092.pdf">BEVDepth Paper</a><br><a target="_blank" rel="noopener" href="https://github.com/Megvii-BaseDetection/BEVDepth">BEVDepth Code</a></p>
+<h3 id="Camera-aware-深度估计"><a href="#Camera-aware-深度估计" class="headerlink" title="Camera-aware 深度估计"></a>Camera-aware 深度估计</h3><p>BEVDepth认为将相机内参也作为输入信息，一同编码进行深度估计可以得到更好的深度估计结果。BEVDepth的DepthNet模块设计如下<br><img src="/images/depthnet.png" width="50%" height="50%"/><br>具体来说，先使用MLP讲相机内参的维度扩展到特征维度，然后使用类似SE模块的方式re-weight图像特征，最后把相机外参和相机内参concate起来辅助感知在自车坐标系下的位置。</p>
+<h3 id="深度细化模块"><a href="#深度细化模块" class="headerlink" title="深度细化模块"></a>深度细化模块</h3><blockquote>
+<p>We first reshape $F^{3d}$ from $[C_F , C_D , H, W ]$ to $[C_F \times H, C_D , W]$, and stack several $3×3$ convolution layer on the $C_D × W$ plane. Its output is finally reshaped back and fed into the subsequent Voxel/Pillar Pooling operation.</p>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2206.10092.pdf">BEVDepth Paper</a><br><a target="_blank" rel="noopener" href="https://github.com/Megvii-BaseDetection/BEVDepth">BEVDepth Code</a></p>
 
                 
             </div>
@@ -637,15 +641,15 @@ BEVDepth整体结构BEVDepth认为深度估计对于基于相机的3D目标检�
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="BEVDet论文与代码解读">
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="BEVDet论文解读">
                         
-                        <span class="card-title">BEVDet论文与代码解读</span>
+                        <span class="card-title">BEVDet论文解读</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            BEVDet论文与代码解读
+                            BEVDet论文解读
                         
                     </div>
                     <div class="publish-info">
@@ -827,7 +831,7 @@ BEVDepth整体结构BEVDepth认为深度估计对于基于相机的3D目标检�
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">45.8k</span>
+                        class="white-color">48.8k</span>
             
             
             

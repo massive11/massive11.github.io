@@ -1,3 +1,4 @@
+https://massive11.github.io/2023/03/05/paper-online-hdmap-construction-zheng-li/
 https://massive11.github.io/2023/02/03/paper-persformer-lun-wen-jie-du/
 https://massive11.github.io/2023/02/12/paper-fast-bev-lun-wen-jie-du/
 https://massive11.github.io/2022/07/08/paper-bevdet-lun-wen-yu-dai-ma-jie-du/
@@ -23,7 +24,6 @@ https://massive11.github.io/2020/03/05/pat-1152-google-recruitment-20-fen/
 https://massive11.github.io/2020/03/11/pat-1148-werewolf-simple-version-20-fen/
 https://massive11.github.io/2020/04/07/pat-1147-heaps-30-fen/
 https://massive11.github.io/2020/03/25/pat-1145-hashing-average-search-time-25-fen/
-https://massive11.github.io/2023/01/05/paper-online-hdmap-construction-zheng-li/
 https://massive11.github.io/2022/08/12/paper-mono3d-paper-lu-xian-shu-li/
 https://massive11.github.io/2022/12/10/paper-maptr-lun-wen-yu-dai-ma-jie-du/
 https://massive11.github.io/2022/07/26/paper-bev-mo-xing-shen-du-gu-ji-mo-kuai-overview/

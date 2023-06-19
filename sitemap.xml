@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://massive11.github.io/2023/03/05/paper-online-hdmap-construction-zheng-li/</loc>
+    
+    <lastmod>2023-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://massive11.github.io/2023/02/03/paper-persformer-lun-wen-jie-du/</loc>
     
     <lastmod>2023-06-19</lastmod>
@@ -219,15 +228,6 @@
   
   <url>
     <loc>https://massive11.github.io/2020/03/25/pat-1145-hashing-average-search-time-25-fen/</loc>
-    
-    <lastmod>2023-06-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://massive11.github.io/2023/01/05/paper-online-hdmap-construction-zheng-li/</loc>
     
     <lastmod>2023-06-08</lastmod>
     

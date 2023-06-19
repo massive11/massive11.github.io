@@ -405,7 +405,7 @@ PersformerPersformer是一个针对3D车道线检测的模型，在介绍具体�
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.1k
+                    1.2k
                 </div>
                 
 
@@ -447,8 +447,15 @@ PersformerPersformer是一个针对3D车道线检测的模型，在介绍具体�
 <p>Persformer的整体思路简单来说就是使用 Transformer 进行2D 和 3D 车道线的联合检测，其整体结构如图1所示<br><img src="/images/persformer.png"/></p>
 <center>图1 Persformer网络结构</center>
 
-<p>Persformer的核心是从前视图到 BEV 空间的空间特征变换，以便通过关注参考点周围的局部上下文，在目标点生成的 BEV 特征将更具代表性。在结构设计方面，实际上和BEVFormer是比较类似的。</p>
-<h3 id="3D-Lane-Head"><a href="#3D-Lane-Head" class="headerlink" title="3D Lane Head"></a>3D Lane Head</h3><div class="table-container">
+<p>Persformer的核心是从前视图到 BEV 空间的空间特征变换，以便通过关注参考点周围的局部上下文，在目标点生成的 BEV 特征将更具代表性。Persformer由三个部分组成，backbone、Perspective Transformer和lane detection heads。backbone仍然是常规的ResNet，以下将详细介绍后两个部分。</p>
+<h3 id="Perspective-Transformer"><a href="#Perspective-Transformer" class="headerlink" title="Perspective Transformer"></a>Perspective Transformer</h3><p>Persformer的视角转换模块依赖相机的内外参，这个模块和BEVFormer的思想基本一致。初始化BEV Queries，通过deformable attention的方式实现BEV Queries和对应的2D特征之间的交互。实现方式也遵循DETR的范式，包括self-attention和cross-attention两个部分。<br>cross-attention模块中，BEV空间中的点$(x, y)$通过中间态$(x’, y’)$投射前视图中的对应点$(u, v)$；通过学习偏移量，网络学习从绿色矩框到黄色目标参考点之间的映射，以及相关的蓝色框作为Transformer的key。图解如下图所示<br><img src="/images/persformer_cross_attention.png" width="60%" height="60%"/></p>
+<h3 id="Lane-detection-Head"><a href="#Lane-detection-Head" class="headerlink" title="Lane detection Head"></a>Lane detection Head</h3><h4 id="Unified-Anchor-Design"><a href="#Unified-Anchor-Design" class="headerlink" title="Unified Anchor Design"></a>Unified Anchor Design</h4><p><img src="/images/persformer_unified_anchor.png" width="60%" height="60%"/></p>
+<blockquote>
+<p>Unifying anchor design in 2D and 3D. We first put curated anchors (red) in the BEV space (left), then project them to the front view (right). Offset $x^i_k$ and $u^i_k$ (dashed line) are predicted to match ground truth (yellow and green) to anchors. The correspondence is thus built, and features are optimized together.</p>
+</blockquote>
+<p>这个部分对于3D和2D的统一设计的方式写的有点模糊，官方的知乎文章也是有点粗糙的。博主本人也没仔细研究这一块的代码，就不做展开介绍了。</p>
+<h4 id="3D-Lane-Head"><a href="#3D-Lane-Head" class="headerlink" title="3D Lane Head"></a>3D Lane Head</h4><p>2D/3D 检测头参考的是LaneATT和3D-LaneNet，这里着重介绍3D lane head。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -486,36 +493,11 @@ PersformerPersformer是一个针对3D车道线检测的模型，在介绍具体�
 </tbody>
 </table>
 </div>
-<h3 id="Loss"><a href="#Loss" class="headerlink" title="Loss"></a>Loss</h3><ol>
+<h4 id="3D-Lane-Head-Loss"><a href="#3D-Lane-Head-Loss" class="headerlink" title="3D Lane Head Loss"></a>3D Lane Head Loss</h4><ol>
 <li>针对车道线坐标偏移的预测，计算L1 loss（normalized的结果）</li>
 <li>针对visibility的预测，计算CE loss</li>
 <li>针对车道线类别的预测，计算CE loss</li>
 </ol>
-<h3 id="后处理"><a href="#后处理" class="headerlink" title="后处理"></a>后处理</h3><p>检测头输出维度为[B, 25, 30]，其中[B, 25, :13]为anchor中每个点相对anchor中心坐标的偏移，[B, 25, 13:26]为anchor中每个点的visibility属性，[B, 25, 26:]为anchor类别（包含background类别，共4类）。<br>NMS,对每个类别的相邻anchor进行NMS处理<br><pre class="line-numbers language-PYTHON" data-language="PYTHON"><code class="language-PYTHON">def nms_1d(v):
-    &quot;&quot;&quot;
-    :param v: a 1D numpy array
-    :return:
-    &quot;&quot;&quot;
-    v_out &#x3D; v.copy()
-    len &#x3D; v.shape[0]
-    if len &lt; 2:
-        return v
-    for i in range(len):
-        if i !&#x3D; 0 and v[i - 1] &gt; v[i]:
-            v_out[i] &#x3D; 0.
-        elif i !&#x3D; len-1 and v[i+1] &gt; v[i]:
-            v_out[i] &#x3D; 0.
-    return v_out
-
-def simple_test(self, img, img_metas, **kwargs):
-    out &#x3D; dict()
-    x &#x3D; self.extract_feat(img)
-    x &#x3D; self.head(x).cpu().numpy()  # [B, 25,30]
-
-    for i in range(1, self.num_category + 2):
-        x[0, :, self.anchor_dim - i] &#x3D; nms_1d(x[0, :, self.anchor_dim - i])
-    pass
-    return x<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2203.11089.pdf">Persformer Paper</a><br><a target="_blank" rel="noopener" href="https://github.com/OpenDriveLab/PersFormer_3DLane">Persformer Code</a><br><a target="_blank" rel="noopener" href="https://patrick-llgc.github.io/Learning-Deep-Learning/paper_notes/persformer.html">patrick-llgc blog</a></p>
 
                 
@@ -701,31 +683,31 @@ def simple_test(self, img, img_metas, **kwargs):
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/01/05/paper-online-hdmap-construction-zheng-li/">
+                <a href="/2022/12/10/paper-maptr-lun-wen-yu-dai-ma-jie-du/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Online HD Map Construction 整理">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="MapTR论文与代码解读">
                         
-                        <span class="card-title">Online HD Map Construction 整理</span>
+                        <span class="card-title">MapTR论文与代码解读</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            本文总结了当前在线地图构造任务的相关工作
+                            本文对MapTR的论文和代码进行了解读。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-01-05
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-12-10
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%A2%B3%E7%90%86/" class="post-category">
-                                    系统梳理
+                            <a href="/categories/Paper/" class="post-category">
+                                    Paper
                                 </a>
                             
                             
@@ -734,10 +716,6 @@ def simple_test(self, img, img_metas, **kwargs):
                 </div>
                 
                 <div class="card-action article-tags">
-                    
-                    <a href="/tags/Multi-view-3D/">
-                        <span class="chip bg-color">Multi-view 3D</span>
-                    </a>
                     
                     <a href="/tags/HD-Map/">
                         <span class="chip bg-color">HD Map</span>
@@ -891,7 +869,7 @@ def simple_test(self, img, img_metas, **kwargs):
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">48.8k</span>
+                        class="white-color">49.3k</span>
             
             
             

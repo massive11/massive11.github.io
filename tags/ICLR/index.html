@@ -4,10 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="PGD-Probabilistic and Geometric Depth_ Detecting Objects in Perspective, Untitled.">
-    <meta name="description" content="本文整理了Probabilistic and Geometric Depth_ Detecting Objects in Perspective论文主要内容
-本文核心思想：利用目标之间的相对位置关系构造深度传播图以获取更准确的深度估计值。
-">
+    <meta name="keywords" content="标签: ICLR, Untitled.">
+    <meta name="description" content="Untitled.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>PGD-Probabilistic and Geometric Depth_ Detecting Objects in Perspective | Untitled.</title>
+    <title>标签: ICLR | Untitled.</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -330,462 +328,430 @@
 
 </header>
 
-    
-
-
-
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
-    <div class="container" style="right: 0px;left: 0px;">
-        <div class="row">
-            <div class="col s12 m12 l12">
-                <div class="brand">
-                    <h1 class="description center-align post-title">PGD-Probabilistic and Geometric Depth_ Detecting Objects in Perspective</h1>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-<main class="post-container content">
-
-    
+    <div class="bg-cover pd-header about-cover">
+    <div class="container">
     <div class="row">
-    <div id="main-content" class="col s12 m12 l9">
-        <!-- 文章内容详情 -->
-<div id="artDetail">
-    <div class="card">
-        <div class="card-content article-info">
-            <div class="row tag-cate">
-                <div class="col s7">
-                    
-                    <div class="article-tag">
-                        
-                            <a href="/tags/Multi-view-3D/">
-                                <span class="chip bg-color">Multi-view 3D</span>
-                            </a>
-                        
-                    </div>
-                    
-                </div>
-                <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/Paper/" class="post-category">
-                                Paper
-                            </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-
-            <div class="post-info">
+    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
+        <div class="brand">
+            <div class="title center-align">
                 
-                <div class="post-date info-break-policy">
-                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-08-22
-                </div>
-                
-
-                
-
-                
-                <div class="info-break-policy">
-                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    633
-                </div>
-                
-
-                
-                <div class="info-break-policy">
-                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
-                </div>
-                
-
+                kk&#39;s Blog
                 
             </div>
-        </div>
-        <hr class="clearfix">
 
-        
-        <!-- 是否加载使用自带的 prismjs. -->
-        <link rel="stylesheet" href="/libs/prism/prism.min.css">
-        
-
-        
-
-        <div class="card-content article-card-content">
-            <div id="articleContent">
-                <p>本文整理了Probabilistic and Geometric Depth_ Detecting Objects in Perspective论文主要内容<br><span id="more"></span></p>
-<p><strong>本文核心思想</strong>：利用目标之间的相对位置关系构造深度传播图以获取更准确的深度估计值。</p>
-<h1 id="0-Overview"><a href="#0-Overview" class="headerlink" title="0.Overview"></a>0.Overview</h1><ul>
-<li>作者提出的主要观点<ul>
-<li>深度估计误差是限制单目3D检测性能的关键因素。通过目标间的相对位置关系，可以进一步优化深度估计结果以提高3D检测性能。</li>
-</ul>
-</li>
-<li>本文具体实现<ul>
-<li>本文主要是在FCOS3D的基础上替换了深度估计模块，该模块的设计方面主要有以下两点考量<ul>
-<li><ol>
-<li>作者认为准确地估计物体深度其实是一件非常难的事情，因此把原本的确定性深度转化为概率性深度，有点类似于hard label → soft label</li>
-</ol>
-</li>
-<li><ol>
-<li>作者认为仅依靠单一物体进行深度估计是不准确的，因此引入了Graph-Based Depth Propagation，利用多个物体间的关系获得更准确的深度估计结果。</li>
-</ol>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h1 id="1-Method"><a href="#1-Method" class="headerlink" title="1.Method"></a>1.Method</h1><h2 id="1-1-Uncertainty-Modeling-with-Probabilistic-Representation"><a href="#1-1-Uncertainty-Modeling-with-Probabilistic-Representation" class="headerlink" title="1.1 Uncertainty Modeling with Probabilistic Representation"></a>1.1 Uncertainty Modeling with Probabilistic Representation</h2><blockquote>
-<p>To establish an effective depth propagation mechanism, modeling the uncertainty of depth estimation for each instance is an important preliminary, which can provide useful guidance for weighing the propagation among instances.</p>
-</blockquote>
-<p>为了建立有效的深度传播机制，对每个实例的深度估计不确定度进行建模是一个重要的前期工作，可以为实例间的传播赋权提供有益的指导。</p>
-<p>是_probabilistic depth_，</p>
-<p>是每个孤立实例的局部深度估计，它与得到的深度评分一起作为构造深度传播图的基础。</p>
-<h2 id="1-2-Depth-Propagation-from-Perspective-Geometry"><a href="#1-2-Depth-Propagation-from-Perspective-Geometry" class="headerlink" title="1.2 Depth Propagation from Perspective Geometry"></a>1.2 Depth Propagation from Perspective Geometry</h2><p>针对深度估计问题，我们提出了一种几何深度传播机制，考虑了实例之间的相互依赖性。我们将首先推导两个实例之间的透视关系，然后给出带有边缘修剪和门控的基于图的深度传播方案的细节。</p>
-<h3 id="Perspective-Relationship"><a href="#Perspective-Relationship" class="headerlink" title="Perspective Relationship"></a>Perspective Relationship</h3><p>注：本文的方法也是基于平面假设的</p>
-<h3 id="Graph-Based-Depth-Propagation"><a href="#Graph-Based-Depth-Propagation" class="headerlink" title="Graph-Based Depth Propagation"></a>Graph-Based Depth Propagation</h3><blockquote>
-<p>From our observation, the same category of nearby objects can well satisfy the “same ground” condition, so we select the following 3 most important factors to decide which edges are influential and reliable, including the depth confidence sd j , 2D distance score s2D ij , and classification similarity scls ij .</p>
-</blockquote>
-<p>此处针对地面假设的部分做了补充。</p>
-<h2 id="1-3-Probabilistic-and-Geometric-Depth-Estimation"><a href="#1-3-Probabilistic-and-Geometric-Depth-Estimation" class="headerlink" title="1.3 Probabilistic and Geometric Depth Estimation"></a>1.3 Probabilistic and Geometric Depth Estimation</h2><h1 id="2-Coding"><a href="#2-Coding" class="headerlink" title="2.Coding"></a>2.Coding</h1><p>PGD在代码实现上，实质上就是FCOS3D的基础上扩充了深度估计模块。模型的Backbone为DCN v2，Neck为FPN，Head部分的结构图如图1<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1666493133769-8a4cac8a-61b0-4bcb-a64a-73e5092b5ad7.png#clientId=ub5dee652-7dc8-4&amp;errorMessage=unknown%20error&amp;from=drop&amp;id=udd02e737&amp;originHeight=1300&amp;originWidth=2464&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=195957&amp;status=error&amp;style=none&amp;taskId=ue3b64591-a44c-43c8-b989-133cdbdfadb&amp;title=" alt="截屏2022-10-23 10.45.30.png"></p>
-<h1 id="3-Conclusion"><a href="#3-Conclusion" class="headerlink" title="3.Conclusion"></a>3.Conclusion</h1>
+            <div class="description center-align">
+                
+                <span id="subtitle"></span>
+                <script src="/libs/typed/typed.js"></script>
+                <script>
+                    var typed = new Typed("#subtitle", {
+                        strings: [ 
+                            
+                                "Too Fast To Live.",
+                            
+                        ],
+                        startDelay: 300,
+                        typeSpeed: 100,
+                        loop: false,
+                        backSpeed: 50,
+                        showCursor: true
+                    });
+                </script>
                 
             </div>
-            <hr/>
-
-            
-
-    <div class="reprint" id="reprint-statement">
-        
-            <div class="reprint__author">
-                <span class="reprint-meta" style="font-weight: bold;">
-                    <i class="fas fa-user">
-                        文章作者:
-                    </i>
-                </span>
-                <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">Jingyi Yu</a>
-                </span>
-            </div>
-            <div class="reprint__type">
-                <span class="reprint-meta" style="font-weight: bold;">
-                    <i class="fas fa-link">
-                        文章链接:
-                    </i>
-                </span>
-                <span class="reprint-info">
-                    <a href="https://massive11.github.io/2022/08/22/paper-pgd-probabilistic-and-geometric-depth-detecting-objects-in-perspective/">https://massive11.github.io/2022/08/22/paper-pgd-probabilistic-and-geometric-depth-detecting-objects-in-perspective/</a>
-                </span>
-            </div>
-            <div class="reprint__notice">
-                <span class="reprint-meta" style="font-weight: bold;">
-                    <i class="fas fa-copyright">
-                        版权声明:
-                    </i>
-                </span>
-                <span class="reprint-info">
-                    本博客所有文章除特別声明外，均采用
-                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
-                    许可协议。转载请注明来源
-                    <a href="/about" target="_blank">Jingyi Yu</a>
-                    !
-                </span>
-            </div>
-        
-    </div>
-
-    <script async defer>
-      document.addEventListener("copy", function (e) {
-        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
-        M.toast({html: toastHTML})
-      });
-
-      function navToReprintStatement() {
-        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
-      }
-    </script>
-
-
-
-            <div class="tag_share" style="display: block;">
-                <div class="post-meta__tag-list" style="display: inline-block;">
-                    
-                        <div class="article-tag">
-                            
-                                <a href="/tags/Multi-view-3D/">
-                                    <span class="chip bg-color">Multi-view 3D</span>
-                                </a>
-                            
-                        </div>
-                    
-                </div>
-                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
-                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
-<div id="article-share">
-
-    
-    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-    <script src="/libs/share/js/social-share.min.js"></script>
-    
-
-    
-
-</div>
-
-                </div>
-            </div>
-            
-        </div>
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-<article id="prenext-posts" class="prev-next articles">
-    <div class="row article-row">
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
-            <div class="card">
-                <a href="/2022/09/12/principle-xiang-ji-cheng-xiang-ji-bian-mo-xing/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="相机成像畸变模型与鱼眼相机模型">
-                        
-                        <span class="card-title">相机成像畸变模型与鱼眼相机模型</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            相机成像畸变模型与鱼眼相机模型介绍
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-09-12
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E5%8E%9F%E7%90%86/" class="post-category">
-                                    原理
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Coordinate-system/">
-                        <span class="chip bg-color">Coordinate system</span>
-                    </a>
-                    
-                    <a href="/tags/Camera-imaging/">
-                        <span class="chip bg-color">Camera imaging</span>
-                    </a>
-                    
-                    <a href="/tags/Distortion/">
-                        <span class="chip bg-color">Distortion</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2022/08/12/paper-mono3d-paper-lu-xian-shu-li/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Mono3D Detection 整理">
-                        
-                        <span class="card-title">Mono3D Detection 整理</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            本文整理了单目3D目标检测的相关工作
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-08-12
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%A2%B3%E7%90%86/" class="post-category">
-                                    系统梳理
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Mono3D/">
-                        <span class="chip bg-color">Mono3D</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-    </div>
-</article>
-
-</div>
-
-
-
-<!-- 代码块功能依赖 -->
-<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
-
-
-  <!-- 是否加载使用自带的 prismjs. -->
-  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
-
-
-<!-- 代码语言 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
-
-
-<!-- 代码块复制 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
-
-
-<!-- 代码块收缩 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
-
-
-
-    </div>
-    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget card" style="background-color: white;">
-            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
-            <div id="toc-content"></div>
         </div>
     </div>
 </div>
 
-<!-- TOC 悬浮按钮. -->
 
-<div id="floating-toc-btn" class="hide-on-med-and-down">
-    <a class="btn-floating btn-large bg-color">
-        <i class="fas fa-list-ul"></i>
-    </a>
-</div>
-
-
-<script src="/libs/tocbot/tocbot.min.js"></script>
 <script>
-    $(function () {
-        tocbot.init({
-            tocSelector: '#toc-content',
-            contentSelector: '#articleContent',
-            headingsOffset: -($(window).height() * 0.4 - 45),
-            collapseDepth: Number('0'),
-            headingSelector: 'h2, h3, h4'
-        });
+    // 每天切换 banner 图.  Switch banner image every day.
+    var bannerUrl = "/medias/banner/" + new Date().getDay() + '.jpg';
+    $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
+</script>
+<script>
+    
+      var bannerUrl = "/medias/featureimages/" + Math.floor(Math.random() * 24) + '.jpg';
+    
+    $('.bg-cover.about-cover').css('background-image', 'url(' + bannerUrl + ')');
 
-        // Set scroll toc fixed.
-        let tocHeight = parseInt($(window).height() * 0.4 - 64);
-        let $tocWidget = $('.toc-widget');
-        $(window).scroll(function () {
-            let scroll = $(window).scrollTop();
-            /* add post toc fixed. */
-            if (scroll > tocHeight) {
-                $tocWidget.addClass('toc-fixed');
-            } else {
-                $tocWidget.removeClass('toc-fixed');
-            }
-        });
-
-        
-        /* 修复文章卡片 div 的宽度. */
-        let fixPostCardWidth = function (srcId, targetId) {
-            let srcDiv = $('#' + srcId);
-            if (srcDiv.length === 0) {
-                return;
-            }
-
-            let w = srcDiv.width();
-            if (w >= 450) {
-                w = w + 21;
-            } else if (w >= 350 && w < 450) {
-                w = w + 18;
-            } else if (w >= 300 && w < 350) {
-                w = w + 16;
-            } else {
-                w = w + 14;
-            }
-            $('#' + targetId).width(w);
-        };
-
-        // 切换TOC目录展开收缩的相关操作.
-        const expandedClass = 'expanded';
-        let $tocAside = $('#toc-aside');
-        let $mainContent = $('#main-content');
-        $('#floating-toc-btn .btn-floating').click(function () {
-            if ($tocAside.hasClass(expandedClass)) {
-                $tocAside.removeClass(expandedClass).hide();
-                $mainContent.removeClass('l9');
-            } else {
-                $tocAside.addClass(expandedClass).show();
-                $mainContent.addClass('l9');
-            }
-            fixPostCardWidth('artDetail', 'prenext-posts');
-        });
-        
-    });
 </script>
 
+
+    </div>
+</div>
+
+<main class="content">
+
     
 
+<div id="tags" class="container chip-container">
+    <div class="card">
+        <div class="card-content">
+            <div class="tag-title center-align">
+                <i class="fas fa-tags"></i>&nbsp;&nbsp;文章标签
+            </div>
+            <div class="tag-chips">
+                
+                
+                <a href="/tags/DFS/" title="DFS: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="DFS" style="background-color: #F9EBEA;">DFS
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/PAT/" title="PAT: 4">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="PAT" style="background-color: #F5EEF8;">PAT
+                        <span class="tag-length">4</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/hash/" title="hash: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="hash" style="background-color: #D5F5E3;">hash
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Multi-view-3D/" title="Multi-view 3D: 14">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Multi-view 3D" style="background-color: #E8F8F5;">Multi-view 3D
+                        <span class="tag-length">14</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/HD-Map/" title="HD Map: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="HD Map" style="background-color: #FEF9E7;">HD Map
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Mono3D/" title="Mono3D: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Mono3D" style="background-color: #F8F9F9;">Mono3D
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Attention/" title="Attention: 5">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Attention" style="background-color: #82E0AA;">Attention
+                        <span class="tag-length">5</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/DETR/" title="DETR: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="DETR" style="background-color: #D7BDE2;">DETR
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/BEV-Perception/" title="BEV Perception: 10">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="BEV Perception" style="background-color: #A3E4D7;">BEV Perception
+                        <span class="tag-length">10</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Calibration/" title="Calibration: 3">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Calibration" style="background-color: #85C1E9;">Calibration
+                        <span class="tag-length">3</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Fisheye/" title="Fisheye: 3">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Fisheye" style="background-color: #F8C471;">Fisheye
+                        <span class="tag-length">3</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/LSS/" title="LSS: 4">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="LSS" style="background-color: #F9E79F;">LSS
+                        <span class="tag-length">4</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Prediction/" title="Prediction: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Prediction" style="background-color: #F5EEF8;">Prediction
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Temporal/" title="Temporal: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Temporal" style="background-color: #F5EEF8;">Temporal
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/ICCV/" title="ICCV: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="ICCV" style="background-color: #D5F5E3;">ICCV
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/ECCV/" title="ECCV: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="ECCV" style="background-color: #85C1E9;">ECCV
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Match/" title="Match: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Match" style="background-color: #F8C471;">Match
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Algorithm/" title="Algorithm: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Algorithm" style="background-color: #D7BDE2;">Algorithm
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Graph-Theory/" title="Graph Theory: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Graph Theory" style="background-color: #FFF;">Graph Theory
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Transformer/" title="Transformer: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Transformer" style="background-color: #F5EEF8;">Transformer
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Tech/" title="Tech: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Tech" style="background-color: #F9EBEA;">Tech
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Post-Processing/" title="Post Processing: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Post Processing" style="background-color: #F9E79F;">Post Processing
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Coordinate-system/" title="Coordinate system: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Coordinate system" style="background-color: #F8F9F9;">Coordinate system
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Camera-imaging/" title="Camera imaging: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Camera imaging" style="background-color: #F9E79F;">Camera imaging
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/nuScenes/" title="nuScenes: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="nuScenes" style="background-color: #FFF;">nuScenes
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Distortion/" title="Distortion: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Distortion" style="background-color: #F8F9F9;">Distortion
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/NeurIPS/" title="NeurIPS: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="NeurIPS" style="background-color: #E8F8F5;">NeurIPS
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Pytorch/" title="Pytorch: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Pytorch" style="background-color: #D5F5E3;">Pytorch
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Loss/" title="Loss: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Loss" style="background-color: #FEF9E7;">Loss
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Metrics/" title="Metrics: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Metrics" style="background-color: #FFF;">Metrics
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/AAAI/" title="AAAI: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="AAAI" style="background-color: #A3E4D7;">AAAI
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Deploy/" title="Deploy: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Deploy" style="background-color: #D7BDE2;">Deploy
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/3D-Lane/" title="3D-Lane: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="3D-Lane" style="background-color: #82E0AA;">3D-Lane
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Mono-3D/" title="Mono 3D: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Mono 3D" style="background-color: #F9E79F;">Mono 3D
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/ICLR/" title="ICLR: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-active "
+                            data-tagname="ICLR" style="background-color: #FEF9E7;">ICLR
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <article id="articles" class="container articles">
+        <div class="row tags-posts">
+            
+            
+            <div class="article tag-post col s12 m6 l4" data-tags="Multi-view 3D, HD Map, ICLR" data-aos="fade-up">
+                <div class="card">
+                    <a href="/2022/12/10/paper-maptr-lun-wen-yu-dai-ma-jie-du/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="MapTR论文与代码解读">
+                            
+                            <span class="card-title">MapTR论文与代码解读</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-12-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/Paper/" class="post-category">
+                                Paper
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </article>
 </main>
 
 

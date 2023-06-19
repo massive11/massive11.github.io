@@ -400,14 +400,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.3k
+                    1.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    8 分
+                    6 分
                 </div>
                 
 
@@ -448,9 +448,20 @@
 <h2 id="现有主要论文"><a href="#现有主要论文" class="headerlink" title="现有主要论文"></a>现有主要论文</h2><h3 id="202203-HDMapNet"><a href="#202203-HDMapNet" class="headerlink" title="[202203] HDMapNet"></a>[202203] HDMapNet</h3><p><strong>Title</strong>：HDMapNet: An Online HD Map Construction and Evaluation Framework<br><strong>TL;DR</strong>: HDMapNet遵循常规的语义分割pipeline的密集预测方案，在后处理中通过启发式的聚类算法得到矢量化的地图元素。<br><strong>Motivation</strong>: 高精地图生成的传统方案需要大量的人力物力去标注和维护地图的语义信息，限制了其规模。<br><strong>Result</strong>:<br><img src="/images/hdmapnet_result.png"/></p>
 <center>图3 HDMapNet 在nuScenes val set的效果</center>
 
-<h4 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h4><p>HDMapNet本质上还是将在线地图学习任务看作是一个语义分割任务，这种任务非常适合使用卷积+全连接网络进行求解。<br>HDMapNet生成segmentation、instance和directional map三个部分，其中segmentation是pixel-level的表示形式，要得到矢量化的地图需要结合instance和directional map，使用hand-designed的后处理算法聚类instance从而将这些地图矢量化。<br><img src="/images/hdmapnet.png"/></p>
+<h4 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h4><p>HDMapNet本质上还是将在线地图学习任务看作是一个语义分割任务，这种任务非常适合使用卷积+全连接网络进行求解。模型Pipeline如图4所示<br><img src="/images/hdmapnet.png"/></p>
 <center>图4 HDMapNet Pipeline</center>
 
+<ol>
+<li>PV Encoder<br>在视角转换部分，HDMapNet是使用MLP讲特征从图像坐标系转到相机坐标系，然后使用IPM投影将其转到自车坐标系</li>
+<li>LiDar Encoder<br>参考的是PointPillar的方案</li>
+<li>BEV Decoder<br>通过三个卷积block得到语义图、实例图和方向图三个输出。<ul>
+<li>语义图是pixel-level的分类结果。</li>
+<li>实例图是。</li>
+<li>方向图预测的是pixel-level地图元素的方向。方向共划分了$N_d$个类别。</li>
+</ul>
+</li>
+<li>通过手工设计的后处理算法将这三种地图矢量化。</li>
+</ol>
 <h4 id="Loss设计"><a href="#Loss设计" class="headerlink" title="Loss设计"></a>Loss设计</h4><script type="math/tex; mode=display">L=L_{seg}+L_{ins\_embedding}</script><p>$L_{seg}$是semantic prediction模块中使用的CE loss。<br>$L_{ins_embedding}$是instance embedding模块中对每个bev embedding进行聚类的损失，$L_{var}$和$L_{dist}$分别是方差和距离的损失，二者都是L2 loss</p>
 <script type="math/tex; mode=display">L_{ins\_embedding}=L_{var}+L_{dist}</script><p>对于点集中点的匹配关系，使用的是Chamfer distance进行度量</p>
 <script type="math/tex; mode=display">CD_{Dir}(S_1, S_2)=\frac{1}{S_1}\sum_{x \in S_1}min_{y\in S_2}||x-y||_2</script><script type="math/tex; mode=display">CD(S_1, S_2)=CD_{Dir}(S_1, S_2) + CD_{Dir}(S_2, S_1)</script><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ol>
@@ -460,36 +471,45 @@
 <li>实际上还是依赖栅格化的地图预测</li>
 <li>启发式后处理步骤使整个pipeline变得复杂，也非常耗时，限制了模型的可伸缩性和性能</li>
 </ol>
-<h3 id="202206-VectorMapNet"><a href="#202206-VectorMapNet" class="headerlink" title="[202206]VectorMapNet"></a>[202206]VectorMapNet</h3><p><strong>Title</strong>：VectorMapNet: End-to-end Vectorized HD Map Learning<br><strong>TL;DR</strong>: VectorMapNet提出了第一个端到端的矢量地图构造方案，无需任何后处理操作。<br><strong>Motivation</strong>: 现有的在线地图学习方案要么是基于栅格地图预测的，没有instance信息；要么就需要复杂的后处理步骤。<br><strong>Result</strong>:<br><img src="/images/vectormapnet_result.png"/></p>
+<h3 id="202206-VectorMapNet"><a href="#202206-VectorMapNet" class="headerlink" title="[202206] VectorMapNet"></a>[202206] VectorMapNet</h3><p><strong>Title</strong>：VectorMapNet: End-to-end Vectorized HD Map Learning<br><strong>TL;DR</strong>：VectorMapNet提出了第一个端到端的矢量地图构造方案，无需任何后处理操作。<br><strong>Motivation</strong>: 现有的在线地图学习方案要么是基于栅格地图预测的，没有instance信息；要么就需要复杂的后处理步骤。<br><strong>Result</strong>:<br><img src="/images/vectormapnet_result.png"/></p>
 <center>图5 VectorMapNet 在nuScenes val set的效果(阈值为$\{0.5, 1.0, 1.5\}$)</center>
 
-<h4 id="Pipeline-1"><a href="#Pipeline-1" class="headerlink" title="Pipeline"></a>Pipeline</h4><p>VectorMapNet将在线地图生成任务描述为一个稀疏的set prediction任务，这种任务非常适合使用Transformer进行求解。<br>实际上VectorMapNet是一个两阶段的任务，第一阶段是一个set prediction任务，预测策略的关键点；第二阶段是一个sequence generation任务，按顺序预测地图元素的下一个点。</p>
-<p>VectorMapNet首先将不同模态的数据整合到BEV特征空间，然后基于可学习的query检测地图元素的位置和类别，最后将每个地图元素解码成polyline。<br><img src="/images/vectormapnet_pipeline.png"/></p>
+<h4 id="Pipeline-1"><a href="#Pipeline-1" class="headerlink" title="Pipeline"></a>Pipeline</h4><p>VectorMapNet将在线地图生成任务描述为一个稀疏的集合任务，这种任务非常适合使用Transformer进行求解，这个任务也可以顺理成章地转换成检测任务进行处理。</p>
+<p>VectorMapNet是一个两阶段的方案，第一阶段是一个set prediction任务，预测策略的关键点；第二阶段是一个sequence generation任务，按顺序预测地图元素的下一个点。VectorMapNet的pipeline如图6所示<br><img src="/images/vectormapnet_pipeline.png"/></p>
 <center>图6 VectorMapNet Pipeline</center>
 
-<h4 id="loss设计"><a href="#loss设计" class="headerlink" title="loss设计"></a>loss设计</h4><p>包括三个部分，对关键点分类的负对数似然，对关键点回归的smooth L1 loss和IoU loss</p>
-<p>是负对数似然损失</p>
+<p>VectorMapNet首先将不同模态的数据整合到BEV特征空间，然后基于可学习的query检测地图元素的位置和类别，最后将每个地图元素解码成polyline。每个模块具体实现的拆解如下</p>
+<ol>
+<li>BEV Feature Extractor<br>将传感器得到的数据（相机图像）转换到鸟瞰图视角（BEV）中得到BEV features。这里使用的也是IPM的方案。</li>
+<li>Map Element Detector<br>主要的目的就是定位每一个地图元素的位置，大致形状以及所属类别。这里论文中称其将每一个地图元素用多个关键点（Keypoints）来表示，实际上就是用bounding box封装了一下</li>
+<li>Polyline Generator<br>这个模块根据检测模块检测到的关键点和类别信息来预测每个地图元素的具体的局部几何形状，将每一个地图元素补充完整。模块推断用公式描述为<script type="math/tex; mode=display">p(V_i^{poly}|a_i,l_i,\mathcal{F}_{BEV};\theta)=
+ \prod_{n=1}^{2N_v}p(v_{i, n}^{f}|v_{i,<n}^{f},a_i,l_i,\mathcal{F}_{BEV})</script></li>
+</ol>
+<h4 id="loss设计"><a href="#loss设计" class="headerlink" title="loss设计"></a>loss设计</h4><p>loss设计包括两个部分，分别是检测损失和生成损失</p>
+<script type="math/tex; mode=display">\mathcal{L} = \mathcal{L}_{det} + \mathcal{L}_{gen}</script><p>其中，$\mathcal{L}_{det}$是由两个个部分组成的损失函数，包括关键点回归损失和分类损失，$\mathcal{L}_{gen}$则是交叉熵损失。<br>由于生成器是一个序列生成模型，采用教师指导（teacher-forcing）训练方法进行训练。</p>
 <h4 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h4><ol>
-<li>无须复杂的后处理过程</li>
-<li>层级式的结构，先预测元素，再确定每个元素具体的点集</li>
+<li>无须复杂的后处理过程，能够直接端到端的得到矢量地图元素</li>
+<li>将地图构造问题转成set prediction的问题，使得基于transformer的方案能够轻松移植过来</li>
 </ol>
 <h4 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h4><ol>
+<li>基于box的封装方式，一方面不能准确表示元素的形状；另一方面，box对于线性目标会退化（尤其是驾驶场景中元素常与坐标轴平行）</li>
 <li>有向折线表示地图元素和顺序预测点会引起定义歧义</li>
-<li>以循环的方式预测点，并采用级联的由粗到细框架，导致较长的推理时间和对实时场景的有限可伸缩性</li>
-<li>自回归解码器的周期性导致了累积误差的问题，需要更长的训练时间才能收敛</li>
-<li>基于box的封装方式，对于常常与坐标轴平行的线型元素并不友好</li>
+<li>以循环的方式预测点，并采用级联的由粗到细框架，导致较长的推理时间和对实时场景的有限可伸缩性。且自回归解码器的周期性导致了累积误差的问题，需要更长的训练时间才能收敛</li>
 </ol>
 <h3 id="202208-MapTR"><a href="#202208-MapTR" class="headerlink" title="[202208]MapTR"></a>[202208]MapTR</h3><p><strong>Title</strong>：MapTR: Structured Modeling and Learning for Online Vectorized HD Map Construction<br><strong>TL;DR</strong>: MapTR直接建模地图元素的元素-点的关系，采用类似DETR的方式直接回归每个元素的每个点，并提出了针对地图元素的等价定义问题。<br><strong>Motivation</strong>: 针对当下地图元素的定义中存在的歧义性，提出了基于排列的方案；遵循DETR的范式，将在线地图构造任务提到了实时级的水平。<br><strong>Result</strong>:<br><img src="/images/maptr_result.png"/></p>
 <center>图7 MapTR 在nuScenes val set的效果(阈值为$\{0.5, 1.0, 1.5\}$)</center>
 
 <p>注：MapTR是目前Online HD Map Construction任务的SOTA，另外写了一篇<a href="https://massive11.github.io/2022/12/10/paper-maptr-lun-wen-yu-dai-ma-jie-du/">MapTR论文与代码解读</a>给出了详细的介绍。</p>
-<h4 id="Pipeline-2"><a href="#Pipeline-2" class="headerlink" title="Pipeline"></a>Pipeline</h4><p>MapTR是一个完全的set prediction任务。<br>MapTR将训练过程定义为一个层级式的set prediction任务。<br>MapTR将每个地图元素视为一个有一组等价排列方式的点集，首先采用常规的view transformation方案将6帧图像转到BEV视角下，然后使用层级式的二分匹配设计，依次进行instance-level、point-level的匹配<br><img src="/images/maptr_structure.png"/></p>
+<h4 id="Pipeline-2"><a href="#Pipeline-2" class="headerlink" title="Pipeline"></a>Pipeline</h4><p>MapTR是一个完全的set prediction任务，几乎可以看作是BEVFormer+DETR head的方案。<br>MapTR将每个地图元素视为一个有一组等价排列方式的点集，首先采用常规的view transformation方案将6帧图像转到BEV视角下，然后使用层级式的二分匹配设计，依次进行instance-level、point-level的匹配，其pipeline如图8所示<br><img src="/images/maptr_structure.png"/></p>
 <center>图8 MapTR Pipeline</center>
 
+<ol>
+<li>Map Encoder<br>这里用的应该是作者实验室团队的GKT，原理和BEVFormer的Spatial cross attention基本一样。实际上可以根据自己的需要替换成其他模块，作者在消融实验中也给出了不同的视角转换模块的性能对比，比较有参考意义<br><img src="/images/maptr_ablation1.png" width="60%" height="60%"/></li>
+<li>Map Decoder<br>DETR的Decoder设计，比较特别的是MapTR在初始化每个Query的时候就直接赋予了结构化关系，也即文中所说的hierarchical query，因此能够直接回归每个地图元素的每个点。其注意力操作中的cross attention也是比较常规的deformable attention，即每个query只与其对应的参考点位置的BEV特征进行交互。这样做的好处就是避免了类似VectorMapNet中需要两阶段才能得到的完整的矢量化的地图数据。</li>
+<li>Hierarchical Match<br>根据之前的操作，已经能够得到多个由有序的点集组成的地图元素，这个模块就是解决有序点集与真值的匹配问题。如前文所述，每个Query在初始化的时候就已经固定了其所属的instance信息，因此这里的匹配包含两部分内容：元素匹配和元素中点的匹配。由于真值和推理结果都是有序的点集，可以直接将元素中所有对应点的距离累加作为两个元素之间的差异。<br>在这个部分，MapTR提出了它们的核心思路，也就是对于地图构造任务来说，真值中有序点集的顺序并不是唯一正确的顺序。因此，MapTR扩展了单个有序的真值点集为其等价定义类。根据预测值与等价定义类的二分匹配结果确定最终的匹配。</li>
+</ol>
 <h4 id="loss"><a href="#loss" class="headerlink" title="loss"></a>loss</h4><p>MapTR损失由分类损失、点对点的损失和方向损失三部分组成</p>
-<p>分类损失是Focal loss</p>
-<p>点对点的损失限制的是每个点的位置，使用的是距离</p>
-<p>点对点的损失仅限制折线和多边形的节点，不考虑边(相邻点之间的连接线)。但是对于地图元素来说，边的方向也同样重要，方向损失使用余弦相似度进行度量</p>
+<script type="math/tex; mode=display">\mathcal{L}=\lambda\mathcal{L}_{cls}+\alpha\mathcal{L}_{p2p}+\beta\mathcal{L}_{dir}</script><p>分类损失是Focal loss。点对点的损失限制的是每个点的位置，使用的是Manhattan距离。点对点的损失仅限制折线和多边形的节点，不考虑边(相邻点之间的连接线)。但是对于地图元素来说，边的方向也同样重要，方向损失使用余弦相似度进行度量。</p>
 <h4 id="优点-2"><a href="#优点-2" class="headerlink" title="优点"></a>优点</h4><ol>
 <li>SOTA，精度高的同时速度非常快</li>
 <li>提出了地图构造问题中组成每个元素的有序点集的排列等价性，从实验中可以看出有效提升了模型性能。</li>
@@ -498,22 +518,28 @@
 <li>等数量插值，模型性能会受每个元素的点集数量的影响</li>
 <li>元素之间、元素内部的结构关系约束比较弱，可能因此导致模型收敛速度慢</li>
 </ol>
-<h3 id="202301-InstaGraM"><a href="#202301-InstaGraM" class="headerlink" title="[202301]InstaGraM"></a>[202301]InstaGraM</h3><p><strong>Title</strong>：InstaGraM: Instance-level Graph Modeling for Vectorized HD Map Learning<br><strong>TL;DR</strong>:<br><strong>Motivation</strong>:<br><strong>Result</strong>:<br><img src="/images/instagram_result.png"/></p>
-<center>图7 InstaGraM 在nuScenes val set的效果(阈值为$\{0.5, 1.0, 1.5\}$)</center>
+<h3 id="202301-InstaGraM"><a href="#202301-InstaGraM" class="headerlink" title="[202301]InstaGraM"></a>[202301]InstaGraM</h3><p><strong>Title</strong>：InstaGraM: Instance-level Graph Modeling for Vectorized HD Map Learning<br><strong>TL;DR</strong>: 分别预测vertex map和edge map，然后通过instance-level的图建模构造矢量化地图元素。<br><strong>Motivation</strong>: 现有的方法要么依赖后处理，要么依赖自回归，速度都比较慢。（本文没有提及MapTR，实际上二者速度应该是差不多的，但是MapTR的精度更高）<br><strong>Result</strong>:<br><img src="/images/instagram_result.png"/></p>
+<center>图9 InstaGraM 在nuScenes val set的效果(阈值为$\{0.5, 1.0, 1.5\}$)</center>
 
 <h4 id="Pipeline-3"><a href="#Pipeline-3" class="headerlink" title="Pipeline"></a>Pipeline</h4><p><img src="/images/instagram_pipeline.png"/></p>
-<center>图8 InstaGraM Pipeline</center>
+<center>图10 InstaGraM Pipeline</center>
 
+<ol>
+<li>BEV feature extractor<br>参考HDMapNet的IPM方式</li>
+<li>Element detector heads<br>使用两个CNN decoder分别提取vertecies和edge的特征信息。vertecies预测的是顶点的heatmap，edge预测的是distance transform map</li>
+<li>Association<br>这部分是使用GNN关联上一个得到的vertecies和edge的信息。</li>
+</ol>
 <h4 id="优点-3"><a href="#优点-3" class="headerlink" title="优点"></a>优点</h4><ol>
 <li>提出图建模的思想解决矢量地图构造问题</li>
 <li>速度非常快</li>
 </ol>
 <h4 id="缺点-3"><a href="#缺点-3" class="headerlink" title="缺点"></a>缺点</h4><ol>
-<li>先检测点，再通过图连接，这种方式在交通密集的场景效果会比较差，缺乏一定的推理能力</li>
+<li>先检测点，再通过图连接，这种二阶段方式在交通密集的场景效果会比较差，缺乏一定的关联推理能力</li>
+<li>代码未开源</li>
 </ol>
-<!-- ## 相关其他研究工作
-## HRAN -->
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2107.06307.pdf">HDMapNet Paper</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2206.08920.pdf">VectorMapNet Paper</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2208.14437.pdf">MapTR Paper</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2301.04470.pdf">InstaGraM Paper</a></p>
+<h2 id="性能评价指标"><a href="#性能评价指标" class="headerlink" title="性能评价指标"></a>性能评价指标</h2><p>早期基于分割的方案使用的是IoU的评价指标，自VectorMapNet将该问题描述为检测问题后，比较常用的评价指标是基于距离的评价指标mAP。<br>判断正负样例使用的是几何相似性，使用的chamfer distance。chamfer distance衡量两个无序点集的相似性，考虑了元素点集的所有排列方式，公式定义如下</p>
+<script type="math/tex; mode=display">D_{chamfer}(S_1, S_2)=\frac{1}{2}(\frac{1}{|S_1|}\sum_{p\in S_1}min_{q\in S_2}||p,q||_2+\frac{1}{|S_2|}\sum_{q\in S_2}min_{p\in S_1}||q,p||_2)</script><p>推理结果和真值都采样成100个点，分别在$\{0.5, 1.0, 1.5\}$距离阈值下计算AP。取各类别在各阈值下的平均值作为最终的结果。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2107.06307.pdf">HDMapNet Paper</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2206.08920.pdf">VectorMapNet Paper</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2208.14437.pdf">MapTR Paper</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2301.04470.pdf">InstaGraM Paper</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/574687904">https://zhuanlan.zhihu.com/p/574687904</a></p>
 
                 
             </div>
@@ -888,7 +914,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">49.3k</span>
+                        class="white-color">48.7k</span>
             
             
             

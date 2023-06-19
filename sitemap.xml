@@ -2,7 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://massive11.github.io/2022/07/08/paper-bevdet-lun-wen-yu-dai-ma-jie-du/</loc>
+    
+    <lastmod>2023-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://massive11.github.io/2023/03/05/paper-online-hdmap-construction-zheng-li/</loc>
+    
+    <lastmod>2023-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2022/07/17/paper-bevdepth-lun-wen-yu-dai-ma-jie-du/</loc>
+    
+    <lastmod>2023-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/2022/12/10/paper-maptr-lun-wen-yu-dai-ma-jie-du/</loc>
     
     <lastmod>2023-06-19</lastmod>
     
@@ -29,15 +56,6 @@
   </url>
   
   <url>
-    <loc>https://massive11.github.io/2022/07/08/paper-bevdet-lun-wen-yu-dai-ma-jie-du/</loc>
-    
-    <lastmod>2023-06-18</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://massive11.github.io/2022/07/27/paper-bevformer-lun-wen-yu-dai-ma-jie-du/</loc>
     
     <lastmod>2023-06-18</lastmod>
@@ -48,15 +66,6 @@
   
   <url>
     <loc>https://massive11.github.io/2022/05/28/principle-detr-yuan-li/</loc>
-    
-    <lastmod>2023-06-18</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://massive11.github.io/2022/07/17/paper-bevdepth-lun-wen-yu-dai-ma-jie-du/</loc>
     
     <lastmod>2023-06-18</lastmod>
     
@@ -237,15 +246,6 @@
   
   <url>
     <loc>https://massive11.github.io/2022/08/12/paper-mono3d-paper-lu-xian-shu-li/</loc>
-    
-    <lastmod>2023-06-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://massive11.github.io/2022/12/10/paper-maptr-lun-wen-yu-dai-ma-jie-du/</loc>
     
     <lastmod>2023-06-08</lastmod>
     
@@ -585,6 +585,13 @@
   
   <url>
     <loc>https://massive11.github.io/tags/Mono-3D/</loc>
+    <lastmod>2023-06-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://massive11.github.io/tags/ICLR/</loc>
     <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

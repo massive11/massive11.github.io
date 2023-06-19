@@ -362,8 +362,16 @@
                     
                     <div class="article-tag">
                         
+                            <a href="/tags/Multi-view-3D/">
+                                <span class="chip bg-color">Multi-view 3D</span>
+                            </a>
+                        
                             <a href="/tags/HD-Map/">
                                 <span class="chip bg-color">HD Map</span>
+                            </a>
+                        
+                            <a href="/tags/ICLR/">
+                                <span class="chip bg-color">ICLR</span>
                             </a>
                         
                     </div>
@@ -423,7 +431,7 @@
             <div id="articleContent">
                 <p>本文对MapTR的论文和代码进行了解读。<br><span id="more"></span></p>
 <p>本文主要改进的地方在于针对地图元素的数据结构进行了instance-point点集的层级式设计，模型直接预测了每个地图元素的点集，而非HDMapNet类的方法去预测分割的tensor。Nuscenes Map所提供的数据本身也就是点集的形式，以下将首先对Nuscenes Map数据集进行简要介绍。</p>
-<h1 id="0-Nuscenes-Map"><a href="#0-Nuscenes-Map" class="headerlink" title="0.Nuscenes Map"></a>0.Nuscenes Map</h1><p>Nuscenes地图分为两个图层，几何图层和非几何图层，几何图层包括（polygon, line, node）,　非几何图层包括(drivable_area, road_segment, road_block, lane, ped_crossing, walkway, stop_line, ‘carpark_area’, ‘road divider’, ‘lane divider’, ‘traffic light’)<br>下载<a target="_blank" rel="noopener" href="https://www.nuscenes.org/nuscenes#download">Nuscenes Map expansion</a>可以看到地图元素的细节描述，以下以expansion/boston-seaport.json为例进行具体分析<br><pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+<h2 id="Nuscenes-Map"><a href="#Nuscenes-Map" class="headerlink" title="Nuscenes Map"></a>Nuscenes Map</h2><p>Nuscenes地图分为两个图层，几何图层和非几何图层，几何图层包括（polygon, line, node）,　非几何图层包括(drivable_area, road_segment, road_block, lane, ped_crossing, walkway, stop_line, ‘carpark_area’, ‘road divider’, ‘lane divider’, ‘traffic light’)<br>下载<a target="_blank" rel="noopener" href="https://www.nuscenes.org/nuscenes#download">Nuscenes Map expansion</a>可以看到地图元素的细节描述，以下以expansion/boston-seaport.json为例进行具体分析<br><pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
   <span class="token property">"polygon"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
     <span class="token punctuation">&#123;</span>
       <span class="token property">"token"</span><span class="token operator">:</span> <span class="token string">"1b161e64-fe37-4f3f-96db-299edefe9f8c"</span><span class="token punctuation">,</span> 
@@ -452,15 +460,21 @@
   <span class="token punctuation">]</span><span class="token punctuation">,</span> 
   ...
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
-<h1 id="1-论文"><a href="#1-论文" class="headerlink" title="1.论文"></a>1.论文</h1><blockquote>
-<p>_We present Map TRansformer (MapTR), for efficient online vectorized HD map construction._ _MapTR is a unified permutation-based modeling approach, i.e., modeling map element as a point set with a group of equivalent permutations, which avoids the definition ambiguity of map element and eases learning._</p>
+<h2 id="MapTR"><a href="#MapTR" class="headerlink" title="MapTR"></a>MapTR</h2><blockquote>
+<p>We present Map TRansformer, for efficient online vectorized HD map construction. MapTR is a unified permutation-based modeling approach, i.e., modeling map element as a point set with a group of equivalent permutations, which avoids the definition ambiguity of map element and eases learning.</p>
 </blockquote>
 <p>MapTR是一个基于排列的HD Map构造方法，它将每个地图元素视为有着一组等价排列方式的点集，通过这样的方式避免地图元素定义上的歧义。</p>
-<h2 id="The-definition-ambiguity-of-map-element"><a href="#The-definition-ambiguity-of-map-element" class="headerlink" title="The definition ambiguity of map element"></a>The definition ambiguity of map element</h2><p>地图元素可以抽象为多段线（车道线等）和多边形（人行横道等）两种。对于多段线而言，两个端点都可以视作起始点；对于多边形而言，从点集中任何一点以任意方向排列都是合理的。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1670658144856-5b3778d7-1998-4d02-826a-020790c401bd.png#averageHue=%237f7565&clientId=ub4351085-37d1-4&from=paste&height=291&id=u0c24d53d&originHeight=581&originWidth=1311&originalType=binary&ratio=1&rotation=0&showTitle=false&size=534954&status=done&style=none&taskId=ub617010c-bb15-460f-a806-eb7c271e27a&title=&width=656" width="50%" height="50%"/><br>图1 The definition ambiguity of map element</p>
-<h2 id="Permutation-based-modeling-of-MapTR"><a href="#Permutation-based-modeling-of-MapTR" class="headerlink" title="Permutation-based modeling of MapTR"></a>Permutation-based modeling of MapTR</h2><p>为了弥补这种差距，MapTR使用$\mathcal{V}=(V,\Gamma)$建模每个地图元素，$V=\{v_j\}_{j=0}^{N_v-1}$表示该地图元素的点集，$\Gamma=\{\gamma_k \}$表示这个点集的一组等效的排列，包含所有可能的组织序列。<br>对于多段线而言，有两种等价的排列方式；对于多边形而言，有$2N_v$种等价的配列方式。<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1670659104340-812a3dc6-a06d-4fbf-ba80-cf8dd36483c6.png#averageHue=%23dedddc&amp;clientId=ub4351085-37d1-4&amp;from=paste&amp;height=326&amp;id=u4cedbb99&amp;originHeight=652&amp;originWidth=1140&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=172876&amp;status=done&amp;style=none&amp;taskId=u8470cd32-c9f8-4818-9d05-d3d29ce873d&amp;title=&amp;width=570" alt="image.png"><br>图2 llustration of permutation-based modeling of MapTR</p>
-<h2 id="Hierarchical-matching"><a href="#Hierarchical-matching" class="headerlink" title="Hierarchical matching"></a>Hierarchical matching</h2><p>在此基础上，MapTR进一步引入了层级式的二分匹配，依次执行instance-level和point-level的匹配。<br>instance-level的匹配是在预测的instance和真值的instance之间寻找一个最优的标签分配，参考DETR的方法使用的是匈牙利匹配算法。<br>得到instance-level的结果之后，使用point-level找到最优的点对点的匹配，利用 Manhattan 距离度量。</p>
-<h2 id="Overall-architecture-of-MapTR"><a href="#Overall-architecture-of-MapTR" class="headerlink" title="Overall architecture of MapTR"></a>Overall architecture of MapTR</h2><p>MapTR的整体结构<br><img src="https://cdn.nlark.com/yuque/0/2022/png/478741/1670660573409-041979b6-9c36-44b4-9afe-2f2a7ac78a39.png#averageHue=%23f1ede9&amp;clientId=ub4351085-37d1-4&amp;from=paste&amp;height=394&amp;id=u6ad1b6b9&amp;originHeight=788&amp;originWidth=1133&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=317190&amp;status=done&amp;style=none&amp;taskId=ue2760a28-29c4-4dd4-b04f-0dce249827c&amp;title=&amp;width=567" alt="image.png"><br>图3 The overall architecture of MapTR</p>
-<h1 id="2-代码"><a href="#2-代码" class="headerlink" title="2.代码"></a>2.代码</h1><h2 id="代码模块划分"><a href="#代码模块划分" class="headerlink" title="代码模块划分"></a>代码模块划分</h2><div class="table-container">
+<h3 id="The-definition-ambiguity-of-map-element"><a href="#The-definition-ambiguity-of-map-element" class="headerlink" title="The definition ambiguity of map element"></a>The definition ambiguity of map element</h3><p>地图元素可以抽象为多段线（车道线等）和多边形（人行横道等）两种。对于多段线而言，两个端点都可以视作起始点；对于多边形而言，从点集中任何一点以任意方向排列都是合理的。<br><img src="/images/ambiguity_maptr.png"/></p>
+<center>图1 The definition ambiguity of map element</center>
+
+<h3 id="Permutation-based-modeling-of-MapTR"><a href="#Permutation-based-modeling-of-MapTR" class="headerlink" title="Permutation-based modeling of MapTR"></a>Permutation-based modeling of MapTR</h3><p>为了弥补这种差距，MapTR使用$\mathcal{V}=(V,\Gamma)$建模每个地图元素，$V=\{v_j\}_{j=0}^{N_v-1}$表示该地图元素的点集，$\Gamma=\{\gamma_k \}$表示这个点集的一组等效的排列，包含所有可能的组织序列。<br>对于多段线而言，有两种等价的排列方式；对于多边形而言，有$2N_v$种等价的配列方式。<br><img src="/images/maptr_equal.png"/></p>
+<center>图2 llustration of permutation-based modeling of MapTR</center>
+
+<h3 id="Hierarchical-matching"><a href="#Hierarchical-matching" class="headerlink" title="Hierarchical matching"></a>Hierarchical matching</h3><p>在此基础上，MapTR进一步引入了层级式的二分匹配，依次执行instance-level和point-level的匹配。<br>instance-level的匹配是在预测的instance和真值的instance之间寻找一个最优的标签分配，参考DETR的方法使用的是匈牙利匹配算法。<br>得到instance-level的结果之后，使用point-level找到最优的点对点的匹配，利用 Manhattan 距离度量。</p>
+<h3 id="Overall-architecture-of-MapTR"><a href="#Overall-architecture-of-MapTR" class="headerlink" title="Overall architecture of MapTR"></a>Overall architecture of MapTR</h3><p>MapTR的整体结构<br><img src="/images/maptr_structure.png"/></p>
+<center>图3 The overall architecture of MapTR</center>
+
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="代码模块划分"><a href="#代码模块划分" class="headerlink" title="代码模块划分"></a>代码模块划分</h3><div class="table-container">
 <table>
 <thead>
 <tr>
@@ -507,13 +521,21 @@
 <td>MapTRDecoder</td>
 <td>DETRDecoderLayer</td>
 <td>MultiHead Attention</td>
-<td>[50*20, B, 256]</td>
+<td>[50*20, B, 256] [B, 20000, 256]</td>
+<td>[N, 50*20, B, 256]</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Deformable Attention</td>
+<td></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>[B, 20000, 256] | [N, 50*20, B, 256] |<br>|  |  |  |  | Deformable Attention |  |  |</p>
-<h2 id="BEVFormerEncoder"><a href="#BEVFormerEncoder" class="headerlink" title="BEVFormerEncoder"></a>BEVFormerEncoder</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> mlvl_feats<span class="token punctuation">,</span> img_metas<span class="token punctuation">,</span> prev_bev<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>  only_bev<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+<h3 id="BEVFormerEncoder"><a href="#BEVFormerEncoder" class="headerlink" title="BEVFormerEncoder"></a>BEVFormerEncoder</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> mlvl_feats<span class="token punctuation">,</span> img_metas<span class="token punctuation">,</span> prev_bev<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>  only_bev<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     bs<span class="token punctuation">,</span> num_cam<span class="token punctuation">,</span> _<span class="token punctuation">,</span> _<span class="token punctuation">,</span> _ <span class="token operator">=</span> mlvl_feats<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>shape  <span class="token comment"># [B, N, 256, 15, 25]</span>
 
     pts_embeds <span class="token operator">=</span> self<span class="token punctuation">.</span>pts_embedding<span class="token punctuation">.</span>weight<span class="token punctuation">.</span>unsqueeze<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>  <span class="token comment"># [1, 20, 512]</span>
@@ -620,7 +642,7 @@
         bev_query <span class="token operator">=</span> output
 
     <span class="token keyword">return</span> output  <span class="token comment"># [B, 20000, 256]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="MapTRDecoder"><a href="#MapTRDecoder" class="headerlink" title="MapTRDecoder"></a>MapTRDecoder</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>
+<h3 id="MapTRDecoder"><a href="#MapTRDecoder" class="headerlink" title="MapTRDecoder"></a>MapTRDecoder</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>
             mlvl_feats<span class="token punctuation">,</span>
             bev_queries<span class="token punctuation">,</span>
             object_query_embed<span class="token punctuation">,</span>
@@ -701,7 +723,7 @@
 
     <span class="token keyword">return</span> torch<span class="token punctuation">.</span>stack<span class="token punctuation">(</span>intermediate<span class="token punctuation">)</span><span class="token punctuation">,</span> torch<span class="token punctuation">.</span>stack<span class="token punctuation">(</span>intermediate_reference_points<span class="token punctuation">)</span>
     <span class="token comment">#               [N, 1000, B, 256]               [N, B, 1000, 2] </span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="推理结果处理"><a href="#推理结果处理" class="headerlink" title="推理结果处理"></a>推理结果处理</h2><p>使用线性层将输出结果处理成points set的形式，每个points set使用bbox封装，最终形式为[x_min, y_min, x_max, y_max]<br><pre class="line-numbers language-python" data-language="python"><code class="language-python">bev_embed<span class="token punctuation">,</span> hs<span class="token punctuation">,</span> init_reference<span class="token punctuation">,</span> inter_references <span class="token operator">=</span> outputs  <span class="token comment"># decoder的输出</span>
+<h3 id="推理结果处理"><a href="#推理结果处理" class="headerlink" title="推理结果处理"></a>推理结果处理</h3><p>使用线性层将输出结果处理成points set的形式<br><pre class="line-numbers language-python" data-language="python"><code class="language-python">bev_embed<span class="token punctuation">,</span> hs<span class="token punctuation">,</span> init_reference<span class="token punctuation">,</span> inter_references <span class="token operator">=</span> outputs  <span class="token comment"># decoder的输出</span>
 hs <span class="token operator">=</span> hs<span class="token punctuation">.</span>permute<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
 outputs_classes <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
 outputs_coords <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
@@ -720,7 +742,7 @@ outputs_pts_coords <span class="token operator">=</span> <span class="token punc
     tmp<span class="token punctuation">[</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">+=</span> reference<span class="token punctuation">[</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span>
     tmp <span class="token operator">=</span> tmp<span class="token punctuation">.</span>sigmoid<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    outputs_coord<span class="token punctuation">,</span> outputs_pts_coord <span class="token operator">=</span> self<span class="token punctuation">.</span>transform_box<span class="token punctuation">(</span>tmp<span class="token punctuation">)</span>  <span class="token comment"># 将点集转成bounding box的形式</span>
+    outputs_coord<span class="token punctuation">,</span> outputs_pts_coord <span class="token operator">=</span> self<span class="token punctuation">.</span>transform_box<span class="token punctuation">(</span>tmp<span class="token punctuation">)</span>
     outputs_classes<span class="token punctuation">.</span>append<span class="token punctuation">(</span>outputs_class<span class="token punctuation">)</span>
     outputs_coords<span class="token punctuation">.</span>append<span class="token punctuation">(</span>outputs_coord<span class="token punctuation">)</span>
     outputs_pts_coords<span class="token punctuation">.</span>append<span class="token punctuation">(</span>outputs_pts_coord<span class="token punctuation">)</span>
@@ -739,7 +761,7 @@ outs <span class="token operator">=</span> <span class="token punctuation">&#123
 <span class="token punctuation">&#125;</span>
 
 <span class="token keyword">return</span> outs<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
-<h2 id="Loss计算"><a href="#Loss计算" class="headerlink" title="Loss计算"></a>Loss计算</h2><p>MapTR的损失函数由分类损失、point2point损失和方向损失三个部分组成</p>
+<h3 id="Loss计算"><a href="#Loss计算" class="headerlink" title="Loss计算"></a>Loss计算</h3><p>MapTR的损失函数由分类损失、point2point损失和方向损失三个部分组成</p>
 <script type="math/tex; mode=display">\mathcal{L}=\lambda \mathcal{L}_{cls}+\alpha \mathcal{L}_{p2p}+\beta \mathcal{L}_{dir}</script><p>分类损失使用Focal loss</p>
 <script type="math/tex; mode=display">\mathcal{L}_{cls} = \mathcal{L}_{Focal}(\hat{p}_{\hat{\pi}(i)},c_i)</script><p>point2point损失使用曼哈顿距离</p>
 <script type="math/tex; mode=display">\mathcal{L}_{p2p}=\sum_{i=0}^{N-1}\mathbb{I}_{c_i\ne\varnothing} \sum_{j=0}^{N_v-1}D_{Manhattan}(\hat{v}_{\hat{\pi}(i)},v_{i,\gamma(j)})</script><p>方向损失使用配对的边之间的余弦相似度</p>
@@ -776,6 +798,7 @@ outs <span class="token operator">=</span> <span class="token punctuation">&#123
 </tbody>
 </table>
 </div>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2208.14437.pdf">MapTR Paper</a><br><a target="_blank" rel="noopener" href="https://github.com/hustvl/MapTR">MapTR Code</a></p>
 
                 
             </div>
@@ -840,8 +863,16 @@ outs <span class="token operator">=</span> <span class="token punctuation">&#123
                     
                         <div class="article-tag">
                             
+                                <a href="/tags/Multi-view-3D/">
+                                    <span class="chip bg-color">Multi-view 3D</span>
+                                </a>
+                            
                                 <a href="/tags/HD-Map/">
                                     <span class="chip bg-color">HD Map</span>
+                                </a>
+                            
+                                <a href="/tags/ICLR/">
+                                    <span class="chip bg-color">ICLR</span>
                                 </a>
                             
                         </div>
@@ -1138,7 +1169,7 @@ outs <span class="token operator">=</span> <span class="token punctuation">&#123
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">49.3k</span>
+                        class="white-color">48.7k</span>
             
             
             

@@ -444,19 +444,21 @@
 <li><p>将畸变后的点通过内参数矩阵投影到像素平面，得到该点在图像上的正确位置</p>
 <script type="math/tex; mode=display">u = f_x x_{distorted} + c_x</script><script type="math/tex; mode=display">v = f_y y_{distorted} + c_y</script></li>
 </ol>
-<h3 id="去畸变处理"><a href="#去畸变处理" class="headerlink" title="去畸变处理"></a>去畸变处理</h3><p>去畸变处理有两种做法。可以选择先对整张图像进行去畸变，得到去畸变厚的图像，然后讨论此图像上的点的空间位置。也可以 从畸变图像上的某个点出发，按照畸变方程，讨论其畸变前的空间位置。去畸变之后，就可以直接用针孔模型建立投影关系。（通常前者更为常用）</p>
+<h3 id="去畸变处理"><a href="#去畸变处理" class="headerlink" title="去畸变处理"></a>去畸变处理</h3><p>去畸变处理有两种做法。可以选择先对整张图像进行去畸变，得到去畸变后的图像，然后讨论此图像上的点的空间位置。也可以从畸变图像上的某个点出发，按照畸变方程，讨论其畸变前的空间位置。去畸变之后，就可以直接用针孔模型建立投影关系。（通常前者更为常用）</p>
 <h2 id="鱼眼相机"><a href="#鱼眼相机" class="headerlink" title="鱼眼相机"></a>鱼眼相机</h2><p>鱼眼镜头设计的目的是要拍摄大的视野，其视场角可达到180-270度。为了将尽可能大的场景投影到有限的图像平面内，鱼眼相机将相机畸变列为其成像特征用以在有限的图像平面内表达本应落在无穷远处的空间点投影。鱼眼镜头采用非相似成像，在成像过程中引入畸变，通过对直径空间的压缩，突破成像视角的局限，从而达到广角成像。因此经入射光线经过镜头之后射向成像面，其出射角一定是要小于入射角的。鱼眼镜头是由十几个不同的透镜组合而成的，在成像过程中，入射光线经过不同程度的折射，投影到尺寸有限的成像平面上，使得鱼眼镜头与普通镜头相比拥有更大的视野。</p>
 <p><img src="/images/fisheye_model.png" width="70%" height="70%"/></p>
 <h3 id="鱼眼相机成像模型"><a href="#鱼眼相机成像模型" class="headerlink" title="鱼眼相机成像模型"></a>鱼眼相机成像模型</h3><p>鱼眼相机成像模型近似为单位球面投影模型。一般将鱼眼相机成像过程分解成两步：先将三维空间点线性的投影到虚拟单位球面上；随后将单位球面上的点投影到图像平面上，这个过程是非线性的。由于鱼眼相机所成影像存在畸变，其中径向畸变非常严重，因此其畸变模型主要考虑径向畸变。</p>
-<p>鱼眼相机的投影函数是为了尽可能将庞大的场景投影到有限的图像平面所设计的。根据投影函数的不同将鱼眼相机的设计模型大致分为等距投影模型、等立体角投影模型、正交投影模型和体视投影模型四种。相机的成像模型实际上表征的是成像的像高与入射角之间的映射关系。</p>
+<p><img src="/images/fisheye_camera_model.png" width="40%" height="40%"/></p>
+<p>鱼眼相机的投影函数是为了尽可能将庞大的场景投影到有限的图像平面所设计的。根据投影函数的不同，鱼眼相机的设计模型大致分为等距投影模型、等立体角投影模型、正交投影模型和体视投影模型四种。相机的成像模型实际上表征的是成像的像高与入射角之间的映射关系。</p>
 <p>以针孔模型为例，其理想成像公式为</p>
 <script type="math/tex; mode=display">r_d = f tan \theta</script><p>f为鱼眼相机的焦距，即成像平面的半径，θ是入射光线与鱼眼相机光轴的夹角，即入射角。$r_d$为鱼眼图像的点到畸变中心的距离，即成像高度。$r_d$随着设计模型的变化而发生变化，四种模型投射距离的大小关系如下（反映空间中的一点P投影到球面再到图像平面的成像过程）</p>
-<h4 id="等距投影"><a href="#等距投影" class="headerlink" title="等距投影"></a>等距投影</h4><p>等距投影模型的投影关系在入射光线之间的角度相同时，保持其对应各投影点之间的间距相同。其投影模型为：</p>
+<h4 id="等距投影"><a href="#等距投影" class="headerlink" title="等距投影"></a>等距投影</h4><p>等距投影模型是使用最广泛的投影模型，其投影关系在入射光线之间的角度相同时，保持其对应各投影点之间的间距相同。其投影模型为：</p>
 <script type="math/tex; mode=display">r_d = f \theta</script><h4 id="正交投影"><a href="#正交投影" class="headerlink" title="正交投影"></a>正交投影</h4><p>正交投影模型的畸变很大，近180度处的图像信息几乎全部丢失，且180度之外的场景区域将无法进行描述。采用这种模型的镜头拍出的图片即使在视角较小的区域也会比其他模型镜头的畸变更明显。因此，针对艺术摄影类的广角镜头，该模型的校正效果更好。其模型如下：</p>
 <script type="math/tex; mode=display">r_d = f sin\theta</script><h4 id="等立体角投影（等积投影）"><a href="#等立体角投影（等积投影）" class="headerlink" title="等立体角投影（等积投影）"></a>等立体角投影（等积投影）</h4><p>等立体角的特点是相等立体角的入射面会产生相等面积的像，其畸变程度介于等距模型与正交模型之间。这种投影方式的特征在于，能保持变换前后，物体所占的立体角大小不变。或者说，在半球形空间中，半球面上两个「面积」相同的图案，成像后，在成像平面上的两个图案的面积仍然相同（虽然两者形状不一定相似）。其模型如下：</p>
 <script type="math/tex; mode=display">r_d = 2f sin \frac{\theta}{2}</script><h4 id="体视投影"><a href="#体视投影" class="headerlink" title="体视投影"></a>体视投影</h4><p>体视模型相比之下畸变最小，球形物面上的微小面元经过体视投影后，其像仍然是一个小圆。所以体视投影对微小物体成像有相似性。但正是这种成像的相似性，使得该投影方式不能提供足够的桶形畸变，影响成像视场。</p>
-<script type="math/tex; mode=display">r_d = 2f tan \frac{\theta}{2}</script><p>一些常用的鱼眼相机模型，可以参考<a href="https://massive11.github.io/2022/11/08/principle-matlab-yu-yan-xiang-ji-biao-ding-xiang-guan-gong-ju-shi-yong/">Scaramuzza畸变模型</a>、<a href="https://massive11.github.io/2022/11/10/principle-opencv-yu-yan-biao-ding-mo-xing/">OpenCV畸变模型</a>和<a href="">MEI模型</a></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>《视觉SLAM十四讲》—高翔<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/511284263">https://zhuanlan.zhihu.com/p/511284263</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/340751380">https://zhuanlan.zhihu.com/p/340751380</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/29273352">https://zhuanlan.zhihu.com/p/29273352</a></p>
+<script type="math/tex; mode=display">r_d = 2f tan \frac{\theta}{2}</script><p>以上四种畸变模型畸变量从大到小依次为：正交投影、等立体角投影、等距投影、体视投影。</p>
+<p>一些常用的鱼眼相机模型，可以参考<a href="https://massive11.github.io/2022/11/08/principle-matlab-yu-yan-xiang-ji-biao-ding-xiang-guan-gong-ju-shi-yong/">Scaramuzza畸变模型</a>、<a href="https://massive11.github.io/2022/11/10/principle-opencv-yu-yan-biao-ding-mo-xing/">OpenCV畸变模型</a>和<a href="https://massive11.github.io/2022/11/22/principle-mei-mo-xing-yu-yan-xiang-ji-biao-ding/">MEI模型</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>《视觉SLAM十四讲》—高翔<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/511284263">https://zhuanlan.zhihu.com/p/511284263</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/340751380">https://zhuanlan.zhihu.com/p/340751380</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/29273352">https://zhuanlan.zhihu.com/p/29273352</a><br><a target="_blank" rel="noopener" href="https://www.researchgate.net/publication/347632237_Universal_Semantic_Segmentation_for_Fisheye_Urban_Driving_Images">https://www.researchgate.net/publication/347632237_Universal_Semantic_Segmentation_for_Fisheye_Urban_Driving_Images</a></p>
 
                 
             </div>
@@ -815,7 +817,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">48.7k</span>
+                        class="white-color">49.1k</span>
             
             
             

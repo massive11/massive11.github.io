@@ -4,6 +4,58 @@
   
     
     <entry>
+      <title>KAN论文与代码解读</title>
+      <link href="/2024/05/09/paper-kan-lun-wen-yu-dai-ma-jie-du/"/>
+      <url>/2024/05/09/paper-kan-lun-wen-yu-dai-ma-jie-du/</url>
+      
+        <content type="html"><![CDATA[<p>本文对KAN的论文和代码进行了解读。<br><span id="more"></span></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> General AI </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>MapTR V2论文与代码解读</title>
+      <link href="/2023/08/27/paper-maptr-v2-lun-wen-yu-dai-ma-jie-du/"/>
+      <url>/2023/08/27/paper-maptr-v2-lun-wen-yu-dai-ma-jie-du/</url>
+      
+        <content type="html"><![CDATA[<p>本文对MapTR V2的论文和代码进行了解读。<br><span id="more"></span></p><p>MapTR V2是在MapTR（详情可戳<a href="https://massive11.github.io/2022/12/10/paper-maptr-lun-wen-yu-dai-ma-jie-du/">MapTR论文与代码解读</a>）的基础上进行了进行了一些小改动实现了性能提升，整体框架和MapTR差距不大，其改动在于：</p><ol><li>解耦了自注意力机制，降低了显存开销</li><li>引入了一对多的集合预测分支来加速收敛</li><li>在pv和bev上都增加了密集的监督，显著提升了性能</li><li>增加了center line的学习，这对于下游任务更加友好</li><li>将整个框架拓展到了3D地图重建</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> Paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Multi-view 3D </tag>
+            
+            <tag> HD Map </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Panoptic Visual Odometry论文解读</title>
       <link href="/2023/08/13/paper-pvo-lun-wen-yu-dai-ma-jie-du/"/>
       <url>/2023/08/13/paper-pvo-lun-wen-yu-dai-ma-jie-du/</url>
@@ -257,7 +309,7 @@
       <link href="/2022/11/22/principle-mei-mo-xing-yu-yan-xiang-ji-biao-ding/"/>
       <url>/2022/11/22/principle-mei-mo-xing-yu-yan-xiang-ji-biao-ding/</url>
       
-        <content type="html"><![CDATA[<p>本文对MEI模型进行鱼眼相机标定的原理进行了介绍<br><span id="more"></span></p><h2 id="MEI模型"><a href="#MEI模型" class="headerlink" title="MEI模型"></a>MEI模型</h2><p>MEI模型实际上是Omnidirectional相机模型+radtan畸变模型（radial-tangential）。由于Omnidirectional模型涵盖了Pinhole模型,（pinhole模型是Omni模型的⼀种特殊情况），MEI model实际上可以表⽰鱼眼和⾮鱼眼相机。MEI模型只用棋盘格即可完成标定。</p><p>MEI模型提出Scaramuzza模型在边界处映射不准，映射模型的参数初始值也难以获得。<br>在畸变模型的参数选择上，MEI模型认为过多参数会导致过多的局部最优，从而使得最小化比较困难。因此，MEI模型只建模下图中Fig2所示的畸变<br><img src="/images/MEI_model.png" width="70%" height="70%"/></p><h3 id="Unified-Projection-Model"><a href="#Unified-Projection-Model" class="headerlink" title="Unified Projection Model"></a>Unified Projection Model</h3><p><img src="/images/unified_image_formation.png" width="40%" height="40%"/><br><img src="/images/MEI_process.png"/></p><h3 id="像素重映射"><a href="#像素重映射" class="headerlink" title="像素重映射"></a>像素重映射</h3><p>其实只是建立虚拟的针孔相机上的每个像素与鱼眼相机的每个像素的映射关系，即可直接用OpenCV的remap函数双线性插值得到针孔相机的图像。其具体步骤为：</p><p>先确定虚拟针孔相机的内参$(fx, fy, cx, cy)$与相对于鱼眼相机的外参。<br>对于虚拟相机的每个像素点$p_{pinhole}$<br>，将像素点反投影到归一化平面，得到三维点$p_{3d}$（z=1）。<br>将三维点根据鱼眼相机模型，投影到鱼眼相机上，得到鱼眼相机上的像素点$p_{fisheye}$。<br>如此，便建立了针孔相机的像素点与鱼眼相机的像素点的映射关系，根据映射关系取鱼眼相机的像素即可。</p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.robots.ox.ac.uk/~cmei/articles/single_viewpoint_calib_mei_07.pdf">Single View Point Omnidirectional Camera Calibration from Planar Grids</a></p>]]></content>
+        <content type="html"><![CDATA[<p>本文对MEI模型进行鱼眼相机标定的原理进行了介绍<br><span id="more"></span></p><h2 id="MEI模型"><a href="#MEI模型" class="headerlink" title="MEI模型"></a>MEI模型</h2><p>MEI模型实际上是Omnidirectional相机模型+Radtan畸变模型（Radial-tangential）。由于Omnidirectional模型涵盖了Pinhole模型,（Pinhole模型是Omni模型的⼀种特殊情况），MEI模型实际上可以表示鱼眼和⾮鱼眼相机。MEI模型只用棋盘格即可完成标定。</p><p>MEI模型提出Scaramuzza模型在边界处映射不准，映射模型的参数初始值也难以获得。在畸变模型的参数选择上，MEI模型认为过多参数会导致过多的局部最优，从而使得最小化比较困难。因此，MEI模型只建模下图中Fig2所示的畸变<br><img src="/images/MEI_model.png" width="70%" height="70%"/></p><h3 id="Unified-Projection-Model"><a href="#Unified-Projection-Model" class="headerlink" title="Unified Projection Model"></a>Unified Projection Model</h3><p><img src="/images/unified_image_formation.png" width="40%" height="40%"/><br><img src="/images/MEI_process.png"/><br>通过引入${\xi}$，将原点拉到$C_p$，入射光线与Z轴的夹角变小，从而可以映射更大的fov。</p><h3 id="像素重映射"><a href="#像素重映射" class="headerlink" title="像素重映射"></a>像素重映射</h3><p>像素重映射是建立虚拟的针孔相机上的每个像素与鱼眼相机的每个像素的映射关系，即可直接用OpenCV的remap函数双线性插值得到针孔相机的图像。其具体步骤为：</p><ol><li>先确定虚拟针孔相机的内参$(fx, fy, cx, cy)$与相对于鱼眼相机的外参</li><li>对于虚拟相机的每个像素点${p_{pinhole}}$，将像素点反投影到归一化平面，得到三维点${p_{3d} (z=1)}$</li><li>将三维点根据鱼眼相机模型，投影到鱼眼相机上，得到鱼眼相机上的像素点$p_{fisheye}$。</li></ol><p>如此，便建立了针孔相机的像素点与鱼眼相机的像素点的映射关系，根据映射关系取鱼眼相机的像素即可。</p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.robots.ox.ac.uk/~cmei/articles/single_viewpoint_calib_mei_07.pdf">Single View Point Omnidirectional Camera Calibration from Planar Grids</a></p>]]></content>
       
       
       <categories>
